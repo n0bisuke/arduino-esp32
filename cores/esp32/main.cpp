@@ -19,6 +19,7 @@ void loopTask(void *pvParameters)
     setup();
 	NefryWebServer.begin();
 	for(;;) {
+        micros(); //update overflow
         loop();
 		Nefry.nefry_loop();
     }
