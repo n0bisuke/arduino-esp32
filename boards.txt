@@ -77,7 +77,7 @@ nefryicing.build.f_cpu=240000000L
 nefryicing.build.flash_mode=dio
 nefryicing.build.flash_size=4MB
 
-nefryicing.FlashFreq=80MHz
+nefryicing.build.flash_freq=80m
 
 nefryicing.menu.UploadSpeed.512000.windows=512000
 nefryicing.menu.UploadSpeed.512000.upload.speed=512000
