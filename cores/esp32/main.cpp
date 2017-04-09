@@ -16,11 +16,15 @@
 void loopTask(void *pvParameters)
 {
 	Nefry.nefry_init();
-    setup();
+	if (Nefry.getBootFlg() != true) {
+		setup();
+	}
 	NefryWebServer.begin();
 	for(;;) {
         micros(); //update overflow
-        loop();
+		if (Nefry.getBootFlg() != true) {
+			loop();
+		}
 		Nefry.nefry_loop();
     }
 }
@@ -33,12 +37,21 @@ void Nefryserver(void *pvParameters) {
 		NefryWebServer.run();	
 	}
 }
-
+void NefrySWpolling(void *pvParameters) {
+	TickType_t xLastWakeTime;
+	xLastWakeTime = xTaskGetTickCount();
+	Nefry.enableSW();
+	for (;;) {
+		vTaskDelayUntil(&xLastWakeTime, 100 / portTICK_PERIOD_MS);
+		Nefry.pollingSW();
+	}
+}
 extern "C" void app_main()
 {
     initArduino();
     xTaskCreatePinnedToCore(loopTask, "loopTask", 4096, NULL, 2, NULL, ARDUINO_RUNNING_CORE);
-	xTaskCreate(&Nefryserver, "NefryWeb", 4096, NULL, 1, NULL);
+	xTaskCreatePinnedToCore(&Nefryserver, "NefryWeb", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+	xTaskCreatePinnedToCore(&NefrySWpolling, "SWpolling", 4096, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
 
 #endif
