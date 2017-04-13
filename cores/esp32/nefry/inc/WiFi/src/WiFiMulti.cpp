@@ -117,11 +117,13 @@ uint8_t WiFiMulti::run(void)
 
                 WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase, bestChannel, bestBSSID);
                 status = WiFi.status();
-
+				int wifiTimout = 0;
                 // wait for connection or fail
                 while(status != WL_CONNECTED && status != WL_NO_SSID_AVAIL && status != WL_CONNECT_FAILED) {
                     delay(10);
                     status = WiFi.status();
+					wifiTimout++;
+					if (wifiTimout > 40)break;
                 }
 
                 IPAddress ip;
