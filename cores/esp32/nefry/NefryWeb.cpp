@@ -93,6 +93,7 @@ String Nefry_Web::beginWeb(String _viwePage) {
 		NefryDataStore.setBootSelector(1);
 		return createHtml(F("Nefry Write mode"), "", F("<h1>Nefry Write mode</h1><p>Reset start!</p><a href=\"/\">Back to top</a>"));
 	}
+	return "";
 }
 
 /*
