@@ -1,11 +1,11 @@
 name=Nefry(ESP32)Module
-version=0.5.2
+version=0.5.3
 
 runtime.tools.xtensa-esp32-elf-gcc.path={runtime.platform.path}/tools/xtensa-esp32-elf
 
-compiler.esptool.cmd=esptool
-compiler.esptool.cmd.linux=esptool.py
-compiler.esptool.cmd.windows=esptool.exe
+tools.esptool.cmd="{runtime.tools.esptool.path}/esptool"
+tools.esptool.cmd.linux="{runtime.tools.esptool.path}/esptool.py"
+tools.esptool.cmd.windows="{runtime.tools.esptool.path}/esptool.exe"
 
 tools.esptool.network_cmd=python "{runtime.platform.path}/tools/espota.py"
 tools.esptool.network_cmd.windows="{runtime.platform.path}/tools/espota.exe"
@@ -75,7 +75,7 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.f
 recipe.objcopy.eep.pattern={tools.gen_esp32part.cmd} -q "{runtime.platform.path}/tools/partitions/default.csv" "{build.path}/{build.project_name}.partitions.bin"
 
 ## Create hex
-recipe.objcopy.hex.pattern="{runtime.tools.esptool.path}/{compiler.esptool.cmd}" --chip esp32 elf2image --flash_mode "{build.flash_mode}" --flash_freq "{build.flash_freq}" --flash_size "{build.flash_size}" -o "{build.path}/{build.project_name}.bin" "{build.path}/{build.project_name}.elf"
+recipe.objcopy.hex.pattern={tools.esptool.cmd} --chip esp32 elf2image --flash_mode "{build.flash_mode}" --flash_freq "{build.flash_freq}" --flash_size "{build.flash_size}" -o "{build.path}/{build.project_name}.bin" "{build.path}/{build.project_name}.elf"
 
 ## Save hex
 recipe.output.tmp_file={build.project_name}.bin
