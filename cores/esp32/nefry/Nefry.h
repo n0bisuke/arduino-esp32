@@ -29,7 +29,8 @@ public:
 		setUserPass(String pass),
 		setStorageValue(long value, int pointer),
 		setStorageStr(String str, int pointer),
-		getBootFlg();
+		getBootFlg(),
+		readSW();
 
 	String
 		getModuleID(),
@@ -38,8 +39,7 @@ public:
 		getStorageStr(int pointer),
 		getVersion(),
 		getProgramName(),
-		getAddressStr(IPAddress ip),
-		readSW();
+		getAddressStr(IPAddress ip);
 
 	long
 		getStorageValue(int pointer);
