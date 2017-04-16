@@ -14,6 +14,7 @@ void NefryDataStore_lib::begin()
 {
 	nefryDataStorePreferences = Preferences();
 	nefryDataStorePreferences.begin("nefryStore");
+	for (int i = 0; i < 30; i++)_readCacheFlg[i] = false;
 }
 /*
 void NefryDataStore_lib::clear()
@@ -24,11 +25,15 @@ void NefryDataStore_lib::clear()
 
 bool NefryDataStore_lib::setModuleID(String id)
 {
+	_readCacheStr[10] = id;
+	_readCacheFlg[10] = true;
 	return nefryDataStorePreferences.putString("ModuleID",id);
 }
 
 bool NefryDataStore_lib::setBootSelector(int mode)
 {
+	_readCacheLong[10] = mode;
+	_readCacheFlg[30] = true;
 	return nefryDataStorePreferences.putInt("BootSelector", mode);
 }
 
@@ -50,37 +55,51 @@ bool NefryDataStore_lib::setConnectSSID(String str, int pointer)
 
 bool NefryDataStore_lib::setStorageStr(String str, int pointer)
 {
+	if (pointer <= 10)return false;
 	String key;
 	key = "StorageStr";
 	key += pointer;
+	_readCacheStr[pointer] = str;
+	_readCacheFlg[pointer] = true;
 	return nefryDataStorePreferences.putString(key.c_str(), str);
 }
 
 bool NefryDataStore_lib::setStorageValue(long value, int pointer)
 {
+	if (pointer <= 10)return false;
 	String key;
 	key = "StorageValue";
 	key += pointer;
+	_readCacheLong[pointer] = value;
+	_readCacheFlg[20+pointer] = true;
 	return nefryDataStorePreferences.putLong(key.c_str(), value);
 }
 
 bool NefryDataStore_lib::setUserPass(String pass)
 {
+	_readCacheStr[11] = pass;
+	_readCacheFlg[11] = true;
 	return nefryDataStorePreferences.putString("UserPass", pass);
 }
 
 bool NefryDataStore_lib::setUser(String user)
 {
+	_readCacheStr[12] = user;
+	_readCacheFlg[12] = true;
 	return nefryDataStorePreferences.putString("User", user);
 }
 
 bool NefryDataStore_lib::setModuleClass(String className)
 {
+	_readCacheStr[13] = className;
+	_readCacheFlg[13] = true;
 	return nefryDataStorePreferences.putString("ModuleClass", className);
 }
 
 bool NefryDataStore_lib::setModulePass(String pass)
 {
+	_readCacheStr[14] = pass;
+	_readCacheFlg[14] = true;
 	return nefryDataStorePreferences.putString("ModulePass", pass);
 }
 
@@ -88,7 +107,19 @@ bool NefryDataStore_lib::setModulePass(String pass)
 
 String NefryDataStore_lib::getModuleID()
 {
-	return nefryDataStorePreferences.getString("ModuleID","");
+	if (_readCacheFlg[10] == false) {
+		_readCacheStr[10] = nefryDataStorePreferences.getString("ModuleID","");
+		_readCacheFlg[10] = true;
+	}
+	return _readCacheStr[10];
+}
+
+String NefryDataStore_lib::getConnectSSID(int pointer)
+{
+	String key;
+	key = "ConnectSSID";
+	key += pointer;
+	return nefryDataStorePreferences.getString(key.c_str(), "");
 }
 
 String NefryDataStore_lib::getConnectPass(int pointer)
@@ -101,51 +132,70 @@ String NefryDataStore_lib::getConnectPass(int pointer)
 
 int NefryDataStore_lib::getBootSelector()
 {
-	return nefryDataStorePreferences.getInt("BootSelector",0);
+	if (_readCacheFlg[30] == false) {
+		_readCacheLong[10] = nefryDataStorePreferences.getInt("BootSelector", 0);
+		_readCacheFlg[30] = true;
+	}
+	return _readCacheLong[10];
 }
 
 long NefryDataStore_lib::getStorageValue(int pointer)
 {
-	String key;
-	key = "StorageValue";
-	key += pointer;
-	return nefryDataStorePreferences.getLong(key.c_str(),0);
-}
-
-String NefryDataStore_lib::getConnectSSID(int pointer)
-{
-	String key;
-	key = "ConnectSSID";
-	key += pointer;
-	return nefryDataStorePreferences.getString(key.c_str(), "");
+	if (pointer <= 10)return 0;
+	if (_readCacheFlg[20 + pointer] == false) {
+		_readCacheFlg[20 + pointer] = true;
+		String key;
+		key = "StorageValue";
+		key += pointer;
+		_readCacheLong[pointer] = nefryDataStorePreferences.getLong(key.c_str(), 0);
+	}
+	return _readCacheLong[pointer];
 }
 
 String NefryDataStore_lib::getStorageStr(int pointer)
 {
-	String key;
-	key = "StorageStr";
-	key += pointer;
-	return nefryDataStorePreferences.getString(key.c_str(), "");
+	if (pointer <= 10)return "";
+	if (_readCacheFlg[pointer] == false) {
+		_readCacheFlg[pointer] = true;
+		String key;
+		key = "StorageStr";
+		key += pointer;
+		_readCacheStr[pointer]= nefryDataStorePreferences.getString(key.c_str(), "");
+	}
+	return _readCacheStr[pointer];
 }
 
 String NefryDataStore_lib::getUserPass()
 {
-	return nefryDataStorePreferences.getString("UserPass", "");
+	if (_readCacheFlg[11] == false) {
+		_readCacheStr[11] = nefryDataStorePreferences.getString("UserPass", "");
+	}
+	return _readCacheStr[11];
 }
 
 String NefryDataStore_lib::getUser()
 {
-	return nefryDataStorePreferences.getString("User", "");
+	if (_readCacheFlg[12] == false) {
+		_readCacheStr[12] = nefryDataStorePreferences.getString("User", "");
+	}
+	return _readCacheStr[12];
 }
 
 String NefryDataStore_lib::getModuleClass()
 {
-	return nefryDataStorePreferences.getString("ModuleClass", "");
+	if (_readCacheFlg[13] == false) {
+		_readCacheStr[13] = nefryDataStorePreferences.getString("ModuleClass", "");
+	}
+	return _readCacheStr[13];
 }
 
 String NefryDataStore_lib::getModulePass()
 {
-	return nefryDataStorePreferences.getString("ModulePass", "");
+	if (_readCacheFlg[14] == false) {
+		_readCacheStr[14] = nefryDataStorePreferences.getString("ModulePass", "");
+	}
+	
+	return _readCacheStr[14];
 }
 
 
