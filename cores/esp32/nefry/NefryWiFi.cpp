@@ -177,6 +177,7 @@ String Nefry_WiFi::beginWeb(String url)
 		setWifiTimeoutClear();
 		return NefryWeb.createHtml(F("Wifi Count Clear"), (String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">"));
 	}
+	return "";
 }
 
 
