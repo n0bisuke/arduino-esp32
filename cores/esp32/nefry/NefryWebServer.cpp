@@ -90,6 +90,7 @@ void Nefry_webserver::run() {
 		String content;
 		if (newssid.length() > 0) {
 			NefryWiFi.addWifi(newssid, newpwd);
+			NefryWiFi.saveWifi();
 			content = F("Save SSID:");
 			content += newssid;
 			content += F(" Restart to boot into new WiFi");
