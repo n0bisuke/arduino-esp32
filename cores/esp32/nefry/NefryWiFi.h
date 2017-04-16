@@ -28,16 +28,18 @@ public:
 
 
 private:
+
 	WiFiMulti wifiMulti;
 	String network_html, network_list;
 	void
 		scanWiFi(),
-		sortWifi();
-
+		dataCache();
+		
 	String escapeParameter(String param),
-		ssidweb, pwdweb;
+		_nefryssid[5], _nefrypwd[5];
 
 	int 
+		sortWifi(),
 		_WifiTimeOutCountMax,
 		_WifiTimeOutCount = 0;
 };

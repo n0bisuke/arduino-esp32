@@ -8,29 +8,27 @@ http://opensource.org/licenses/mit-license.php
 */
 
 /*
-ConnectSSID	: Nefry‚ªÚ‘±‚·‚éWiFi‚ÌSSID‚ğ•Û‘¶‚·‚é‚Æ‚«‚Ég—p‚·‚éB5‚Â‚Ü‚Å•Û‘¶B––’[‚É”š‚ª’Ç‰Á‚³‚ê‚é StringŒ^ null•¶š‚ÌƒŠƒXƒg‚É’Ç‰Á‚µ‚È‚¢
-ConnectPass	: Nefry‚ªÚ‘±‚·‚éWiFi‚ÌƒpƒXƒ[ƒh‚ğ•Û‘¶‚·‚é‚Æ‚«‚Ég—p‚·‚éB5‚Â‚Ü‚Å•Û‘¶B––’[‚É”š‚ª’Ç‰Á‚³‚ê‚é StringŒ^
-ConnectWiFi : Ú‘±‚·‚éWiFi‚ğ—LŒøor–³Œø‰»‚·‚é
+ConnectSSID	: Nefryï¿½ï¿½ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½ï¿½WiFiï¿½ï¿½SSIDï¿½ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½B5ï¿½Â‚Ü‚Å•Û‘ï¿½ï¿½Bï¿½ï¿½ï¿½[ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Stringï¿½^ nullï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Xï¿½gï¿½É’Ç‰ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+ConnectPass	: Nefryï¿½ï¿½ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½ï¿½WiFiï¿½Ìƒpï¿½Xï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½B5ï¿½Â‚Ü‚Å•Û‘ï¿½ï¿½Bï¿½ï¿½ï¿½[ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Stringï¿½^
+ConnectWiFi : ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½ï¿½WiFiï¿½ï¿½Lï¿½ï¿½orï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 */
 
 #include "NefryWiFi.h"
-Preferences wifiPreferences;
-bool wifiEnable[5];
 
 bool initflgWifi = false;
-void Nefry_WiFi::begin() {
-	deleteWifi(0);
+void Nefry_WiFi::begin() {	
+	WiFi.persistent(false);
+	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
+	dataCache();
 	scanWiFi();								//WiFi‚ğŒŸõ‚µAWebƒy[ƒW‚É•\¦‚·‚é
 	setWifiTimeout(0);//–³§ŒÀ‚Å©“®Ú‘±‚·‚é
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
-	WiFi.persistent(false);
-	WiFi.mode(WIFI_AP_STA);
-	deleteWifi(0);
+
 	for (int i = 0; i < 5; i++) {
-		if (!NefryDataStore.getConnectSSID(i).equals("")) {
-			wifiMulti.addAP(NefryDataStore.getConnectSSID(i).c_str(), NefryDataStore.getConnectPass(i).c_str());
+		if (!_nefryssid[i].equals("")) {
+			wifiMulti.addAP(_nefryssid[i].c_str(), _nefrypwd[i].c_str());
 		}
 	}
 	wifiMulti.addAP("NefryWiFi", "NefryWiFi");
@@ -162,11 +160,11 @@ String Nefry_WiFi::beginWeb(String url)
 		content += network_list;
 		content += F("</div><div><h1>Saved WiFi List</h1><p>Delete WiFi Select</p><form  name=\"myForm\" method='get' action='delete_wifi'>");
 		for (int i = 0; i < 5; i++) {
-			if (!NefryDataStore.getConnectSSID(i).equals("")){
+			if (!_nefryssid[i].equals("")){
 				content += F("<input type=\"checkbox\" value=\"1\"name=\"");
 				content += i;
 				content += F("\">");
-				content += NefryDataStore.getConnectSSID(i);
+				content += _nefryssid[i];
 				content += F("<br>");
 			}
 		}
@@ -188,56 +186,71 @@ String Nefry_WiFi::beginWeb(String url)
 
 void Nefry_WiFi::deleteWifi(int id)
 {
+	Serial.print("Delete : ");
+	Serial.println(id);
 	if (id < 0 || id >= 5)return;
-	NefryDataStore.setConnectSSID("",id);
-	NefryDataStore.setConnectPass("",id);
+	_nefryssid[id] = "";
+	_nefrypwd[id]="";
 }
 
-void Nefry_WiFi::addWifi(String ssid, String pwd)
+void Nefry_WiFi::addWifi(String _ssid, String _pwd)
 {
+
+	int i = sortWifi();	
 	Serial.print("addwifi : ");
-	Serial.println(ssid);
+	Serial.println(_ssid);
+	Serial.print("addwifi i : ");
+	Serial.println(i);
 	sortWifi();
 	for (int i = 0; i < 5; i++) {
-		if (NefryDataStore.getConnectSSID(i).equals("")) {
-			NefryDataStore.setConnectSSID(ssid, i);
-			NefryDataStore.setConnectPass(pwd, i);
+		if (_nefryssid[i].equals("")) {
+			_nefryssid[i] = _ssid;
+			_nefrypwd[i]=_pwd;
 			return;
 		}
 	}
 	deleteWifi(0);
 	sortWifi();
-	NefryDataStore.setConnectSSID(ssid, 4);
-	NefryDataStore.setConnectPass(pwd, 4);
+	_nefryssid[4]=_ssid;
+	_nefrypwd[4]=_pwd;
+	Serial.println(getlistWifi());
 }
-void Nefry_WiFi::sortWifi()
+int Nefry_WiFi::sortWifi()
 {
-	for (int i = 0,j = 0; i < 4; i++) {
-		if (NefryDataStore.getConnectSSID(i).equals("")) {
+	int i = 0;
+	for (int j = 0; i < 4; i++) {
+		if (_nefryssid[i].equals("")) {
+			Serial.print("sort i: ");
+			Serial.println(i);
 			for (j = i + 1; j < 5; j++) {
-				if (!NefryDataStore.getConnectSSID(j).equals("")) {
-					NefryDataStore.setConnectSSID(NefryDataStore.getConnectSSID(j), i);
-					NefryDataStore.setConnectPass(NefryDataStore.getConnectPass(j), i);
-					NefryDataStore.setConnectSSID("", j);
-					NefryDataStore.setConnectPass("", j);
+				Serial.print("sort j: ");
+				Serial.println(j);
+				if (!_nefryssid[j].equals("")) {
+					_nefryssid[i] = _nefryssid[j];
+					_nefrypwd[i] = _nefrypwd[j];
+					deleteWifi(j);
 					break;
 				}
 			}
-			if (j == 5)return;
+			if (j == 5)break;
 		}
 	}
+	return i;
 }
 void Nefry_WiFi::saveWifi() {
-	sortWifi();
+	for (int i = 0; i < 5; i++) {
+		NefryDataStore.setConnectSSID(_nefryssid[i],i);
+		NefryDataStore.setConnectPass(_nefrypwd[i],i);
+	}
 }
 String Nefry_WiFi::getlistWifi() {
 	String lisWifi = "";
 	for (int i = 0; i < 5; i++) {
-		if (!NefryDataStore.getConnectSSID(i).equals("")) {
+		if (!_nefryssid[i].equals("")) {
 		lisWifi += "ID : ";
 		lisWifi += i;
 		lisWifi += " SSID : ";
-		lisWifi += NefryDataStore.getConnectSSID(i);
+		lisWifi += _nefryssid[i];
 		lisWifi += "\n";
 		}
 	}
@@ -278,6 +291,14 @@ void Nefry_WiFi::scanWiFi(void) {
 		network_html += F("</ol>");
 		network_list += F("</datalist>");
 	}
+}
+void Nefry_WiFi::dataCache()
+{
+	for (int i = 0; i < 5; i++) {
+		_nefryssid[i] = NefryDataStore.getConnectSSID(i);
+		_nefrypwd[i] = NefryDataStore.getConnectPass(i);
+	}
+	
 }
 /* •¶š’uŠ· */
 String Nefry_WiFi::escapeParameter(String param) {
