@@ -183,11 +183,13 @@ String Nefry_WiFi::beginWeb(String url)
 
 //WiFi
 
-void Nefry_WiFi::deleteWifi(int id)
+String Nefry_WiFi::deleteWifi(int id)
 {
-	if (id < 0 || id >= 5)return;
+	if (id < 0 || id >= 5)return "";
+	String ssid = _nefryssid[id];
 	_nefryssid[id] = "";
 	_nefrypwd[id]="";
+	return ssid;
 }
 
 void Nefry_WiFi::addWifi(String _ssid, String _pwd)
