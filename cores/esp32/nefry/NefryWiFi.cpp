@@ -245,10 +245,10 @@ String Nefry_WiFi::getlistWifi() {
 }
 
 void Nefry_WiFi::scanWiFi(void) {
-	int founds = WiFi.scanNetworks();
+	int founds = WiFi.scanNetworks(false);
 	Serial.println();
 	Serial.println(F("scan done"));
-	if (founds == 0) {
+	if (founds <= 0) {
 		Serial.println(F("no networks found"));
 	}
 	else {
