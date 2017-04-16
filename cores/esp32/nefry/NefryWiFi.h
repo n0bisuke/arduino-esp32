@@ -13,7 +13,6 @@ public:
 	void
 		begin(),
 		addWifi(String ssid, String pwd),
-		deleteWifi(int id),
 		setWifiTimeout(int count),
 		setWifiTimeoutClear(),
 		saveWifi();
@@ -23,6 +22,7 @@ public:
 		getWifiTimeout();
 
 	String beginWeb(String s),
+		deleteWifi(int id),
 		getlistWifi();
 
 

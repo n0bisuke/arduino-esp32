@@ -20,7 +20,6 @@ void Nefry_WiFi::begin() {
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
 	dataCache();
-	scanWiFi();								//WiFiを検索し、Webページに表示する
 	setWifiTimeout(0);						//無制限で自動接続する
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
@@ -47,7 +46,7 @@ void Nefry_WiFi::begin() {
 		delay(100);
 		loopCounter++;
 		Serial.print(".");
-		if (loopCounter >= 30)break;
+		if (loopCounter >= 6)break;
 		if (WiFi.status() == WL_CONNECTED)break;
 	}
 	if (WiFi.status() == WL_CONNECTED) {
@@ -60,7 +59,7 @@ void Nefry_WiFi::begin() {
 	else {
 		Nefry.setLed(200, 0, 0);
 	}
-	
+	scanWiFi();								//WiFiを検索し、Webページに表示する
 	/* Nefryが発信するWiFiの設定*/
 	if ( NefryDataStore.getBootSelector()== 1 || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
@@ -226,6 +225,7 @@ int Nefry_WiFi::sortWifi()
 	return i;
 }
 void Nefry_WiFi::saveWifi() {
+	sortWifi();
 	for (int i = 0; i < 5; i++) {
 		NefryDataStore.setConnectSSID(_nefryssid[i],i);
 		NefryDataStore.setConnectPass(_nefrypwd[i],i);
@@ -246,7 +246,7 @@ String Nefry_WiFi::getlistWifi() {
 }
 
 void Nefry_WiFi::scanWiFi(void) {
-	int founds = WiFi.scanNetworks(false);
+	int founds = WiFi.scanNetworks();
 	Serial.println();
 	Serial.println(F("scan done"));
 	if (founds <= 0) {
