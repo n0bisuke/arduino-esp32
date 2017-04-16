@@ -47,9 +47,9 @@ uint8_t WiFiMulti::run(void)
 
     int8_t scanResult;
     uint8_t status = WiFi.status();
-    if(status == WL_DISCONNECTED || status == WL_NO_SSID_AVAIL || status == WL_IDLE_STATUS || status == WL_CONNECT_FAILED) {
+	if (status != WL_CONNECTED || status == WL_NO_SSID_AVAIL || status == WL_IDLE_STATUS || status == WL_CONNECT_FAILED) {
 
-        scanResult = WiFi.scanComplete();
+        scanResult = WiFi.scanNetworks();
         if(scanResult == WIFI_SCAN_RUNNING) {
             // scan is running
             return WL_NO_SSID_AVAIL;
@@ -158,7 +158,7 @@ uint8_t WiFiMulti::run(void)
 
             DEBUG_WIFI_MULTI("[WIFI] start scan\n");
             // scan wifi async mode
-            WiFi.scanNetworks(true);
+            //WiFi.scanNetworks(true);
         }
     }
     return status;
