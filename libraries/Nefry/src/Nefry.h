@@ -3,13 +3,6 @@
 
 
 
-// Offset:         W          R          G          B
-#define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
-#define NEO_RBG  ((0 << 6) | (0 << 4) | (2 << 2) | (1))
-#define NEO_GRB  ((1 << 6) | (1 << 4) | (0 << 2) | (2))
-#define NEO_GBR  ((2 << 6) | (2 << 4) | (0 << 2) | (1))
-#define NEO_BRG  ((1 << 6) | (1 << 4) | (2 << 2) | (0))
-#define NEO_BGR  ((2 << 6) | (2 << 4) | (1 << 2) | (0))
 
 
 class Nefry_lib
@@ -39,11 +32,13 @@ public:
 		reset(),
 		sleep(const int sec),
 		setProgramName(const char * pn),
-		setIndexLink(const char title[32], const char url[32]),
 		beginLed(const int num, const int pin, uint8_t t),
 		setLed(const int r, const int g, const int b, const char w = 122, const int pin = 16, const int num = 0),
 		setLed(String _colorStr, const char w = 122, const int pin = 16, const int num = 0),
-/*
+		addWiFi(String ssid, String pass),
+		deleteWiFi(int id),
+		saveWiFi(),
+		/*
 		println(float text),
 		println(double text),
 		println(char text),
@@ -72,28 +67,23 @@ public:
 	void disableSW();
 
 	bool
-		readSW(),
-		autoConnect(),
-		getConfHtmlPrint(const int num),
-		setConfValue(const int pt, const int num),
-		setConfStr(const char *pt, const int num),
-		login(const char *UserID, const char *User_pass),
-		Auth(const char *Nefryclass, const char *NefryID),
-		getWifiAuto(), 
-		push_sw_();
+		readSW();
 
-	char* getConfStr(const int num);
+	void pollingSW();
+	bool getBootFlg();
 
 
-	String read(),
+	String
 		getVersion(),
 		getProgramName(),
-		getAddressStr(IPAddress ip),
-		getModuleWiFiPass();
+		getAddressStr(IPAddress ip);
 
 
 private:
+	bool _swEnableFlg;
+	bool _bootMode = true, _swflg = false;
 	int hextonum(char c);
+
 };
 extern Nefry_lib Nefry;
 #endif

@@ -90,6 +90,7 @@ void Nefry_webserver::run() {
 		String content;
 		if (newssid.length() > 0) {
 			NefryWiFi.addWifi(newssid, newpwd);
+			NefryWiFi.saveWifi();
 			content = F("Save SSID:");
 			content += newssid;
 			content += F(" Restart to boot into new WiFi");
@@ -102,15 +103,14 @@ void Nefry_webserver::run() {
 		if (newssid.length() != 0)resetTimer(2);
 	}
 	else if (url.equalsIgnoreCase("/delete_wifi")) {
-		String del = "";
+		String del = "",ssid;
 		deleteFlg = false;
-		for (int i = 0; i < 5; i++) {
-			String data = arg("" + i);
-			if (data.equals("1")) {
+		for (int i = 0; i < _currentArgCount; i++) {
+			ssid = NefryWiFi.deleteWifi(_currentArgs[i].key.toInt());
+			if (!ssid.equals("")) {
 				del += "<li>";
-				del += NefryDataStore.getConnectSSID(i);
+				del += ssid;
 				del += "</li>";
-				NefryWiFi.deleteWifi(i);
 				deleteFlg = true;
 			}
 		}

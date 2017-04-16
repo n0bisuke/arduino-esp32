@@ -13,7 +13,6 @@ public:
 	void
 		begin(),
 		addWifi(String ssid, String pwd),
-		deleteWifi(int id),
 		setWifiTimeout(int count),
 		setWifiTimeoutClear(),
 		saveWifi();
@@ -23,21 +22,24 @@ public:
 		getWifiTimeout();
 
 	String beginWeb(String s),
+		deleteWifi(int id),
 		getlistWifi();
 
 
 
 private:
+
 	WiFiMulti wifiMulti;
 	String network_html, network_list;
 	void
 		scanWiFi(),
-		sortWifi();
-
+		dataCache();
+		
 	String escapeParameter(String param),
-		ssidweb, pwdweb;
+		_nefryssid[5], _nefrypwd[5];
 
 	int 
+		sortWifi(),
 		_WifiTimeOutCountMax,
 		_WifiTimeOutCount = 0;
 };

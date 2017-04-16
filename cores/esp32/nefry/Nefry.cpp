@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.9.0")
+#define LIBVERSION ("0.5.4")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -161,6 +161,19 @@ void Nefry_lib::reset() {
 	Serial.println(F("Nefry Reset"));
 	ESP.restart();
 	delay(500);
+}
+
+void Nefry_lib::deleteWiFi(int id)
+{
+	NefryWiFi.deleteWifi(id);
+}
+
+void Nefry_lib::addWiFi(String ssid, String pass)
+{
+	NefryWiFi.addWifi(ssid, pass);
+}
+void Nefry_lib::saveWiFi() {
+	NefryWiFi.saveWifi();
 }
 
 /* DeepSleep */
