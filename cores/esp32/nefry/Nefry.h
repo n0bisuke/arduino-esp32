@@ -44,10 +44,12 @@ public:
 		reset(),
 		sleep(const int sec),
 		setProgramName(const char * pn),
-		setIndexLink(const char title[32], const char url[32]),
 		beginLed(const int num, const int pin, uint8_t t),
 		setLed(const int r, const int g, const int b, const char w = 122, const int pin = 16, const int num = 0),
 		setLed(String _colorStr, const char w = 122, const int pin = 16, const int num = 0),
+		addWiFi(String ssid,String pass),
+		deleteWiFi(int id),
+		saveWiFi(),
 /*
 		println(float text),
 		println(double text),
@@ -77,26 +79,16 @@ public:
 	void disableSW();
 
 	bool
-		readSW(),
-		autoConnect(),
-		getConfHtmlPrint(const int num),
-		setConfValue(const int pt, const int num),
-		setConfStr(const char *pt, const int num),
-		login(const char *UserID, const char *User_pass),
-		Auth(const char *Nefryclass, const char *NefryID),
-		getWifiAuto(), 
-		push_sw_();
+		readSW();
 
 	void pollingSW();
 	bool getBootFlg();
-	char* getConfStr(const int num);
 
 
-	String read(),
+	String 
 		getVersion(),
 		getProgramName(),
-		getAddressStr(IPAddress ip),
-		getModuleWiFiPass();
+		getAddressStr(IPAddress ip);
 
 
 private:

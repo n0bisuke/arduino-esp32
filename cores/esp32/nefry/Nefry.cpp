@@ -163,6 +163,19 @@ void Nefry_lib::reset() {
 	delay(500);
 }
 
+void Nefry_lib::deleteWiFi(int id)
+{
+	NefryWiFi.deleteWifi(id);
+}
+
+void Nefry_lib::addWiFi(String ssid, String pass)
+{
+	NefryWiFi.addWifi(ssid, pass);
+}
+void Nefry_lib::saveWiFi() {
+	NefryWiFi.saveWifi();
+}
+
 /* DeepSleep */
 void Nefry_lib::sleep(const int sec) {
 	ESP.deepSleep(sec * 1000 * 1000);
