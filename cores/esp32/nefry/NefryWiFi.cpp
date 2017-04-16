@@ -1,4 +1,4 @@
-/**
+ï»¿/**
 Nefry lib
 
 Copyright (c) 2016 wami
@@ -8,9 +8,8 @@ http://opensource.org/licenses/mit-license.php
 */
 
 /*
-ConnectSSID	: Nefryï¿½ï¿½ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½ï¿½WiFiï¿½ï¿½SSIDï¿½ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½B5ï¿½Â‚Ü‚Å•Û‘ï¿½ï¿½Bï¿½ï¿½ï¿½[ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Stringï¿½^ nullï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Xï¿½gï¿½É’Ç‰ï¿½ï¿½ï¿½ï¿½È‚ï¿½
-ConnectPass	: Nefryï¿½ï¿½ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½ï¿½WiFiï¿½Ìƒpï¿½Xï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½Û‘ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½B5ï¿½Â‚Ü‚Å•Û‘ï¿½ï¿½Bï¿½ï¿½ï¿½[ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Stringï¿½^
-ConnectWiFi : ï¿½Ú‘ï¿½ï¿½ï¿½ï¿½ï¿½WiFiï¿½ï¿½Lï¿½ï¿½orï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ConnectSSID	: NefryãŒæ¥ç¶šã™ã‚‹WiFiã®SSIDã‚’ä¿å­˜ã™ã‚‹ã¨ãã«ä½¿ç”¨ã™ã‚‹ã€‚5ã¤ã¾ã§ä¿å­˜ã€‚æœ«ç«¯ã«æ•°å­—ãŒè¿½åŠ ã•ã‚Œã‚‹ Stringå‹ nullæ–‡å­—ã®æ™‚ãƒªã‚¹ãƒˆã«è¿½åŠ ã—ãªã„
+ConnectPass	: NefryãŒæ¥ç¶šã™ã‚‹WiFiã®ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚’ä¿å­˜ã™ã‚‹ã¨ãã«ä½¿ç”¨ã™ã‚‹ã€‚5ã¤ã¾ã§ä¿å­˜ã€‚æœ«ç«¯ã«æ•°å­—ãŒè¿½åŠ ã•ã‚Œã‚‹ Stringå‹
 */
 
 #include "NefryWiFi.h"
@@ -21,8 +20,8 @@ void Nefry_WiFi::begin() {
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
 	dataCache();
-	scanWiFi();								//WiFi‚ğŒŸõ‚µAWebƒy[ƒW‚É•\¦‚·‚é
-	setWifiTimeout(0);//–³§ŒÀ‚Å©“®Ú‘±‚·‚é
+	scanWiFi();								//WiFiã‚’æ¤œç´¢ã—ã€Webãƒšãƒ¼ã‚¸ã«è¡¨ç¤ºã™ã‚‹
+	setWifiTimeout(0);						//ç„¡åˆ¶é™ã§è‡ªå‹•æ¥ç¶šã™ã‚‹
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
 
@@ -62,7 +61,7 @@ void Nefry_WiFi::begin() {
 		Nefry.setLed(200, 0, 0);
 	}
 	
-	/* Nefry‚ª”­M‚·‚éWiFi‚Ìİ’è*/
+	/* NefryãŒç™ºä¿¡ã™ã‚‹WiFiã®è¨­å®š*/
 	if ( NefryDataStore.getBootSelector()== 1 || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
 		Serial.println(F("\nWaiting for WiFi to connect"));
@@ -70,7 +69,7 @@ void Nefry_WiFi::begin() {
 	else {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str(), NefryDataStore.getModulePass().c_str());
 	}
-	setWifiTimeout(6);//6‰ñ–Ú‚Å©“®Ú‘±‚ğƒ^ƒCƒ€ƒAƒEƒg‚·‚é
+	setWifiTimeout(6);//6å›ç›®ã§è‡ªå‹•æ¥ç¶šã‚’ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã™ã‚‹
 	setWifiTimeoutClear();
 	delay(1000);
 }
@@ -78,17 +77,17 @@ void Nefry_WiFi::begin() {
 uint8_t prevWifiStatus = WL_IDLE_STATUS;
 int Nefry_WiFi::run() {
 	/*
-runŠÖ”‚Å•Ô‚·’l
+runé–¢æ•°ã§è¿”ã™å€¤
 
--1	:•s–¾‚ÈƒGƒ‰[
-0	:Ú‘±Ï‚İ
-1	:©“®Ú‘±‚µ‚È‚¢
-2	:ƒ^ƒCƒ€ƒAƒEƒg
-3	:ƒlƒbƒgƒ[ƒNƒAƒCƒhƒ‹’†
-4	:SSIDŒŸo‚Å‚«‚¸
-5	:ŒŸõŠ®—¹
-6	:Ú‘±ƒGƒ‰[
-7	:Ø’f
+-1	:ä¸æ˜ãªã‚¨ãƒ©ãƒ¼
+0	:æ¥ç¶šæ¸ˆã¿
+1	:è‡ªå‹•æ¥ç¶šã—ãªã„
+2	:ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+3	:ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ã‚¢ã‚¤ãƒ‰ãƒ«ä¸­
+4	:SSIDæ¤œå‡ºã§ããš
+5	:æ¤œç´¢å®Œäº†
+6	:æ¥ç¶šã‚¨ãƒ©ãƒ¼
+7	:åˆ‡æ–­
 
 */
 	if (initflgWifi == false)return 1;
@@ -186,8 +185,6 @@ String Nefry_WiFi::beginWeb(String url)
 
 void Nefry_WiFi::deleteWifi(int id)
 {
-	Serial.print("Delete : ");
-	Serial.println(id);
 	if (id < 0 || id >= 5)return;
 	_nefryssid[id] = "";
 	_nefrypwd[id]="";
@@ -195,12 +192,6 @@ void Nefry_WiFi::deleteWifi(int id)
 
 void Nefry_WiFi::addWifi(String _ssid, String _pwd)
 {
-
-	int i = sortWifi();	
-	Serial.print("addwifi : ");
-	Serial.println(_ssid);
-	Serial.print("addwifi i : ");
-	Serial.println(i);
 	sortWifi();
 	for (int i = 0; i < 5; i++) {
 		if (_nefryssid[i].equals("")) {
@@ -213,18 +204,13 @@ void Nefry_WiFi::addWifi(String _ssid, String _pwd)
 	sortWifi();
 	_nefryssid[4]=_ssid;
 	_nefrypwd[4]=_pwd;
-	Serial.println(getlistWifi());
 }
 int Nefry_WiFi::sortWifi()
 {
 	int i = 0;
 	for (int j = 0; i < 4; i++) {
 		if (_nefryssid[i].equals("")) {
-			Serial.print("sort i: ");
-			Serial.println(i);
 			for (j = i + 1; j < 5; j++) {
-				Serial.print("sort j: ");
-				Serial.println(j);
 				if (!_nefryssid[j].equals("")) {
 					_nefryssid[i] = _nefryssid[j];
 					_nefrypwd[i] = _nefrypwd[j];
@@ -300,7 +286,7 @@ void Nefry_WiFi::dataCache()
 	}
 	
 }
-/* •¶š’uŠ· */
+/* æ–‡å­—ç½®æ› */
 String Nefry_WiFi::escapeParameter(String param) {
 	param.replace("+", " ");
 	param.replace("%21", "!");
@@ -334,7 +320,7 @@ String Nefry_WiFi::escapeParameter(String param) {
 	return param;
 }
 
-/* WiFi‚Ìƒ^ƒCƒ€ƒAƒEƒg‚Ì•b”‚ğİ’è‚µ‚Ü‚·B */
+/* WiFiã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã®ç§’æ•°ã‚’è¨­å®šã—ã¾ã™ã€‚ */
 
 int Nefry_WiFi::getWifiTimeout()
 {
