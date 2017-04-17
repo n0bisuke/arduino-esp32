@@ -7,6 +7,7 @@
 //#include "NefryWebServer.h"
 #include "NefryWiFi.h"
 #include "./NefryDataStore.h"
+#include "NefryConfig.h"
 
 // Offset:         W          R          G          B
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))

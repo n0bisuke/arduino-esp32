@@ -7,7 +7,7 @@
 #include "Nefry.h"
 #include "NefryWeb.h"
 #include "NefryWiFi.h"
-
+#include "NefryConfig.h"
 
 #define HTTP_DOWNLOAD_UNIT_SIZE 1460
 #define HTTP_UPLOAD_BUFLEN 2048

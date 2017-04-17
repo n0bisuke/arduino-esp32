@@ -1,9 +1,9 @@
 #ifndef NefryConf_h
 #define NefryConf_h
 
-#include <Nefry.h>
 #include "Nefry.h"
 #include "NefryDataStore.h"
+#include "NefryWeb.h"
 
 class Nefry_Conf
 {

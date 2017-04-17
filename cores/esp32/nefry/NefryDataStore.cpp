@@ -56,6 +56,7 @@ bool NefryDataStore_lib::setConnectSSID(String str, int pointer)
 bool NefryDataStore_lib::setStorageStr(String str, int pointer)
 {
 	if (pointer <= 10)return false;
+	Serial.println(str);
 	String key;
 	key = "StorageStr";
 	key += pointer;
@@ -67,6 +68,7 @@ bool NefryDataStore_lib::setStorageStr(String str, int pointer)
 bool NefryDataStore_lib::setStorageValue(long value, int pointer)
 {
 	if (pointer <= 10)return false;
+	Serial.println(value);
 	String key;
 	key = "StorageValue";
 	key += pointer;

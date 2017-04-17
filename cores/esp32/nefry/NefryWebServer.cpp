@@ -118,6 +118,24 @@ void Nefry_webserver::run() {
 		send(200, "text/html", NefryWeb.createHtml(F("Nefry Wifi Delete"), "", (String)F("<h1>Nefry Wifi Delete</h1><p>Delete List</p><ul>") + del + (String)F("</ul><a href=\"/\">Back to top</a>")));
 		if (deleteFlg ==true)resetTimer(2);
 	}
+	else if (url.equalsIgnoreCase("/config")) {
+		send(200, "text/html", NefryConfig.beginWeb("config"));
+	}
+	else if (url.equalsIgnoreCase("/set_config")) {
+		char webarg[5] = { "smo0" };
+		for (int i = 0; i < 10; i++) {
+			webarg[3] = '0' + i;
+			NefryDataStore.setStorageStr(arg(webarg),i);
+		}
+		webarg[0] = 'i';
+		for (int i = 0; i < 10; i++) {
+			webarg[3] = '0' + i;
+			NefryDataStore.setStorageValue(arg(webarg).toInt(),i);
+		}
+		resetTimer(2);
+		send(200, "text/html", NefryWeb.createHtml(F("Nefry DataStore Set"), "", F("<h1>Nefry Module Set</h1><p>Restart...</p><a href=\"/\">Back to top</a>")));
+		resetTimer(2);
+	}
 	/* "/"は必ず一番下にすること */
 	else if (url.equalsIgnoreCase("/")) {
 		send(200, "text/html", NefryWeb.beginWeb("index"));

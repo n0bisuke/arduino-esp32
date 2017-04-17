@@ -63,6 +63,7 @@ void Nefry_lib::nefry_init() {
 		//cssAdd("writemode", F("Write Mode"));
 	}
 	_bootMode = false;
+	NefryConfig.begin();
 	Serial.println(F("\nServer started"));
 	setLed(0x00, 0xff, 0xff);
 }
@@ -262,4 +263,26 @@ int Nefry_lib::hextonum(char c)
 bool Nefry_lib::getBootFlg() {
 	return _bootflg;
 }
+
+/*
+String Nefry_Conf::setDefaultModuleId() {
+	uint8_t macAddr[WL_MAC_ADDR_LENGTH];
+	String moduleName;
+	WiFi.macAddress(macAddr);
+	switch (boardId)
+	{
+	case 1:
+		moduleName = "Nefry";
+		break;
+	case 2:
+		moduleName = "CocoaBit";
+		break;
+	}
+	moduleName += "-";
+	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 2];
+	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 1];
+	return moduleName
+}
+*/
+
 Nefry_lib Nefry;

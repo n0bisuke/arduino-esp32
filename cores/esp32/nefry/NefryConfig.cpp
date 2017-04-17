@@ -23,8 +23,8 @@ StorageStr	: Nefry‚ÌŠÂ‹«•Ï”‚ð•Û‘¶‚·‚é‚Æ‚«‚ÉŽg—p‚·‚éB(0-7)‚Ì”ÍˆÍ‚Å•Û‘¶‚·‚éB––’
 
 String Nefry_Conf::beginWeb(String link) {
 
-	_webServer->on("/module_id", [&]() {
-		String content = F("<h1>Nefry DataStore Setup</h1><form method='get'action='set_module_id'>");
+	if (link.equals("config")) {
+		String content = F("<h1>Nefry DataStore Setup</h1><form method='get'action='set_config'>");
 		int formNumber;
 		for (formNumber = 0; formNumber < 10; formNumber++) {
 			if (htmlPrint[formNumber] == 1) {
@@ -50,26 +50,10 @@ String Nefry_Conf::beginWeb(String link) {
 		}
 		delay(1);
 		content += F("<div class=\"psrow\"><div><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form></div><div class=\"writemode\">");
-		if(NefryDataStore.getBootSelector()==1)content += "WriteMode";
+		if (NefryDataStore.getBootSelector() == 1)content += "WriteMode";
 		content += F("</div><a href=\"/\">Back to top</a>");
-		nefry_server.send(200, "text/html", createHtml(F("Nefry DataStore"), "", content));
-	});
-	_webServer->on("/set_module_id", [&]() {
-		char webarg[5] = { "smo0" };
-		for (int i = 0; i < 10; i++) {
-			webarg[3] = '0' + i;
-			setConfStr(i, nefry_server.arg(webarg));
-		}
-		webarg[0] = 'i';
-		for (int i = 0; i < 10; i++) {
-			webarg[3] = '0' + i;
-			setConfValue(i, nefry_server.arg(webarg));
-		}
-		nefry_server.send(200, "text/html", createHtml(F("Nefry Module Set"), "",
-			(String)F("<h1>Nefry Module Set</h1><p>Set Module ID to '") + getConfModuleID() + (String)F("'... Restart.</p><a href=\"/\">Back to top</a>")));
-		ndelay(2000);
-		reset();
-	});
+		NefryWeb.createHtml(F("Nefry DataStore"), "", content);
+	}
 }
 				   /* HTML‚É•\Ž¦‚·‚é‚Ì‚© */
 void Nefry_Conf::setStoreTitle(const char set[15], const int num) {
@@ -95,26 +79,4 @@ void Nefry_Conf::begin()
 		}		
 	}
 }
-
-
-String Nefry_Conf::setDefaultModuleId() {
-	uint8_t macAddr[WL_MAC_ADDR_LENGTH];
-	String moduleName;
-	WiFi.macAddress(macAddr);
-	switch (boardId)
-	{
-	case 1:
-		moduleName = "Nefry";
-		break;
-	case 2:
-		moduleName = "CocoaBit";
-		break;
-	}
-	moduleName += "-";
-	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 2];
-	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 1];
-	return moduleName
-}
-
-
 Nefry_Conf NefryConfig;
