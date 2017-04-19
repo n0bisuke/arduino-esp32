@@ -28,18 +28,17 @@ BootMode
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
-const char * program;
-bool _bootMode = true, _swflg = false,_bootflg = false;
+
 //main 
 
 void Nefry_lib::nefry_init() {
 	beginLed(1, 16, NEO_GRB);
+	enableSW();
 	setLed(0x00, 0x0f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
 	Serial.println(F("\n\nNefry Startup"));
 	NefryDataStore.begin();
-	//enableSW();
 	setLed(0x00, 0x2f, 0x00);
 	/* Display設定 */
 	setLed(0x00, 0x4f, 0x00);
@@ -53,26 +52,26 @@ void Nefry_lib::nefry_init() {
 	/* IPaddress display表示 */
 	setLed(0x00, 0xcf, 0x00);
 	setLed(0x00, 0xef, 0x00);
-	if (NefryDataStore.getBootSelector() == 1) {
-		//for (int i = 0; i < 20; i++)
-			//setConfHtmlPrint(1, i);
-		//println(F("Nefry Write mode"));
+	disableSW();
+	if (NefryDataStore.getBootSelector() == 1 || readSW()) {
 		setLed(0x0f, 0xff, 0xff);
 		NefryDataStore.setBootSelector(0);
-		_bootflg = true;
-		//cssAdd("writemode", F("Write Mode"));
+		_bootMode = 2;
+		Serial.println("Write Mode");
+	} else {
+		_bootMode = 1;
 	}
-	_bootMode = false;
+	
 	NefryConfig.begin();
 	Serial.println(F("\nServer started"));
 	setLed(0x00, 0xff, 0xff);
+	
 }
 
 void Nefry_lib::nefry_loop() {
 	//_dnsServer.processNextRequest();
 	NefryWiFi.run();
 
-	//NefryWebServer.run();
 }
 
 /* ModuleID */
@@ -218,10 +217,8 @@ bool Nefry_lib::readSW() {
 /* SWを押されたときに割り込まれます */
 void Nefry_lib::pollingSW() {
 	if (_swEnableFlg == true && _swflg != true && digitalRead(4) == LOW) {
-		if (_bootMode == true) {
+		if (_bootMode == 0) {
 			Nefry.setLed(0xff, 0x2f, 0x00);
-			NefryDataStore.setBootSelector(1);
-			Serial.println("push SW");
 		}
 		Serial.println("push SW");
 		_swflg = true;
