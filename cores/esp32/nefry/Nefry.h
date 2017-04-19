@@ -30,7 +30,7 @@ public:
 		setUserPass(String pass),
 		setStorageValue(long value, int pointer),
 		setStorageStr(String str, int pointer),
-		getBootFlg(),
+		getWriteMode(),
 		readSW();
 
 	String

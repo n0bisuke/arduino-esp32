@@ -260,8 +260,9 @@ int Nefry_lib::hextonum(char c)
 	return n;
 }
 
-bool Nefry_lib::getBootFlg() {
-	return _bootflg;
+bool Nefry_lib::getWriteMode() {
+	if (_bootMode == 2)return true;
+	return false;
 }
 
 /*

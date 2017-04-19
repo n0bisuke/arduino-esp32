@@ -50,7 +50,7 @@ String Nefry_Conf::beginWeb(String link) {
 		}
 		delay(1);
 		content += F("<div class=\"psrow\"><div><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form></div><div class=\"writemode\">");
-		if (NefryDataStore.getBootSelector() == 1)content += "WriteMode";
+		if (Nefry.getWriteMode())content += "WriteMode";
 		content += F("</div><a href=\"/\">Back to top</a>");
 		NefryWeb.createHtml(F("Nefry DataStore"), "", content);
 	}
@@ -69,7 +69,7 @@ void Nefry_Conf::begin()
 	for (int i = 0; i < 10; i++) {
 		sprintf(module_input[i], "String %d", i);
 		sprintf(module_input[10+i], "Value %d", 10+i);
-		if (NefryDataStore.getBootSelector() == 1) {
+		if (Nefry.getWriteMode()) {
 			htmlPrint[i] = 1;
 			htmlPrint[10+i] = 1;
 		}

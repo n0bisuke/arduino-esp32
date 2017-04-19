@@ -48,7 +48,7 @@ void Nefry_WiFi::begin() {
 	}
 	scanWiFi();								//WiFiを検索し、Webページに表示する
 	/* Nefryが発信するWiFiの設定*/
-	if ( NefryDataStore.getBootSelector()== 1 || NefryDataStore.getModulePass().length() == 0) {
+	if ( Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
 		Serial.println(F("\nWaiting for WiFi to connect"));
 	}
