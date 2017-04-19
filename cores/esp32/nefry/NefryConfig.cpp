@@ -1,4 +1,4 @@
-/**
+ï»¿/**
 Nefry Config
 
 Copyright (c) 2016 wami
@@ -8,13 +8,13 @@ http://opensource.org/licenses/mit-license.php
 */
 
 /*
-ModuleID	: Nefryƒ‚ƒWƒ…[ƒ‹–¼ & Nefry‚ª”­M‚·‚éSSID
-ModulePass	: Nefry‚ª”­M‚·‚éWiFiƒpƒXƒ[ƒh
-ModuleClass	: Nefry‚Ìƒ‚ƒWƒ…[ƒ‹‚ª‘®‚·‚éƒNƒ‰ƒX
-user		: Nefry‚ÅƒƒOƒCƒ“‹@”\‚ğg‚¤‚Æ‚«‚Ég—p‚·‚éƒ†[ƒU–¼
-userPass	: Nefry‚ÅƒƒOƒCƒ“‹@”\‚ğg‚¤‚Æ‚«‚Ég—p‚·‚éƒpƒXƒ[ƒh
-StorageValue: Nefry‚ÌŠÂ‹«•Ï”‚ğ•Û‘¶‚·‚é‚Æ‚«‚Ég—p‚·‚éB(0-7)‚Ì”ÍˆÍ‚Å•Û‘¶‚·‚éB––’[‚É”š‚ª’Ç‰Á‚³‚ê‚é longŒ^
-StorageStr	: Nefry‚ÌŠÂ‹«•Ï”‚ğ•Û‘¶‚·‚é‚Æ‚«‚Ég—p‚·‚éB(0-7)‚Ì”ÍˆÍ‚Å•Û‘¶‚·‚éB––’[‚É”š‚ª’Ç‰Á‚³‚ê‚é StringŒ^
+ModuleID	: Nefryãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å & NefryãŒç™ºä¿¡ã™ã‚‹SSID
+ModulePass	: NefryãŒç™ºä¿¡ã™ã‚‹WiFiãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+ModuleClass	: Nefryã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãŒå±ã™ã‚‹ã‚¯ãƒ©ã‚¹
+user		: Nefryã§ãƒ­ã‚°ã‚¤ãƒ³æ©Ÿèƒ½ã‚’ä½¿ã†ã¨ãã«ä½¿ç”¨ã™ã‚‹ãƒ¦ãƒ¼ã‚¶å
+userPass	: Nefryã§ãƒ­ã‚°ã‚¤ãƒ³æ©Ÿèƒ½ã‚’ä½¿ã†ã¨ãã«ä½¿ç”¨ã™ã‚‹ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
+StorageValue: Nefryã®ç’°å¢ƒå¤‰æ•°ã‚’ä¿å­˜ã™ã‚‹ã¨ãã«ä½¿ç”¨ã™ã‚‹ã€‚(0-7)ã®ç¯„å›²ã§ä¿å­˜ã™ã‚‹ã€‚æœ«ç«¯ã«æ•°å­—ãŒè¿½åŠ ã•ã‚Œã‚‹ longå‹
+StorageStr	: Nefryã®ç’°å¢ƒå¤‰æ•°ã‚’ä¿å­˜ã™ã‚‹ã¨ãã«ä½¿ç”¨ã™ã‚‹ã€‚(0-7)ã®ç¯„å›²ã§ä¿å­˜ã™ã‚‹ã€‚æœ«ç«¯ã«æ•°å­—ãŒè¿½åŠ ã•ã‚Œã‚‹ Stringå‹
 */
 
 #include "NefryConfig.h"
@@ -24,8 +24,11 @@ StorageStr	: Nefry‚ÌŠÂ‹«•Ï”‚ğ•Û‘¶‚·‚é‚Æ‚«‚Ég—p‚·‚éB(0-7)‚Ì”ÍˆÍ‚Å•Û‘¶‚·‚éB––’
 String Nefry_Conf::beginWeb(String link) {
 
 	if (link.equals("config")) {
-		String content = F("<h1>Nefry DataStore Setup</h1><form method='get'action='set_config'>");
-		int formNumber;
+		String content = F("<h1>Nefry DataStore Setup</h1><p>ã“ã®ãƒšãƒ¼ã‚¸ã¯ãƒ—ãƒ­ã‚°ãƒ©ãƒ å†…ã‹ã‚‰èª­ã¿æ›¸ãã—ãŸå€¤ã‚’è¡¨ç¤ºã€ç·¨é›†ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚</p>"
+			"<p>ã‚ã–ã‚ã–ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’æ›¸ãæ›ãˆãšã«å€¤ã‚’å¤‰æ›´ã§ãã‚‹ãŸã‚Webã‚µãƒ¼ãƒ“ã‚¹ã§ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ãŒå¿…è¦ã«ãªã‚‹å ´åˆãªã©ç’°å¢ƒå¤‰æ•°ã¨ã—ã¦æ‰±ã†ã“ã¨ãŒã§ãã¾ã™ã€‚</p>"
+			"<ul><li>setStorageValue or setStorageStr : å€¤ã®ä¿å­˜</li><li>getStorageValue or getStorageStr : å€¤ã®å–å¾—</li><li>setStoreTitle : å†…å®¹ã®è¡¨ç¤º</li></ul>"
+			"<p>ãã‚Œãã‚Œã®é–¢æ•°ã®ä½¿ã„æ–¹ã¯Nefryå…¬å¼ã‚µã‚¤ãƒˆã‚’ã”è¦§ã«ãªã‚‹ã‹ã€ã‚µãƒ³ãƒ—ãƒ«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’å‚è€ƒã«ã—ã¦ãã ã•ã„ã€‚</p><form method='get'action='set_config'>");
+		int formNumber,printCounter = 0;
 		for (formNumber = 0; formNumber < 10; formNumber++) {
 			if (htmlPrint[formNumber] == 1) {
 				content += F("<div class=\"row\"><label>");
@@ -35,6 +38,7 @@ String Nefry_Conf::beginWeb(String link) {
 				content += F("\"maxlength=\"128\"value=\"");
 				content += NefryDataStore.getStorageStr(formNumber);
 				content += F("\"></div></div>");
+				printCounter++;
 			}
 		}
 		for (formNumber = 10; formNumber < 20; formNumber++) {
@@ -46,17 +50,25 @@ String Nefry_Conf::beginWeb(String link) {
 				content += F("\"type=\"number\"value=\"");
 				content += NefryDataStore.getStorageValue(formNumber - 10);
 				content += F("\"></div></div>");
+				printCounter++;
 			}
 		}
 		delay(1);
-		content += F("<div class=\"psrow\"><div><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form></div><div class=\"writemode\">");
+		if(printCounter == 0){
+			content += F("<p>è¡¨ç¤ºã™ã‚‹ã‚‚ã®ãŒã²ã¨ã¤ã‚‚ã‚ã‚Šã¾ã›ã‚“ã€‚setStoreTitleé–¢æ•°ã‚’ä½¿ã£ã¦è¡¨ç¤ºã‚’ã™ã‚‹ã‹ã€WriteModeã«ã—ã¦ãã ã•ã„ã€‚</p>");
+
+		}
+		else {
+			content += F("<div class=\"row\"><div><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form></div>");
+		}
+		content += F("<div class=\"writemode\">");
 		if (Nefry.getWriteMode())content += "WriteMode";
 		content += F("</div><a href=\"/\">Back to top</a>");
 		return NefryWeb.createHtml(F("Nefry DataStore"), "", content);
 	}
 	return "";
 }
-				   /* HTML‚É•\¦‚·‚é‚Ì‚© */
+				   /* HTMLã«è¡¨ç¤ºã™ã‚‹ã®ã‹ */
 void Nefry_Conf::setStoreTitle(const char set[15], const int num) {
 	if (0 <= num&&num < 20) {
 		strcpy(module_input[num], set);
