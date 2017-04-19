@@ -52,8 +52,9 @@ String Nefry_Conf::beginWeb(String link) {
 		content += F("<div class=\"psrow\"><div><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form></div><div class=\"writemode\">");
 		if (Nefry.getWriteMode())content += "WriteMode";
 		content += F("</div><a href=\"/\">Back to top</a>");
-		NefryWeb.createHtml(F("Nefry DataStore"), "", content);
+		return NefryWeb.createHtml(F("Nefry DataStore"), "", content);
 	}
+	return "";
 }
 				   /* HTML‚É•\Ž¦‚·‚é‚Ì‚© */
 void Nefry_Conf::setStoreTitle(const char set[15], const int num) {
