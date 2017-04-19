@@ -55,7 +55,7 @@ bool NefryDataStore_lib::setConnectSSID(String str, int pointer)
 
 bool NefryDataStore_lib::setStorageStr(String str, int pointer)
 {
-	if (pointer <= 10)return false;
+	if (pointer >= 10)return false;
 	Serial.println(str);
 	String key;
 	key = "StorageStr";
@@ -67,7 +67,7 @@ bool NefryDataStore_lib::setStorageStr(String str, int pointer)
 
 bool NefryDataStore_lib::setStorageValue(long value, int pointer)
 {
-	if (pointer <= 10)return false;
+	if (pointer >= 10)return false;
 	Serial.println(value);
 	String key;
 	key = "StorageValue";
@@ -143,7 +143,7 @@ int NefryDataStore_lib::getBootSelector()
 
 long NefryDataStore_lib::getStorageValue(int pointer)
 {
-	if (pointer <= 10)return 0;
+	if (pointer >= 10)return 0;
 	if (_readCacheFlg[20 + pointer] == false) {
 		_readCacheFlg[20 + pointer] = true;
 		String key;
@@ -156,7 +156,7 @@ long NefryDataStore_lib::getStorageValue(int pointer)
 
 String NefryDataStore_lib::getStorageStr(int pointer)
 {
-	if (pointer <= 10)return "";
+	if (pointer >= 10)return "";
 	if (_readCacheFlg[pointer] == false) {
 		_readCacheFlg[pointer] = true;
 		String key;
