@@ -20,8 +20,8 @@ setModuleClass			KEYWORD2
 setUser				KEYWORD2
 setUserPass			KEYWORD2
 setStorageValue			KEYWORD2
-setStorageStr		KEYWORD2
-setUser		KEYWORD2
+setStorageStr			KEYWORD2
+setUser				KEYWORD2
 
 #######################################
 # Nefry Configure Memory
@@ -64,6 +64,7 @@ setProgramName			KEYWORD2
 getProgramName			KEYWORD2
 getVersion			KEYWORD2
 getAddressStr			KEYWORD2
+setStoreTitle			KEYWORD2
 
 #######################################
 # Constants

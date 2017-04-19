@@ -61,6 +61,8 @@ public:
 		nefry_loop(),
 		ndelay(unsigned long ms),
 
+		setStoreTitle(const char set[15], const int num),
+
 		enableSW(),
 		disableSW(),
 

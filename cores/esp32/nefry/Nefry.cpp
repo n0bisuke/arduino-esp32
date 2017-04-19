@@ -271,6 +271,12 @@ bool Nefry_lib::getWriteMode() {
 	return false;
 }
 
+void Nefry_lib::setStoreTitle(const char set[15], const int num)
+{
+	NefryConfig.setStoreTitle(set, num);
+	return ;
+}
+
 /*
 String Nefry_Conf::setDefaultModuleId() {
 	uint8_t macAddr[WL_MAC_ADDR_LENGTH];
