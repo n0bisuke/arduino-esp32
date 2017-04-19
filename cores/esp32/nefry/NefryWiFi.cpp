@@ -35,20 +35,7 @@ void Nefry_WiFi::begin() {
 	Serial.println(F("Waiting for WiFi to connect"));
 	delay(20);
 	int loopCounter = 0;
-	while(1){
-		run();
-		if (loopCounter % 2) {
-			Nefry.setLed(0, 0, 0xFF);
-		}
-		else {
-			Nefry.setLed(0, 0, 0, (char)0);
-		}
-		delay(100);
-		loopCounter++;
-		Serial.print(".");
-		if (loopCounter >= 6)break;
-		if (WiFi.status() == WL_CONNECTED)break;
-	}
+	run();
 	if (WiFi.status() == WL_CONNECTED) {
 		Nefry.setLed(0, 100, 100);
 		Serial.println("SSID : ");
