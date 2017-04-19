@@ -31,7 +31,8 @@ public:
 		setStorageValue(long value, int pointer),
 		setStorageStr(String str, int pointer),
 		getWriteMode(),
-		readSW();
+		readSW(),
+		getPollingSW();
 
 	String
 		getModuleID(),

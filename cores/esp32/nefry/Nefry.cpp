@@ -52,7 +52,6 @@ void Nefry_lib::nefry_init() {
 	/* IPaddress display表示 */
 	setLed(0x00, 0xcf, 0x00);
 	setLed(0x00, 0xef, 0x00);
-	disableSW();
 	if (NefryDataStore.getBootSelector() == 1 || readSW()) {
 		setLed(0x0f, 0xff, 0xff);
 		NefryDataStore.setBootSelector(0);
@@ -61,7 +60,7 @@ void Nefry_lib::nefry_init() {
 	} else {
 		_bootMode = 1;
 	}
-	
+	disableSW();
 	NefryConfig.begin();
 	Serial.println(F("\nServer started"));
 	setLed(0x00, 0xff, 0xff);
@@ -207,9 +206,15 @@ void Nefry_lib::disableSW() {
 
 /* SW の状態を取得します */
 bool Nefry_lib::readSW() {
-	if (_swflg == true) {
-		_swflg = false;
-		return true;
+	if (_swEnableFlg == true) {
+		if (_swflg == true) {
+			_swflg = false;
+			return true;
+		}
+		return false;
+	}
+	else {
+		return digitalRead(4);
 	}
 	return false;
 }
@@ -223,6 +228,10 @@ void Nefry_lib::pollingSW() {
 		Serial.println("push SW");
 		_swflg = true;
 	}
+}
+bool Nefry_lib::getPollingSW()
+{
+	return _swEnableFlg;
 }
 
 //LED
