@@ -68,12 +68,14 @@ public:
 
 private:
 	bool 
-		_swEnableFlg,
-		_bootMode = true,
-		_swflg = false;
+		_swEnableFlg = false,/* SWの有効無効化 */
+		_swflg = false; /* SWの状態を保持 */
 
-	int hextonum(char c);
+	int 
+		_bootMode = 0,	/* Boot状態を管理　0:起動中 1:通常起動 2:書き込みモード */
+		hextonum(char c);
 	
+	const char * program;
 };
 extern Nefry_lib Nefry;
 #endif
