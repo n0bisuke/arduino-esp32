@@ -39,10 +39,6 @@ void Nefry_WiFi::begin() {
 	run();
 	if (WiFi.status() == WL_CONNECTED) {
 		Nefry.setLed(0, 100, 100);
-		Serial.println("SSID : ");
-		Serial.println(WiFi.SSID());
-		Serial.print("IP address: ");
-		Serial.println(WiFi.localIP());
 	}
 	else {
 		Nefry.setLed(200, 0, 0);
@@ -79,51 +75,56 @@ run関数で返す値
 */
 	if (initflgWifi == false)return 1;
 	if (getWifiTimeout() == -1)return 1;
-	if (getWifiTimeout() !=0 && getWifiTimeout() >= _WifiTimeOutCount)return 2;
+	if (getWifiTimeout() !=0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
 	uint8_t wifiStatus = wifiMulti.run();
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
 		if (wifiStatus == WL_CONNECTED) {
 			_WifiTimeOutCount = 0;
 			Serial.println("WiFi connected");
-			Serial.println("SSID: ");
+			Serial.print("SSID: ");
 			Serial.println(WiFi.SSID());
-			Serial.println("IP address: ");
+			Serial.print("IP address: ");
 			Serial.println(WiFi.localIP());
 			return 0;
 		}
 		prevWifiStatus = wifiStatus;
-		_WifiTimeOutCount++;
-		Serial.print(F("WiFi errorCode : "));
-		switch (wifiStatus)
-		{
-		case WL_IDLE_STATUS:
-			Serial.println(F("Network Idle"));
-			return 3;
-			break;
-		case WL_NO_SSID_AVAIL:
-			Serial.println(F("SSID Not Found"));
-			return 4;
-			break;
-		case WL_SCAN_COMPLETED:
-			Serial.println(F("Scan Complete"));
-			return 5;
-			break;
-		case WL_CONNECT_FAILED:
-			Serial.println(F("Connect Failed"));
-			return 6;
-			break;
-		case WL_CONNECTION_LOST:
-			Serial.println(F("Connection Lost"));
-			return 7;
-			break;
-		case WL_DISCONNECTED:
-			Serial.println(F("Disconnected"));
-			return 7;
-			break;
-		default:
-			break;
-		}
+	}
+	_WifiTimeOutCount++;
+	//Serial.print(_WifiTimeOutCount);
+	//Serial.print(F(" WiFi errorCode : "));
+	switch (wifiStatus)
+	{
+	case WL_CONNECTED:
+		_WifiTimeOutCount = 0;
+		return 0;
+		break;
+	case WL_IDLE_STATUS:
+		Serial.println(F("Network Idle"));
+		return 3;
+		break;
+	case WL_NO_SSID_AVAIL:
+		Serial.println(F("SSID Not Found"));
+		return 4;
+		break;
+	case WL_SCAN_COMPLETED:
+		Serial.println(F("Scan Complete"));
+		return 5;
+		break;
+	case WL_CONNECT_FAILED:
+		Serial.println(F("Connect Failed"));
+		return 6;
+		break;
+	case WL_CONNECTION_LOST:
+		Serial.println(F("Connection Lost"));
+		return 7;
+		break;
+	case WL_DISCONNECTED:
+		Serial.println(F("Disconnected"));
+		return 7;
+		break;
+	default:
+		break;
 	}
 	return -1;
 }
