@@ -24,6 +24,7 @@ void Nefry_WiFi::begin() {
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
 
+	wifiMulti.addAP("d", "d");// ダミーデータ
 	for (int i = 0; i < 5; i++) {
 		if (!_nefryssid[i].equals("")) {
 			wifiMulti.addAP(_nefryssid[i].c_str(), _nefrypwd[i].c_str());
