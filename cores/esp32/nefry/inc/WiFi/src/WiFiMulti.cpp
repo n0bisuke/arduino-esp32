@@ -124,7 +124,7 @@ uint8_t WiFiMulti::run(void)
                     status = WiFi.status();
 					Serial.print(status);
 					wifiTimout++;
-					if (wifiTimout > 40)break;
+					if (wifiTimout > 70)break;
                 }
 				Serial.println();
                 IPAddress ip;
