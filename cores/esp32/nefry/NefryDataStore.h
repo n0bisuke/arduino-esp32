@@ -53,7 +53,9 @@ public:
 	long
 		getStorageValue(int pointer);
 private:
-
+	bool _readCacheFlg[31];
+	String _readCacheStr[20];
+	long _readCacheLong[11];
 	Preferences nefryDataStorePreferences;
 };
 extern NefryDataStore_lib NefryDataStore;

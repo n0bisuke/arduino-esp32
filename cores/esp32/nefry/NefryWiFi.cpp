@@ -24,6 +24,7 @@ void Nefry_WiFi::begin() {
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
 
+	wifiMulti.addAP("d", "d");// ダミーデータ
 	for (int i = 0; i < 5; i++) {
 		if (!_nefryssid[i].equals("")) {
 			wifiMulti.addAP(_nefryssid[i].c_str(), _nefrypwd[i].c_str());
@@ -35,33 +36,16 @@ void Nefry_WiFi::begin() {
 	Serial.println(F("Waiting for WiFi to connect"));
 	delay(20);
 	int loopCounter = 0;
-	while(1){
-		run();
-		if (loopCounter % 2) {
-			Nefry.setLed(0, 0, 0xFF);
-		}
-		else {
-			Nefry.setLed(0, 0, 0, (char)0);
-		}
-		delay(100);
-		loopCounter++;
-		Serial.print(".");
-		if (loopCounter >= 6)break;
-		if (WiFi.status() == WL_CONNECTED)break;
-	}
+	run();
 	if (WiFi.status() == WL_CONNECTED) {
 		Nefry.setLed(0, 100, 100);
-		Serial.println("SSID : ");
-		Serial.println(WiFi.SSID());
-		Serial.print("IP address: ");
-		Serial.println(WiFi.localIP());
 	}
 	else {
 		Nefry.setLed(200, 0, 0);
 	}
 	scanWiFi();								//WiFiを検索し、Webページに表示する
 	/* Nefryが発信するWiFiの設定*/
-	if ( NefryDataStore.getBootSelector()== 1 || NefryDataStore.getModulePass().length() == 0) {
+	if ( Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
 		Serial.println(F("\nWaiting for WiFi to connect"));
 	}
@@ -91,51 +75,56 @@ run関数で返す値
 */
 	if (initflgWifi == false)return 1;
 	if (getWifiTimeout() == -1)return 1;
-	if (getWifiTimeout() !=0 && getWifiTimeout() >= _WifiTimeOutCount)return 2;
+	if (getWifiTimeout() !=0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
 	uint8_t wifiStatus = wifiMulti.run();
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
 		if (wifiStatus == WL_CONNECTED) {
 			_WifiTimeOutCount = 0;
 			Serial.println("WiFi connected");
-			Serial.println("SSID: ");
+			Serial.print("SSID: ");
 			Serial.println(WiFi.SSID());
-			Serial.println("IP address: ");
+			Serial.print("IP address: ");
 			Serial.println(WiFi.localIP());
 			return 0;
 		}
 		prevWifiStatus = wifiStatus;
-		_WifiTimeOutCount++;
-		Serial.print(F("WiFi errorCode : "));
-		switch (wifiStatus)
-		{
-		case WL_IDLE_STATUS:
-			Serial.println(F("Network Idle"));
-			return 3;
-			break;
-		case WL_NO_SSID_AVAIL:
-			Serial.println(F("SSID Not Found"));
-			return 4;
-			break;
-		case WL_SCAN_COMPLETED:
-			Serial.println(F("Scan Complete"));
-			return 5;
-			break;
-		case WL_CONNECT_FAILED:
-			Serial.println(F("Connect Failed"));
-			return 6;
-			break;
-		case WL_CONNECTION_LOST:
-			Serial.println(F("Connection Lost"));
-			return 7;
-			break;
-		case WL_DISCONNECTED:
-			Serial.println(F("Disconnected"));
-			return 7;
-			break;
-		default:
-			break;
-		}
+	}
+	_WifiTimeOutCount++;
+	//Serial.print(_WifiTimeOutCount);
+	//Serial.print(F(" WiFi errorCode : "));
+	switch (wifiStatus)
+	{
+	case WL_CONNECTED:
+		_WifiTimeOutCount = 0;
+		return 0;
+		break;
+	case WL_IDLE_STATUS:
+		Serial.println(F("Network Idle"));
+		return 3;
+		break;
+	case WL_NO_SSID_AVAIL:
+		Serial.println(F("SSID Not Found"));
+		return 4;
+		break;
+	case WL_SCAN_COMPLETED:
+		Serial.println(F("Scan Complete"));
+		return 5;
+		break;
+	case WL_CONNECT_FAILED:
+		Serial.println(F("Connect Failed"));
+		return 6;
+		break;
+	case WL_CONNECTION_LOST:
+		Serial.println(F("Connection Lost"));
+		return 7;
+		break;
+	case WL_DISCONNECTED:
+		Serial.println(F("Disconnected"));
+		return 7;
+		break;
+	default:
+		break;
 	}
 	return -1;
 }
@@ -177,6 +166,7 @@ String Nefry_WiFi::beginWeb(String url)
 		setWifiTimeoutClear();
 		return NefryWeb.createHtml(F("Wifi Count Clear"), (String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">"));
 	}
+	return "";
 }
 
 

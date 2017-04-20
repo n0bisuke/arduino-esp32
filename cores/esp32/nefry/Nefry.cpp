@@ -24,22 +24,21 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.5.4")
+#define LIBVERSION ("0.6.0")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
-const char * program;
-bool _bootMode = true, _swflg = false,_bootflg = false;
+
 //main 
 
 void Nefry_lib::nefry_init() {
 	beginLed(1, 16, NEO_GRB);
+	enableSW();
 	setLed(0x00, 0x0f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
 	Serial.println(F("\n\nNefry Startup"));
 	NefryDataStore.begin();
-	//enableSW();
 	setLed(0x00, 0x2f, 0x00);
 	/* Display設定 */
 	setLed(0x00, 0x4f, 0x00);
@@ -53,25 +52,25 @@ void Nefry_lib::nefry_init() {
 	/* IPaddress display表示 */
 	setLed(0x00, 0xcf, 0x00);
 	setLed(0x00, 0xef, 0x00);
-	if (NefryDataStore.getBootSelector() == 1) {
-		//for (int i = 0; i < 20; i++)
-			//setConfHtmlPrint(1, i);
-		//println(F("Nefry Write mode"));
+	if (NefryDataStore.getBootSelector() == 1 || readSW()) {
 		setLed(0x0f, 0xff, 0xff);
 		NefryDataStore.setBootSelector(0);
-		_bootflg = true;
-		//cssAdd("writemode", F("Write Mode"));
+		_bootMode = 2;
+		Serial.println("Write Mode");
+	} else {
+		_bootMode = 1;
 	}
-	_bootMode = false;
+	disableSW();
+	NefryConfig.begin();
 	Serial.println(F("\nServer started"));
 	setLed(0x00, 0xff, 0xff);
+	
 }
 
 void Nefry_lib::nefry_loop() {
 	//_dnsServer.processNextRequest();
 	NefryWiFi.run();
 
-	//NefryWebServer.run();
 }
 
 /* ModuleID */
@@ -207,9 +206,15 @@ void Nefry_lib::disableSW() {
 
 /* SW の状態を取得します */
 bool Nefry_lib::readSW() {
-	if (_swflg == true) {
-		_swflg = false;
-		return true;
+	if (_swEnableFlg == true) {
+		if (_swflg == true) {
+			_swflg = false;
+			return true;
+		}
+		return false;
+	}
+	else {
+		return digitalRead(4);
 	}
 	return false;
 }
@@ -217,14 +222,16 @@ bool Nefry_lib::readSW() {
 /* SWを押されたときに割り込まれます */
 void Nefry_lib::pollingSW() {
 	if (_swEnableFlg == true && _swflg != true && digitalRead(4) == LOW) {
-		if (_bootMode == true) {
+		if (_bootMode == 0) {
 			Nefry.setLed(0xff, 0x2f, 0x00);
-			NefryDataStore.setBootSelector(1);
-			Serial.println("push SW");
 		}
 		Serial.println("push SW");
 		_swflg = true;
 	}
+}
+bool Nefry_lib::getPollingSW()
+{
+	return _swEnableFlg;
 }
 
 //LED
@@ -259,7 +266,36 @@ int Nefry_lib::hextonum(char c)
 	return n;
 }
 
-bool Nefry_lib::getBootFlg() {
-	return _bootflg;
+bool Nefry_lib::getWriteMode() {
+	if (_bootMode == 2)return true;
+	return false;
 }
+
+void Nefry_lib::setStoreTitle(const char set[15], const int num)
+{
+	NefryConfig.setStoreTitle(set, num);
+	return ;
+}
+
+/*
+String Nefry_Conf::setDefaultModuleId() {
+	uint8_t macAddr[WL_MAC_ADDR_LENGTH];
+	String moduleName;
+	WiFi.macAddress(macAddr);
+	switch (boardId)
+	{
+	case 1:
+		moduleName = "Nefry";
+		break;
+	case 2:
+		moduleName = "CocoaBit";
+		break;
+	}
+	moduleName += "-";
+	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 2];
+	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 1];
+	return moduleName
+}
+*/
+
 Nefry_lib Nefry;

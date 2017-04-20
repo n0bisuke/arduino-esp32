@@ -7,7 +7,7 @@
 #include "Nefry.h"
 #include "NefryWeb.h"
 #include "NefryWiFi.h"
-
+#include "NefryConfig.h"
 
 #define HTTP_DOWNLOAD_UNIT_SIZE 1460
 #define HTTP_UPLOAD_BUFLEN 2048
@@ -17,6 +17,9 @@
 
 #define CONTENT_LENGTH_UNKNOWN ((size_t) -1)
 #define CONTENT_LENGTH_NOT_SET ((size_t) -2)
+
+#define DEBUG_OUTPUT Serial
+//#define DEBUG_ESP_HTTP_SERVERR
 
 class Nefry_webserver
 {

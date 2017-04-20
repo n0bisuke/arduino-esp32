@@ -118,6 +118,36 @@ void Nefry_webserver::run() {
 		send(200, "text/html", NefryWeb.createHtml(F("Nefry Wifi Delete"), "", (String)F("<h1>Nefry Wifi Delete</h1><p>Delete List</p><ul>") + del + (String)F("</ul><a href=\"/\">Back to top</a>")));
 		if (deleteFlg ==true)resetTimer(2);
 	}
+	else if (url.equalsIgnoreCase("/config")) {
+		send(200, "text/html", NefryConfig.beginWeb("config"));
+	}
+	else if (url.equalsIgnoreCase("/set_config")) {
+		char webarg[5] = { "smo0" };
+		for (int i = 0; i < 10; i++) {
+			webarg[3] = '0' + i;
+			String s = arg(webarg);
+#ifdef DEBUG_ESP_HTTP_SERVER
+			DEBUG_OUTPUT.print(webarg);
+			DEBUG_OUTPUT.print(" : ");
+			DEBUG_OUTPUT.println(s);
+#endif
+			NefryDataStore.setStorageStr(s,i);
+		}
+		webarg[0] = 'i';
+		for (int i = 0; i < 10; i++) {
+			webarg[3] = '0' + i;
+			String s = arg(webarg);
+#ifdef DEBUG_ESP_HTTP_SERVER
+			DEBUG_OUTPUT.print(webarg);
+			DEBUG_OUTPUT.print(" : ");
+			DEBUG_OUTPUT.println(s);
+#endif
+			NefryDataStore.setStorageValue(s.toInt(),i);
+		}
+		resetTimer(2);
+		send(200, "text/html", NefryWeb.createHtml(F("Nefry DataStore Set"), "", F("<h1>Nefry Module Set</h1><p>Restart...</p><a href=\"/\">Back to top</a>")));
+		resetTimer(2);
+	}
 	/* "/"は必ず一番下にすること */
 	else if (url.equalsIgnoreCase("/")) {
 		send(200, "text/html", NefryWeb.beginWeb("index"));
@@ -227,8 +257,7 @@ String Nefry_webserver::_responseCodeToString(int code) {
 	default:  return "";
 	}
 }
-#define DEBUG_OUTPUT Serial
-#define DEBUG_ESP_HTTP_SERVER
+
 void Nefry_webserver::_parseArguments(String data) {
 	if (_currentArgs)
 		delete[] _currentArgs;
@@ -275,16 +304,15 @@ void Nefry_webserver::_parseArguments(String data) {
 			pos = next_arg_index + 1;
 			continue;
 		}
-		RequestArgument& arg = _currentArgs[iarg];
-		arg.key = data.substring(pos, equal_sign_index);
-		arg.value = escapeParameter(data.substring(equal_sign_index + 1, next_arg_index));
+		_currentArgs[iarg].key = data.substring(pos, equal_sign_index);
+		_currentArgs[iarg].value = escapeParameter(data.substring(equal_sign_index + 1, next_arg_index));
 #ifdef DEBUG_ESP_HTTP_SERVER
 		DEBUG_OUTPUT.print("arg ");
 		DEBUG_OUTPUT.print(iarg);
 		DEBUG_OUTPUT.print(" key: ");
-		DEBUG_OUTPUT.print(arg.key);
+		DEBUG_OUTPUT.print(_currentArgs[iarg].key);
 		DEBUG_OUTPUT.print(" value: ");
-		DEBUG_OUTPUT.println(arg.value);
+		DEBUG_OUTPUT.println(_currentArgs[iarg].value);
 #endif
 		++iarg;
 		if (next_arg_index == -1)

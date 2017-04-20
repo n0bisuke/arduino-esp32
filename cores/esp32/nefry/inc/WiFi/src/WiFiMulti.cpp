@@ -120,12 +120,13 @@ uint8_t WiFiMulti::run(void)
 				int wifiTimout = 0;
                 // wait for connection or fail
                 while(status != WL_CONNECTED && status != WL_NO_SSID_AVAIL && status != WL_CONNECT_FAILED) {
-                    delay(10);
+                    delay(50);
                     status = WiFi.status();
+					Serial.print(status);
 					wifiTimout++;
-					if (wifiTimout > 40)break;
+					if (wifiTimout > 70)break;
                 }
-
+				Serial.println();
                 IPAddress ip;
                 uint8_t * mac;
                 switch(status) {
@@ -158,7 +159,7 @@ uint8_t WiFiMulti::run(void)
 
             DEBUG_WIFI_MULTI("[WIFI] start scan\n");
             // scan wifi async mode
-            //WiFi.scanNetworks(true);
+            WiFi.scanNetworks(true);
         }
     }
     return status;

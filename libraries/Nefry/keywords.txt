@@ -1,0 +1,72 @@
+#######################################
+# Syntax Coloring Map For nefry
+####################################### 
+# Class
+#######################################
+
+Nefry				KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+#######################################
+# Nefry Configure Memory
+#   SET
+#######################################
+setModuleID			KEYWORD2
+setModulePass			KEYWORD2
+setModuleClass			KEYWORD2
+setUser				KEYWORD2
+setUserPass			KEYWORD2
+setStorageValue			KEYWORD2
+setStorageStr			KEYWORD2
+setUser				KEYWORD2
+
+#######################################
+# Nefry Configure Memory
+#   GET
+#######################################
+getModuleID			KEYWORD2
+getModuleClass			KEYWORD2
+getUser				KEYWORD2
+getStorageStr			KEYWORD2
+getStorageValue			KEYWORD2
+getBootFlg			KEYWORD2
+
+#######################################
+# Nefry Switch Function
+#######################################
+readSW				KEYWORD2
+enableSW			KEYWORD2
+disableSW			KEYWORD2
+
+#######################################
+# Nefry WiFiClass Function
+#######################################
+addWiFi				KEYWORD2
+deleteWiFi			KEYWORD2
+saveWiFi			KEYWORD2
+
+#######################################
+# Nefry Switch Function
+#######################################
+beginLed			KEYWORD2
+setLed				KEYWORD2
+
+#######################################
+# Nefry etc Function
+#######################################
+reset				KEYWORD2
+sleep				KEYWORD2
+ndelay				KEYWORD2
+setProgramName			KEYWORD2
+getProgramName			KEYWORD2
+getVersion			KEYWORD2
+getAddressStr			KEYWORD2
+setStoreTitle			KEYWORD2
+
+#######################################
+# Constants
+#######################################
+ 

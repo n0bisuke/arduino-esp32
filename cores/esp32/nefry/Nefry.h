@@ -1,4 +1,4 @@
-#ifndef Nefry_h
+﻿#ifndef Nefry_h
 #define Nefry_h
 
 #include <Esp.h>
@@ -7,6 +7,7 @@
 //#include "NefryWebServer.h"
 #include "NefryWiFi.h"
 #include "./NefryDataStore.h"
+#include "NefryConfig.h"
 
 // Offset:         W          R          G          B
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
@@ -28,13 +29,19 @@ public:
 		setUser(String user),
 		setUserPass(String pass),
 		setStorageValue(long value, int pointer),
-		setStorageStr(String str, int pointer);
+		setStorageStr(String str, int pointer),
+		getWriteMode(),
+		readSW(),
+		getPollingSW();
 
 	String
 		getModuleID(),
 		getModuleClass(),
 		getUser(),
-		getStorageStr(int pointer);
+		getStorageStr(int pointer),
+		getVersion(),
+		getProgramName(),
+		getAddressStr(IPAddress ip);
 
 	long
 		getStorageValue(int pointer);
@@ -50,54 +57,28 @@ public:
 		addWiFi(String ssid,String pass),
 		deleteWiFi(int id),
 		saveWiFi(),
-/*
-		println(float text),
-		println(double text),
-		println(char text),
-		println(int text),
-		println(long text),
-		println(unsigned char text),
-		println(unsigned int text),
-		println(unsigned long text),
-		print(float text),
-		print(double text),
-		print(char text),
-		print(int text),
-		print(long text),
-		print(unsigned char text),
-		print(unsigned int text),
-		print(unsigned long text),
-		print(String text, int ln = 0),
-		println(String text),
-		*/
 		nefry_init(),
 		nefry_loop(),
-		ndelay(unsigned long ms);
+		ndelay(unsigned long ms),
 
-	void enableSW();
+		setStoreTitle(const char set[15], const int num),
 
-	void disableSW();
+		enableSW(),
+		disableSW(),
 
-	bool
-		readSW();
-
-	void pollingSW();
-	bool getBootFlg();
-
-
-	String 
-		getVersion(),
-		getProgramName(),
-		getAddressStr(IPAddress ip);
-
+	/* Pollingでスイッチの状態をチェック */
+		pollingSW();
 
 private:
-	bool _swEnableFlg;
-	bool _bootMode = true, _swflg = false;
-	int hextonum(char c);
+	bool 
+		_swEnableFlg = false,/* SWの有効無効化 */
+		_swflg = false; /* SWの状態を保持 */
+
+	int 
+		_bootMode = 0,	/* Boot状態を管理　0:起動中 1:通常起動 2:書き込みモード */
+		hextonum(char c);
 	
+	const char * program;
 };
 extern Nefry_lib Nefry;
 #endif
-
-void _swcallback_function();
