@@ -37,7 +37,7 @@
 #endif
 #endif
 
-#define DEBUG_WIFI_MULTI_SERIAL
+//#define DEBUG_WIFI_MULTI_SERIAL
 
 #ifndef DEBUG_WIFI_MULTI_SERIAL
 #define DEBUG_WIFI_MULTI(...)
