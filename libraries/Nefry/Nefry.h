@@ -1,6 +1,9 @@
 ﻿#ifndef Nefry_h
 #define Nefry_h
 
+#include <Arduino.h>
+
+
 class Nefry_lib
 {
 public:
@@ -28,6 +31,7 @@ public:
 
 	long
 		getStoreValue(int pointer);
+
 
 	void
 		reset(),
@@ -63,6 +67,4 @@ private:
 	const char * program;
 };
 extern Nefry_lib Nefry;
-
 #endif
-
