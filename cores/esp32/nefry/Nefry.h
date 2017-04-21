@@ -28,8 +28,8 @@ public:
 		setModuleClass(String className),
 		setUser(String user),
 		setUserPass(String pass),
-		setStorageValue(long value, int pointer),
-		setStorageStr(String str, int pointer),
+		setStoreValue(long value, int pointer),
+		setStoreStr(String str, int pointer),
 		getWriteMode(),
 		readSW(),
 		getPollingSW();
@@ -38,13 +38,13 @@ public:
 		getModuleID(),
 		getModuleClass(),
 		getUser(),
-		getStorageStr(int pointer),
+		getStoreStr(int pointer),
 		getVersion(),
 		getProgramName(),
 		getAddressStr(IPAddress ip);
 
 	long
-		getStorageValue(int pointer);
+		getStoreValue(int pointer);
 
 
 	void

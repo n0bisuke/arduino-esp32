@@ -19,8 +19,8 @@ setModulePass			KEYWORD2
 setModuleClass			KEYWORD2
 setUser				KEYWORD2
 setUserPass			KEYWORD2
-setStorageValue			KEYWORD2
-setStorageStr			KEYWORD2
+setStoreValue			KEYWORD2
+setStoreStr			KEYWORD2
 setUser				KEYWORD2
 
 #######################################
@@ -30,8 +30,8 @@ setUser				KEYWORD2
 getModuleID			KEYWORD2
 getModuleClass			KEYWORD2
 getUser				KEYWORD2
-getStorageStr			KEYWORD2
-getStorageValue			KEYWORD2
+getStoreStr			KEYWORD2
+getStoreValue			KEYWORD2
 getBootFlg			KEYWORD2
 
 #######################################

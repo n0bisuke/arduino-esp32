@@ -117,21 +117,21 @@ bool Nefry_lib::setUserPass(String pass)
 
 /* Storage */
 /* Value */
-bool Nefry_lib::setStorageValue(long value, int pointer)
+bool Nefry_lib::setStoreValue(long value, int pointer)
 {
 	return NefryDataStore.setStorageValue(value, pointer);
 }
-long Nefry_lib::getStorageValue(int pointer)
+long Nefry_lib::geStoreValue(int pointer)
 {
 	return NefryDataStore.getStorageValue(pointer);
 }
 
 /* String */
-bool Nefry_lib::setStorageStr(String str, int pointer)
+bool Nefry_lib::setStoreStr(String str, int pointer)
 {
 	return NefryDataStore.setStorageStr(str, pointer);
 }
-String Nefry_lib::getStorageStr(int pointer)
+String Nefry_lib::getStoreStr(int pointer)
 {
 	return NefryDataStore.getStorageStr(pointer);
 }
