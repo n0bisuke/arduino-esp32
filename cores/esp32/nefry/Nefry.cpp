@@ -214,19 +214,28 @@ bool Nefry_lib::readSW() {
 		return false;
 	}
 	else {
-		return digitalRead(4);
+		return !digitalRead(4);
 	}
 	return false;
 }
 
 /* SWを押されたときに割り込まれます */
 void Nefry_lib::pollingSW() {
-	if (_swEnableFlg == true && _swflg != true && digitalRead(4) == LOW) {
-		if (_bootMode == 0) {
-			Nefry.setLed(0xff, 0x2f, 0x00);
+	if (_swEnableFlg == true && _swflg != true) {
+		if(digitalRead(4) == LOW){
+			if (_bootMode == 0) {
+				Nefry.setLed(0xff, 0x2f, 0x00);
+			}
+			Serial.println("push SW");
+			delay(100);
+			_swPushingflg = true;
 		}
-		Serial.println("push SW");
-		_swflg = true;
+		if (digitalRead(4) == HIGH && _swPushingflg == true) {
+			_swPushingflg = false;
+			_swflg = true;
+			Serial.println("push SW end");
+		}
+
 	}
 }
 bool Nefry_lib::getPollingSW()
