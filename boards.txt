@@ -58,43 +58,43 @@ esp32.menu.DebugLevel.verbose.build.code_debug=5
 
 ##############################################################
 
-nefryicing.name=Nefry Icing
+nefrybt.name=Nefry BT
 
-nefryicing.upload.tool=esptool
-nefryicing.upload.maximum_size=1044464
-nefryicing.upload.maximum_data_size=294912
-nefryicing.upload.wait_for_upload_port=true
+nefrybt.upload.tool=esptool
+nefrybt.upload.maximum_size=1044464
+nefrybt.upload.maximum_data_size=294912
+nefrybt.upload.wait_for_upload_port=true
 
-nefryicing.serial.disableDTR=true
-nefryicing.serial.disableRTS=true
+nefrybt.serial.disableDTR=true
+nefrybt.serial.disableRTS=true
 
-nefryicing.build.mcu=esp32
-nefryicing.build.core=esp32
-nefryicing.build.variant=esp32
-nefryicing.build.board=Nefry_Icing
+nefrybt.build.mcu=esp32
+nefrybt.build.core=esp32
+nefrybt.build.variant=esp32
+nefrybt.build.board=Nefry_Icing
 
-nefryicing.build.f_cpu=240000000L
-nefryicing.build.flash_mode=dio
-nefryicing.build.flash_size=4MB
+nefrybt.build.f_cpu=240000000L
+nefrybt.build.flash_mode=dio
+nefrybt.build.flash_size=4MB
 
-nefryicing.build.flash_freq=80m
+nefrybt.build.flash_freq=80m
 
-nefryicing.menu.UploadSpeed.512000.windows=512000
-nefryicing.menu.UploadSpeed.512000.upload.speed=512000
-nefryicing.menu.UploadSpeed.115200=115200
-nefryicing.menu.UploadSpeed.115200.upload.speed=115200
-nefryicing.menu.UploadSpeed.921600=921600
-nefryicing.menu.UploadSpeed.921600.upload.speed=921600
+nefrybt.menu.UploadSpeed.512000.windows=512000
+nefrybt.menu.UploadSpeed.512000.upload.speed=512000
+nefrybt.menu.UploadSpeed.115200=115200
+nefrybt.menu.UploadSpeed.115200.upload.speed=115200
+nefrybt.menu.UploadSpeed.921600=921600
+nefrybt.menu.UploadSpeed.921600.upload.speed=921600
 
-nefryicing.menu.DebugLevel.none=None
-nefryicing.menu.DebugLevel.none.build.code_debug=0
-nefryicing.menu.DebugLevel.error=Error
-nefryicing.menu.DebugLevel.error.build.code_debug=1
-nefryicing.menu.DebugLevel.warn=Warn
-nefryicing.menu.DebugLevel.warn.build.code_debug=2
-nefryicing.menu.DebugLevel.info=Info
-nefryicing.menu.DebugLevel.info.build.code_debug=3
-nefryicing.menu.DebugLevel.debug=Debug
-nefryicing.menu.DebugLevel.debug.build.code_debug=4
-nefryicing.menu.DebugLevel.verbose=Verbose
-nefryicing.menu.DebugLevel.verbose.build.code_debug=5
+nefrybt.menu.DebugLevel.none=None
+nefrybt.menu.DebugLevel.none.build.code_debug=0
+nefrybt.menu.DebugLevel.error=Error
+nefrybt.menu.DebugLevel.error.build.code_debug=1
+nefrybt.menu.DebugLevel.warn=Warn
+nefrybt.menu.DebugLevel.warn.build.code_debug=2
+nefrybt.menu.DebugLevel.info=Info
+nefrybt.menu.DebugLevel.info.build.code_debug=3
+nefrybt.menu.DebugLevel.debug=Debug
+nefrybt.menu.DebugLevel.debug.build.code_debug=4
+nefrybt.menu.DebugLevel.verbose=Verbose
+nefrybt.menu.DebugLevel.verbose.build.code_debug=5
