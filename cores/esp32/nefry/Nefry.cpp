@@ -226,14 +226,12 @@ void Nefry_lib::pollingSW() {
 			if (_bootMode == 0) {
 				Nefry.setLed(0xff, 0x2f, 0x00);
 			}
-			Serial.println("push SW");
-			delay(100);
 			_swPushingflg = true;
 		}
 		if (digitalRead(4) == HIGH && _swPushingflg == true) {
 			_swPushingflg = false;
 			_swflg = true;
-			Serial.println("push SW end");
+			Serial.println("push SW");
 		}
 
 	}
