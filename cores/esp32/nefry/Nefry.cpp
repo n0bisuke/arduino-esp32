@@ -121,7 +121,7 @@ bool Nefry_lib::setStoreValue(long value, int pointer)
 {
 	return NefryDataStore.setStorageValue(value, pointer);
 }
-long Nefry_lib::geStoreValue(int pointer)
+long Nefry_lib::getStoreValue(int pointer)
 {
 	return NefryDataStore.getStorageValue(pointer);
 }
