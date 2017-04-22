@@ -145,7 +145,7 @@ void Nefry_webserver::run() {
 			NefryDataStore.setStorageValue(s.toInt(),i);
 		}
 		resetTimer(2);
-		send(200, "text/html", NefryWeb.createHtml(F("Nefry DataStore Set"), "", F("<h1>Nefry Module Set</h1><p>Restart...</p><a href=\"/\">Back to top</a>")));
+		send(200, "text/html", NefryWeb.createHtml(F("Nefry DataStore Set"), "", F("<h1>Nefry Module Set</h1><p>Saveing & Restart...</p><a href=\"/\">Back to top</a>")));
 		resetTimer(2);
 	}
 	/* "/"は必ず一番下にすること */
