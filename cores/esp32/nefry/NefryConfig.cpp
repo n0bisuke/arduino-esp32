@@ -13,8 +13,8 @@ ModulePass	: Nefryが発信するWiFiパスワード
 ModuleClass	: Nefryのモジュールが属するクラス
 user		: Nefryでログイン機能を使うときに使用するユーザ名
 userPass	: Nefryでログイン機能を使うときに使用するパスワード
-StorageValue: Nefryの環境変数を保存するときに使用する。(0-7)の範囲で保存する。末端に数字が追加される long型
-StorageStr	: Nefryの環境変数を保存するときに使用する。(0-7)の範囲で保存する。末端に数字が追加される String型
+StoreValue	: Nefryの環境変数を保存するときに使用する。(0-7)の範囲で保存する。末端に数字が追加される long型
+StoreStr	: Nefryの環境変数を保存するときに使用する。(0-7)の範囲で保存する。末端に数字が追加される String型
 */
 
 #include "NefryConfig.h"
@@ -26,7 +26,7 @@ String Nefry_Conf::beginWeb(String link) {
 	if (link.equals("config")) {
 		String content = F("<h1>Nefry DataStore Setup</h1><p>このページはプログラム内から読み書きした値を表示、編集することができます。</p>"
 			"<p>わざわざプログラムを書き換えずに値を変更できるためWebサービスでアクセスキーが必要になる場合など環境変数として扱うことができます。</p>"
-			"<ul><li>setStorageValue or setStorageStr : 値の保存</li><li>getStorageValue or getStorageStr : 値の取得</li><li>setStoreTitle : 内容の表示</li></ul>"
+			"<ul><li>setStoreValue or setStoreStr : 値の保存</li><li>getStoreValue or getStoreStr : 値の取得</li><li>setStoreTitle : 内容の表示</li></ul>"
 			"<p>それぞれの関数の使い方はNefry公式サイトをご覧になるか、サンプルプログラムを参考にしてください。</p><form method='get'action='set_config'>");
 		int formNumber,printCounter = 0;
 		for (formNumber = 0; formNumber < 10; formNumber++) {
