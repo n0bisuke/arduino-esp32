@@ -230,8 +230,7 @@ void Nefry_lib::pollingSW() {
 		}
 		if (digitalRead(4) == HIGH && _swPushingflg == true) {
 			_swPushingflg = false;
-			_swflg = true;
-			Serial.println("push SW");
+			_swflg = true;	
 		}
 
 	}
