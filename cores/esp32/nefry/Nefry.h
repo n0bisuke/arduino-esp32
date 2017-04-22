@@ -28,8 +28,8 @@ public:
 		setModuleClass(String className),
 		setUser(String user),
 		setUserPass(String pass),
-		setStorageValue(long value, int pointer),
-		setStorageStr(String str, int pointer),
+		setStoreValue(long value, int pointer),
+		setStoreStr(String str, int pointer),
 		getWriteMode(),
 		readSW(),
 		getPollingSW();
@@ -38,13 +38,13 @@ public:
 		getModuleID(),
 		getModuleClass(),
 		getUser(),
-		getStorageStr(int pointer),
+		getStoreStr(int pointer),
 		getVersion(),
 		getProgramName(),
 		getAddressStr(IPAddress ip);
 
 	long
-		getStorageValue(int pointer);
+		getStoreValue(int pointer);
 
 
 	void
@@ -70,9 +70,10 @@ public:
 		pollingSW();
 
 private:
-	bool 
+	bool
 		_swEnableFlg = false,/* SWの有効無効化 */
-		_swflg = false; /* SWの状態を保持 */
+		_swflg = false, /* SWの状態を保持 */
+		_swPushingflg = false;
 
 	int 
 		_bootMode = 0,	/* Boot状態を管理　0:起動中 1:通常起動 2:書き込みモード */

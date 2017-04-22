@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.6.0")
+#define LIBVERSION ("0.6.1")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -117,21 +117,21 @@ bool Nefry_lib::setUserPass(String pass)
 
 /* Storage */
 /* Value */
-bool Nefry_lib::setStorageValue(long value, int pointer)
+bool Nefry_lib::setStoreValue(long value, int pointer)
 {
 	return NefryDataStore.setStorageValue(value, pointer);
 }
-long Nefry_lib::getStorageValue(int pointer)
+long Nefry_lib::getStoreValue(int pointer)
 {
 	return NefryDataStore.getStorageValue(pointer);
 }
 
 /* String */
-bool Nefry_lib::setStorageStr(String str, int pointer)
+bool Nefry_lib::setStoreStr(String str, int pointer)
 {
 	return NefryDataStore.setStorageStr(str, pointer);
 }
-String Nefry_lib::getStorageStr(int pointer)
+String Nefry_lib::getStoreStr(int pointer)
 {
 	return NefryDataStore.getStorageStr(pointer);
 }
@@ -214,19 +214,25 @@ bool Nefry_lib::readSW() {
 		return false;
 	}
 	else {
-		return digitalRead(4);
+		return !digitalRead(4);
 	}
 	return false;
 }
 
 /* SWを押されたときに割り込まれます */
 void Nefry_lib::pollingSW() {
-	if (_swEnableFlg == true && _swflg != true && digitalRead(4) == LOW) {
-		if (_bootMode == 0) {
-			Nefry.setLed(0xff, 0x2f, 0x00);
+	if (_swEnableFlg == true && _swflg != true) {
+		if(digitalRead(4) == LOW){
+			if (_bootMode == 0) {
+				Nefry.setLed(0xff, 0x2f, 0x00);
+			}
+			_swPushingflg = true;
 		}
-		Serial.println("push SW");
-		_swflg = true;
+		if (digitalRead(4) == HIGH && _swPushingflg == true) {
+			_swPushingflg = false;
+			_swflg = true;	
+		}
+
 	}
 }
 bool Nefry_lib::getPollingSW()
