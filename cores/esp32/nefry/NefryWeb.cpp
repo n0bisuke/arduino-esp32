@@ -7,7 +7,7 @@ This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php
 */
 
-#include "NefryWeb.h"
+#include "./NefryWeb.h"
 //web
 String indexlink;
 
@@ -90,6 +90,7 @@ void Nefry_Web::beginWeb() {
 
 	NefryWebServer.getWebServer()->on("/Reset", [&]() {
 		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Nefry Reset"), "", F("<h1>Nefry Reset</h1><p>Reset start!</p><a href=\"/\">Back to top</a>")));
+		NefryWebServer.resetTimer(2);	
 	});
 
 	NefryWebServer.getWebServer()->on("/jsform", [&]() {
@@ -98,7 +99,9 @@ void Nefry_Web::beginWeb() {
 
 	NefryWebServer.getWebServer()->on("/onreset", [&]() {
 		NefryDataStore.setBootSelector(1);
-		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Nefry Write mode"), "", F("<h1>Nefry Write mode</h1><p>Reset start!</p><a href=\"/\">Back to top</a>")));
+		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Nefry Write mode"), "",
+			F("<h1>Nefry Write mode</h1><p>Reset start!</p><a href=\"/\">Back to top</a>")));
+		NefryWebServer.resetTimer(2);
 	});
 }
 
@@ -111,8 +114,8 @@ void Nefry_Web::begin()
 void Nefry_Web::setupCaptivePortal() {
 	_dnsServer.start(53, "*", IPAddress(192, 168, 4, 1));
 	NefryWebServer.getWebServer()->onNotFound([&]() {
-		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("CaptivePortal"), (String)F("<meta http-equiv=\"Refresh\" content=\"10; URL = http://") + ipaddressStr(WiFi.localIP()) + (String)F("\">"),
-			(String)F("<h1>Move to main page!</h1><p>お探しのページは見つかりませんでした。<br>このままの画面で動作させた場合、<br>予期しない動作をする可能性があります。<br>できれば、別ブラウザで開くことを推奨します。<br>そのときブラウザに『192.168.4.1』とURL欄に入力してください。</p><p>Please wait...10sec</p><a href=\"http://") + ipaddressStr(WiFi.localIP()) + (String)F("\">Move to main page!</a>")));
+		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("CaptivePortal"), (String)F("<meta http-equiv=\"Refresh\" content=\"10; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("\">"),
+			(String)F("<h1>Move to main page!</h1><p>お探しのページは見つかりませんでした。<br>このままの画面で動作させた場合、<br>予期しない動作をする可能性があります。<br>できれば、別ブラウザで開くことを推奨します。<br>そのときブラウザに『192.168.4.1』とURL欄に入力してください。</p><p>Please wait...10sec</p><a href=\"http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("\">Move to main page!</a>")));
 	});
 }
 Nefry_Web NefryWeb;
