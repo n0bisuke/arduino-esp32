@@ -32,8 +32,11 @@ void loopTask(void *pvParameters)
 void NefryBackEnd(void *pvParameters) {
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
+	NefryWeb.begin();
+	NefryWebServer.begin();
 	for (;;) {
 		vTaskDelayUntil(&xLastWakeTime,100/portTICK_PERIOD_MS);
+		NefryWeb.run();
 		NefryWebServer.run();	
 		Nefry.pollingSW();
 	}
