@@ -5,6 +5,7 @@
 #include "./inc/DNSServer/src/DNSServer.h"
 #include <Arduino.h>
 #include "./inc/ESP32WebServer/src/ESP32WebServer.h"
+#include "Nefry.h"
 
 class Nefry_webserver
 {
