@@ -15,23 +15,25 @@
 
 void loopTask(void *pvParameters)
 {
-	Nefry.nefry_init();
+	Serial.println("Nefrybackend");
+	while (Nefry.getBootMode() == 0) {
+		Serial.print(".");
+	}
 	if (Nefry.getWriteMode() != true) {
 		setup();
 	}
-	NefryWebServer.begin();
 	for(;;) {
         micros(); //update overflow
 		if (Nefry.getWriteMode() != true) {
 			loop();
 		}
-		Nefry.nefry_loop();
     }
 }
 
 void NefryBackEnd(void *pvParameters) {
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
+	Nefry.nefry_init();
 	NefryWeb.begin();
 	NefryWebServer.begin();
 	for (;;) {
@@ -39,6 +41,7 @@ void NefryBackEnd(void *pvParameters) {
 		NefryWeb.run();
 		NefryWebServer.run();	
 		Nefry.pollingSW();
+		Nefry.nefry_loop();
 	}
 }
 

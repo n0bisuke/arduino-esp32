@@ -44,7 +44,8 @@ public:
 		getAddressStr(IPAddress ip);
 
 	long
-		getStoreValue(int pointer);
+		getStoreValue(int pointer),
+		getBootMode();
 
 
 	void

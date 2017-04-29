@@ -276,7 +276,10 @@ bool Nefry_lib::getWriteMode() {
 	if (_bootMode == 2)return true;
 	return false;
 }
-
+long Nefry_lib::getBootMode()
+{
+	return _bootMode;
+}
 void Nefry_lib::setStoreTitle(const char set[15], const int num)
 {
 	NefryConfig.setStoreTitle(set, num);
