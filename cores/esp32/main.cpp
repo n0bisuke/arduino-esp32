@@ -48,8 +48,8 @@ void NefryBackEnd(void *pvParameters) {
 extern "C" void app_main()
 {
     initArduino();
-	xTaskCreatePinnedToCore(loopTask, "loopTask", 4096, NULL, 2, NULL, 1);
-	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 9192, NULL, 1, NULL,0);
+	xTaskCreatePinnedToCore(loopTask, "loopTask", 8192, NULL, 2, NULL, 1);
+	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 8192, NULL, 1, NULL,0);
 }
 
 #endif

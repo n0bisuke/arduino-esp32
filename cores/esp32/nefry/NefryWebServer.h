@@ -2,6 +2,7 @@
 #define NefryWebServer_h
 
 #include "./inc/WiFi/src/WiFi.h"
+#include "./inc/DNSServer/src/DNSServer.h"
 #include <Arduino.h>
 #include "./inc/ESP32WebServer/src/ESP32WebServer.h"
 

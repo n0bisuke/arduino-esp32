@@ -21,6 +21,7 @@ void Nefry_webserver::resetTimer(int delaySec)
 }
 
 void Nefry_webserver::run() {
+	_dnsServer.processNextRequest();
 	bool deleteFlg;
 	_nefryWebServer.handleClient();
 	if (resetFlg == true) {
