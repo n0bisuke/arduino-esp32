@@ -77,7 +77,7 @@ private:
 		_swPushingflg = false;
 
 	int 
-		_bootMode = 0,	/* Boot状態を管理　0:起動中 1:通常起動 2:書き込みモード */
+		_bootMode = -1,	/* Boot状態を管理　-1:初期化中 0:起動中 1:通常起動 2:書き込みモード */
 		hextonum(char c);
 	
 	const char * program;

@@ -34,6 +34,8 @@ Adafruit_NeoPixel _NefryLED[40];
 void Nefry_lib::nefry_init() {
 	beginLed(1, 16, NEO_GRB);
 	enableSW();
+	delay(50);
+	_bootMode = 0;
 	setLed(0x00, 0x0f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
