@@ -72,7 +72,7 @@ void Nefry_Web::beginWeb() {
 		content += F("</br>Running ProgramName:");
 		content += Nefry.getProgramName();
 		content += F("</p>");
-		NefryWebServer.getWebServer()->send(200, "text/css", createHtml(F("Nefry Menu"), "", content));
+		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Nefry Menu"), "", content));
 	});
 
 	NefryWebServer.getWebServer()->on("/nefry_css", [&]() {
