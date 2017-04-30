@@ -39,7 +39,7 @@ void NefryBackEnd(void *pvParameters) {
 	for (;;) {
 		vTaskDelayUntil(&xLastWakeTime,10/portTICK_PERIOD_MS);
 		NefryWeb.run();
-		NefryWebServer.run();	
+		NefryWebServer.run();
 		Nefry.pollingSW();
 		Nefry.nefry_loop();
 	}
