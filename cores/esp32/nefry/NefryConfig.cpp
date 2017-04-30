@@ -24,7 +24,7 @@ StoreStr	: Nefryの環境変数を保存するときに使用する。(0-7)の�
 void Nefry_Conf::beginWeb() {
 	NefryWebServer.getWebServer()->on("/config", [&]() {
 		String content = F("<h1>Nefry DataStore Setup</h1><p>このページはプログラム内から読み書きした値を表示、編集することができます。</p>"
-			"<p>わざわざプログラムを書き換えずに値を変更できるためWebサービスでアクセスキーが必要になる場合など環境変数として扱うことができます。</p>"
+			"<p>わざわざプログラムを書き換えずに値を変更できるためWebサービスでアクセスキーが必要になる場合やモードを切り替える時など環境変数として扱うことができます。</p>"
 			"<ul><li>setStoreValue or setStoreStr : 値の保存</li><li>getStoreValue or getStoreStr : 値の取得</li><li>setStoreTitle : 内容の表示</li></ul>"
 			"<p>それぞれの関数の使い方はNefry公式サイトをご覧になるか、サンプルプログラムを参考にしてください。</p><form method='get'action='set_config'>");
 		int formNumber, printCounter = 0;
