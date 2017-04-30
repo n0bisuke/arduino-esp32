@@ -4,6 +4,7 @@
 
 #include "./nefry/NefryWebServer.h"
 #include "./nefry/Nefry.h"
+#include "./nefry/NefryWiFi.h"
 
 #if CONFIG_AUTOSTART_ARDUINO
 
@@ -33,6 +34,7 @@ void NefryBackEnd(void *pvParameters) {
 	xLastWakeTime = xTaskGetTickCount();
 	Nefry.nefry_init();
 	NefryWeb.begin();
+	NefryWiFi.beginWeb();
 	NefryWebServer.begin();
 	for (;;) {
 		vTaskDelayUntil(&xLastWakeTime,10/portTICK_PERIOD_MS);
