@@ -15,7 +15,7 @@ ConnectPass	: Nefryが接続するWiFiのパスワードを保存するときに
 #include "NefryWiFi.h"
 
 bool initflgWifi = false;
-void Nefry_WiFi::begin() {	
+void Nefry_WiFi::begin() {
 	WiFi.persistent(false);
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
@@ -44,8 +44,10 @@ void Nefry_WiFi::begin() {
 		Nefry.setLed(200, 0, 0);
 	}
 	scanWiFi();								//WiFiを検索し、Webページに表示する
+	if (NefryDataStore.getModuleID().equals(""))
+		NefryDataStore.setModuleID(getDefaultModuleId());
 	/* Nefryが発信するWiFiの設定*/
-	if ( Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
+	if (Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
 		Serial.println(F("\nWaiting for WiFi to connect"));
 	}
@@ -75,7 +77,7 @@ run関数で返す値
 */
 	if (initflgWifi == false)return 1;
 	if (getWifiTimeout() == -1)return 1;
-	if (getWifiTimeout() !=0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
+	if (getWifiTimeout() != 0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
 	uint8_t wifiStatus = wifiMulti.run();
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
@@ -147,7 +149,7 @@ String Nefry_WiFi::beginWeb(String url)
 		content += network_list;
 		content += F("</div><div><h1>Saved WiFi List</h1><p>Delete WiFi Select</p><form  name=\"myForm\" method='get' action='delete_wifi'>");
 		for (int i = 0; i < 5; i++) {
-			if (!_nefryssid[i].equals("")){
+			if (!_nefryssid[i].equals("")) {
 				content += F("<input type=\"checkbox\" value=\"1\"name=\"");
 				content += i;
 				content += F("\">");
@@ -160,7 +162,7 @@ String Nefry_WiFi::beginWeb(String url)
 	}
 	else if (url.equals("wifiReload")) {
 		scanWiFi();
-		return NefryWeb.createHtml(F("Wifi Reload"),(String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">"));
+		return NefryWeb.createHtml(F("Wifi Reload"), (String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">"));
 	}
 	else if (url.equals("wifiCount")) {
 		setWifiTimeoutClear();
@@ -177,7 +179,7 @@ String Nefry_WiFi::deleteWifi(int id)
 	if (id < 0 || id >= 5)return "";
 	String ssid = _nefryssid[id];
 	_nefryssid[id] = "";
-	_nefrypwd[id]="";
+	_nefrypwd[id] = "";
 	return ssid;
 }
 
@@ -187,14 +189,14 @@ void Nefry_WiFi::addWifi(String _ssid, String _pwd)
 	for (int i = 0; i < 5; i++) {
 		if (_nefryssid[i].equals("")) {
 			_nefryssid[i] = _ssid;
-			_nefrypwd[i]=_pwd;
+			_nefrypwd[i] = _pwd;
 			return;
 		}
 	}
 	deleteWifi(0);
 	sortWifi();
-	_nefryssid[4]=_ssid;
-	_nefrypwd[4]=_pwd;
+	_nefryssid[4] = _ssid;
+	_nefrypwd[4] = _pwd;
 }
 int Nefry_WiFi::sortWifi()
 {
@@ -217,19 +219,19 @@ int Nefry_WiFi::sortWifi()
 void Nefry_WiFi::saveWifi() {
 	sortWifi();
 	for (int i = 0; i < 5; i++) {
-		NefryDataStore.setConnectSSID(_nefryssid[i],i);
-		NefryDataStore.setConnectPass(_nefrypwd[i],i);
+		NefryDataStore.setConnectSSID(_nefryssid[i], i);
+		NefryDataStore.setConnectPass(_nefrypwd[i], i);
 	}
 }
 String Nefry_WiFi::getlistWifi() {
 	String lisWifi = "";
 	for (int i = 0; i < 5; i++) {
 		if (!_nefryssid[i].equals("")) {
-		lisWifi += "ID : ";
-		lisWifi += i;
-		lisWifi += " SSID : ";
-		lisWifi += _nefryssid[i];
-		lisWifi += "\n";
+			lisWifi += "ID : ";
+			lisWifi += i;
+			lisWifi += " SSID : ";
+			lisWifi += _nefryssid[i];
+			lisWifi += "\n";
 		}
 	}
 	return lisWifi;
@@ -276,7 +278,7 @@ void Nefry_WiFi::dataCache()
 		_nefryssid[i] = NefryDataStore.getConnectSSID(i);
 		_nefrypwd[i] = NefryDataStore.getConnectPass(i);
 	}
-	
+
 }
 /* 文字置換 */
 String Nefry_WiFi::escapeParameter(String param) {
@@ -325,6 +327,22 @@ void Nefry_WiFi::setWifiTimeout(int count)
 void Nefry_WiFi::setWifiTimeoutClear()
 {
 	_WifiTimeOutCount = 0;
+}
+
+String Nefry_WiFi::getDefaultModuleId() {
+	uint8_t macAddr[6];
+	char str[15];
+	char* moduleName;
+	WiFi.macAddress(macAddr);
+	switch (boardId)
+	{
+	case 0:case 1:
+		moduleName = "Nefry";
+		break;
+	}
+	sprintf(str, "%s-%02x%02x", moduleName, macAddr[6 - 2], macAddr[6 - 1]);
+	Serial.println(str);
+	return str;
 }
 
 Nefry_WiFi NefryWiFi;

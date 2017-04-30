@@ -286,25 +286,4 @@ void Nefry_lib::setStoreTitle(const char set[15], const int num)
 	return ;
 }
 
-/*
-String Nefry_Conf::setDefaultModuleId() {
-	uint8_t macAddr[WL_MAC_ADDR_LENGTH];
-	String moduleName;
-	WiFi.macAddress(macAddr);
-	switch (boardId)
-	{
-	case 1:
-		moduleName = "Nefry";
-		break;
-	case 2:
-		moduleName = "CocoaBit";
-		break;
-	}
-	moduleName += "-";
-	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 2];
-	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 1];
-	return moduleName
-}
-*/
-
 Nefry_lib Nefry;

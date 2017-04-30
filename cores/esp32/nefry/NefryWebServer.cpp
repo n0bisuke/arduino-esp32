@@ -17,7 +17,7 @@ void Nefry_webserver::begin() {
 void Nefry_webserver::resetTimer(int delaySec)
 {
 	resetFlg = true;
-	countdown = delaySec*10;
+	countdown = delaySec*100;
 }
 
 void Nefry_webserver::run() {

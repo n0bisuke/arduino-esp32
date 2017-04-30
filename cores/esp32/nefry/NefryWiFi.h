@@ -17,6 +17,8 @@ public:
 		setWifiTimeoutClear(),
 		saveWifi();
 
+	String getDefaultModuleId();
+
 	int 
 		run(),
 		getWifiTimeout();
