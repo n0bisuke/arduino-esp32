@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.6.2")
+#define LIBVERSION ("0.7.0")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
