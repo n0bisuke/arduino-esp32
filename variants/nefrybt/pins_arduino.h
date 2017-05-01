@@ -46,4 +46,6 @@ static const uint8_t T4 = 13;
 static const uint8_t DAC1 = 25;
 static const uint8_t DAC2 = 26;
 
+static const uint8_t  boardId = 1;//Nefry BT
+
 #endif /* Pins_Arduino_h */

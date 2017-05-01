@@ -4,7 +4,7 @@
 #include "./inc/WiFi/src/WiFiMulti.h"
 #include "Nefry.h"
 #include "./inc/Preferences/src/Preferences.h"
-#include"NefryWeb.h"
+#include "NefryWeb.h"
 #include "NefryWebServer.h"
 
 class Nefry_WiFi
@@ -12,16 +12,19 @@ class Nefry_WiFi
 public:
 	void
 		begin(),
+		beginWeb(),
 		addWifi(String ssid, String pwd),
 		setWifiTimeout(int count),
 		setWifiTimeoutClear(),
 		saveWifi();
 
+	String getDefaultModuleId();
+
 	int 
 		run(),
 		getWifiTimeout();
 
-	String beginWeb(String s),
+	String
 		deleteWifi(int id),
 		getlistWifi();
 

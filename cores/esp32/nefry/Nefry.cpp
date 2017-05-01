@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.6.1")
+#define LIBVERSION ("0.6.2")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -34,6 +34,8 @@ Adafruit_NeoPixel _NefryLED[40];
 void Nefry_lib::nefry_init() {
 	beginLed(1, 16, NEO_GRB);
 	enableSW();
+	delay(50);
+	_bootMode = 0;
 	setLed(0x00, 0x0f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
@@ -276,32 +278,14 @@ bool Nefry_lib::getWriteMode() {
 	if (_bootMode == 2)return true;
 	return false;
 }
-
+long Nefry_lib::getBootMode()
+{
+	return _bootMode;
+}
 void Nefry_lib::setStoreTitle(const char set[15], const int num)
 {
 	NefryConfig.setStoreTitle(set, num);
 	return ;
 }
-
-/*
-String Nefry_Conf::setDefaultModuleId() {
-	uint8_t macAddr[WL_MAC_ADDR_LENGTH];
-	String moduleName;
-	WiFi.macAddress(macAddr);
-	switch (boardId)
-	{
-	case 1:
-		moduleName = "Nefry";
-		break;
-	case 2:
-		moduleName = "CocoaBit";
-		break;
-	}
-	moduleName += "-";
-	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 2];
-	moduleName += macAddr[WL_MAC_ADDR_LENGTH - 1];
-	return moduleName
-}
-*/
 
 Nefry_lib Nefry;

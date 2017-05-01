@@ -15,7 +15,7 @@ ConnectPass	: Nefryが接続するWiFiのパスワードを保存するときに
 #include "NefryWiFi.h"
 
 bool initflgWifi = false;
-void Nefry_WiFi::begin() {	
+void Nefry_WiFi::begin() {
 	WiFi.persistent(false);
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
@@ -44,8 +44,10 @@ void Nefry_WiFi::begin() {
 		Nefry.setLed(200, 0, 0);
 	}
 	scanWiFi();								//WiFiを検索し、Webページに表示する
+	if (NefryDataStore.getModuleID().equals(""))
+		NefryDataStore.setModuleID(getDefaultModuleId());
 	/* Nefryが発信するWiFiの設定*/
-	if ( Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
+	if (Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
 		Serial.println(F("\nWaiting for WiFi to connect"));
 	}
@@ -75,7 +77,7 @@ run関数で返す値
 */
 	if (initflgWifi == false)return 1;
 	if (getWifiTimeout() == -1)return 1;
-	if (getWifiTimeout() !=0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
+	if (getWifiTimeout() != 0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
 	uint8_t wifiStatus = wifiMulti.run();
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
@@ -129,9 +131,9 @@ run関数で返す値
 	return -1;
 }
 
-String Nefry_WiFi::beginWeb(String url)
+void Nefry_WiFi::beginWeb()
 {
-	if (url.equals("wifi_conf")) {
+	NefryWebServer.getWebServer()->on("/wifi_conf", [&]() {
 		String content = F(
 			"<h1>Nefry Wifi Set</h1>"
 			"<form  name=\"myForm\" method='get' action='set_wifi'><div class=\"row\"> <label for=\"ssid\">SSID: </label> <div> <input name=\"ssid\" id=\"ssid\" maxlength=\"32\"list=\"network_list\" value=\"\"> </div></div>"
@@ -147,7 +149,7 @@ String Nefry_WiFi::beginWeb(String url)
 		content += network_list;
 		content += F("</div><div><h1>Saved WiFi List</h1><p>Delete WiFi Select</p><form  name=\"myForm\" method='get' action='delete_wifi'>");
 		for (int i = 0; i < 5; i++) {
-			if (!_nefryssid[i].equals("")){
+			if (!_nefryssid[i].equals("")) {
 				content += F("<input type=\"checkbox\" value=\"1\"name=\"");
 				content += i;
 				content += F("\">");
@@ -156,17 +158,61 @@ String Nefry_WiFi::beginWeb(String url)
 			}
 		}
 		content += F("<input type=\"button\" value=\"Delete\" onclick=\"return jsSubmit(this.form);\"></form>");
-		return NefryWeb.createHtml(F("Nefry Wifi Confing"), "", content);
-	}
-	else if (url.equals("wifiReload")) {
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Wifi Confing"), "", content));
+	});
+
+	NefryWebServer.getWebServer()->on("/wifiReload", [&]() {
 		scanWiFi();
-		return NefryWeb.createHtml(F("Wifi Reload"),(String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">"));
-	}
-	else if (url.equals("wifiCount")) {
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Wifi Reload"),
+			(String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"),
+			F("<p>Please wait...</p><a href=\"/wifi_conf\">")));
+	});
+
+	NefryWebServer.getWebServer()->on("/wifiCount", [&]() {
 		setWifiTimeoutClear();
-		return NefryWeb.createHtml(F("Wifi Count Clear"), (String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">"));
-	}
-	return "";
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Wifi Count Clear"), (String)F("<meta http-equiv=\"Refresh\" content=\"0; URL = http://") + Nefry.getAddressStr(WiFi.localIP()) + (String)F("/wifi_conf\">"), F("<p>Please wait...</p><a href=\"/wifi_conf\">")));
+	});
+
+	NefryWebServer.getWebServer()->on("/set_wifi", [&]() {
+		String newssid = NefryWebServer.getWebServer()->arg("ssid");
+		String newpwd = NefryWebServer.getWebServer()->arg("pwd");
+		Serial.print("newssid : ");
+		Serial.println(newssid);
+		String content;
+		if (newssid.length() > 0) {
+			NefryWiFi.addWifi(newssid, newpwd);
+			NefryWiFi.saveWifi();
+			content = F("Save SSID:");
+			content += newssid;
+			content += F(" Restart to boot into new WiFi");
+		}
+		else {
+			content = F("Empty SSID is not acceptable.");
+		}
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Wifi Set"), "", (String)F("<h1>Nefry Wifi Set</h1><p>") + content + (String)F("</p><a href=\"/\">Back to top</a>")));
+		Serial.print("dateSend");
+		if (newssid.length() != 0)NefryWebServer.resetTimer(2);
+	});
+
+	NefryWebServer.getWebServer()->on("/delete_wifi", [&]() {
+		String del = "", ssid;
+		bool deleteFlg = false;
+		for (int i = 0; i < 5; i++) {
+			String data = NefryWebServer.getWebServer()->arg(i);
+			if (data.equals("1")) {
+				ssid = NefryWiFi.deleteWifi(i);
+				if (!ssid.equals("")) {
+					del += "<li>";
+					del += ssid;
+					del += "</li>";
+					deleteFlg = true;
+				}
+			}
+		}
+		NefryWiFi.saveWifi();
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Wifi Delete"), "", (String)F("<h1>Nefry Wifi Delete</h1><p>Delete List</p><ul>") + del + (String)F("</ul><a href=\"/\">Back to top</a>")));
+		if (deleteFlg == true)NefryWebServer.resetTimer(2);
+	});
 }
 
 
@@ -177,7 +223,7 @@ String Nefry_WiFi::deleteWifi(int id)
 	if (id < 0 || id >= 5)return "";
 	String ssid = _nefryssid[id];
 	_nefryssid[id] = "";
-	_nefrypwd[id]="";
+	_nefrypwd[id] = "";
 	return ssid;
 }
 
@@ -187,14 +233,14 @@ void Nefry_WiFi::addWifi(String _ssid, String _pwd)
 	for (int i = 0; i < 5; i++) {
 		if (_nefryssid[i].equals("")) {
 			_nefryssid[i] = _ssid;
-			_nefrypwd[i]=_pwd;
+			_nefrypwd[i] = _pwd;
 			return;
 		}
 	}
 	deleteWifi(0);
 	sortWifi();
-	_nefryssid[4]=_ssid;
-	_nefrypwd[4]=_pwd;
+	_nefryssid[4] = _ssid;
+	_nefrypwd[4] = _pwd;
 }
 int Nefry_WiFi::sortWifi()
 {
@@ -217,19 +263,19 @@ int Nefry_WiFi::sortWifi()
 void Nefry_WiFi::saveWifi() {
 	sortWifi();
 	for (int i = 0; i < 5; i++) {
-		NefryDataStore.setConnectSSID(_nefryssid[i],i);
-		NefryDataStore.setConnectPass(_nefrypwd[i],i);
+		NefryDataStore.setConnectSSID(_nefryssid[i], i);
+		NefryDataStore.setConnectPass(_nefrypwd[i], i);
 	}
 }
 String Nefry_WiFi::getlistWifi() {
 	String lisWifi = "";
 	for (int i = 0; i < 5; i++) {
 		if (!_nefryssid[i].equals("")) {
-		lisWifi += "ID : ";
-		lisWifi += i;
-		lisWifi += " SSID : ";
-		lisWifi += _nefryssid[i];
-		lisWifi += "\n";
+			lisWifi += "ID : ";
+			lisWifi += i;
+			lisWifi += " SSID : ";
+			lisWifi += _nefryssid[i];
+			lisWifi += "\n";
 		}
 	}
 	return lisWifi;
@@ -276,7 +322,7 @@ void Nefry_WiFi::dataCache()
 		_nefryssid[i] = NefryDataStore.getConnectSSID(i);
 		_nefrypwd[i] = NefryDataStore.getConnectPass(i);
 	}
-	
+
 }
 /* 文字置換 */
 String Nefry_WiFi::escapeParameter(String param) {
@@ -325,6 +371,22 @@ void Nefry_WiFi::setWifiTimeout(int count)
 void Nefry_WiFi::setWifiTimeoutClear()
 {
 	_WifiTimeOutCount = 0;
+}
+
+String Nefry_WiFi::getDefaultModuleId() {
+	uint8_t macAddr[6];
+	char str[15];
+	char* moduleName;
+	WiFi.macAddress(macAddr);
+	switch (boardId)
+	{
+	case 0:case 1:
+		moduleName = "Nefry";
+		break;
+	}
+	sprintf(str, "%s-%02x%02x", moduleName, macAddr[6 - 2], macAddr[6 - 1]);
+	Serial.println(str);
+	return str;
 }
 
 Nefry_WiFi NefryWiFi;

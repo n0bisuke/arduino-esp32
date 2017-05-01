@@ -4,6 +4,8 @@
 
 #include "./nefry/NefryWebServer.h"
 #include "./nefry/Nefry.h"
+#include "./nefry/NefryWiFi.h"
+#include "./nefry/NefryConfig.h"
 
 #if CONFIG_AUTOSTART_ARDUINO
 
@@ -15,35 +17,44 @@
 
 void loopTask(void *pvParameters)
 {
-	Nefry.nefry_init();
+	while (Nefry.getBootMode() == -1) {}
+	while (Nefry.getBootMode() == 0) {
+		Nefry.pollingSW();
+	}
 	if (Nefry.getWriteMode() != true) {
+		delay(500);
 		setup();
 	}
-	NefryWebServer.begin();
 	for(;;) {
         micros(); //update overflow
 		if (Nefry.getWriteMode() != true) {
 			loop();
 		}
-		Nefry.nefry_loop();
     }
 }
 
 void NefryBackEnd(void *pvParameters) {
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
+	Nefry.nefry_init();
+	NefryWeb.begin();
+	NefryWiFi.beginWeb();
+	NefryConfig.beginWeb();
+	NefryWebServer.begin();
 	for (;;) {
-		vTaskDelayUntil(&xLastWakeTime,100/portTICK_PERIOD_MS);
-		NefryWebServer.run();	
+		vTaskDelayUntil(&xLastWakeTime,10/portTICK_PERIOD_MS);
+		NefryWeb.run();
+		NefryWebServer.run();
 		Nefry.pollingSW();
+		Nefry.nefry_loop();
 	}
 }
 
 extern "C" void app_main()
 {
     initArduino();
-	xTaskCreatePinnedToCore(loopTask, "loopTask", 4096, NULL, 2, NULL, 1);
-	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 9192, NULL, 1, NULL,0);
+	xTaskCreatePinnedToCore(loopTask,      "loopTask",     8192, NULL, 2, NULL,1);
+	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 8192, NULL, 1, NULL,0);
 }
 
 #endif
