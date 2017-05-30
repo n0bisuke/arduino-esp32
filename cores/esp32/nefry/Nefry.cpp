@@ -323,4 +323,6 @@ void Nefry_lib::print(unsigned int text) { NefryConsole.print(text); }
 void Nefry_lib::print(unsigned long text) { NefryConsole.print(text); }
 void Nefry_lib::print(String text) { NefryConsole.print(text); }
 
+void Nefry_lib::clearConsole() { NefryConsole.clearConsole(); }
+
 Nefry_lib Nefry;
