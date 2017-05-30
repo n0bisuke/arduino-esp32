@@ -324,5 +324,6 @@ void Nefry_lib::print(unsigned long text) { NefryConsole.print(text); }
 void Nefry_lib::print(String text) { NefryConsole.print(text); }
 
 void Nefry_lib::clearConsole() { NefryConsole.clearConsole(); }
-
+int Nefry_lib::available(){ return NefryConsole.available(); }
+bool Nefry_lib::read(){ return NefryConsole.read(); }
 Nefry_lib Nefry;
