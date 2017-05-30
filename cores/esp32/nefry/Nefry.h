@@ -33,9 +33,7 @@ public:
 		setStoreStr(String str, int pointer),
 		getWriteMode(),
 		readSW(),
-		getPollingSW(),
-		/* Console */
-		read();
+		getPollingSW();
 
 	String
 		getModuleID(),
@@ -45,7 +43,9 @@ public:
 		getVersion(),
 		getProgramName(),
 		getAddressStr(IPAddress ip),
-		getDefaultModuleId();
+		getDefaultModuleId(),
+		/* Console */
+		read();
 
 	long
 		getStoreValue(int pointer),
