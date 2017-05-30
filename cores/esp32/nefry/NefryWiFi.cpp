@@ -44,8 +44,6 @@ void Nefry_WiFi::begin() {
 		Nefry.setLed(200, 0, 0);
 	}
 	scanWiFi();								//WiFiを検索し、Webページに表示する
-	if (NefryDataStore.getModuleID().equals(""))
-		NefryDataStore.setModuleID(getDefaultModuleId());
 	/* Nefryが発信するWiFiの設定*/
 	if (Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
@@ -371,22 +369,6 @@ void Nefry_WiFi::setWifiTimeout(int count)
 void Nefry_WiFi::setWifiTimeoutClear()
 {
 	_WifiTimeOutCount = 0;
-}
-
-String Nefry_WiFi::getDefaultModuleId() {
-	uint8_t macAddr[6];
-	char str[15];
-	char* moduleName;
-	WiFi.macAddress(macAddr);
-	switch (boardId)
-	{
-	case 0:case 1:
-		moduleName = "Nefry";
-		break;
-	}
-	sprintf(str, "%s-%02x%02x", moduleName, macAddr[6 - 2], macAddr[6 - 1]);
-	Serial.println(str);
-	return str;
 }
 
 Nefry_WiFi NefryWiFi;

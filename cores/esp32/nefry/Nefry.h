@@ -8,6 +8,7 @@
 #include "NefryWiFi.h"
 #include "./NefryDataStore.h"
 #include "NefryConfig.h"
+#include "NefryConsole.h"
 
 // Offset:         W          R          G          B
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
@@ -41,12 +42,18 @@ public:
 		getStoreStr(int pointer),
 		getVersion(),
 		getProgramName(),
-		getAddressStr(IPAddress ip);
+		getAddressStr(IPAddress ip),
+		getDefaultModuleId(),
+		/* Console */
+		read();
 
 	long
 		getStoreValue(int pointer),
 		getBootMode();
 
+	int
+		/* Console */
+		available();
 
 	void
 		reset(),
@@ -68,7 +75,29 @@ public:
 		disableSW(),
 
 	/* Pollingでスイッチの状態をチェック */
-		pollingSW();
+		pollingSW(),
+
+		/* Console機能追加 */
+		clearConsole(),
+		
+		println(float text),
+		println(double text),
+		println(char text),
+		println(int text),
+		println(long text),
+		println(unsigned char text),
+		println(unsigned int text),
+		println(unsigned long text),
+		print(float text),
+		print(double text),
+		print(char text),
+		print(int text),
+		print(long text),
+		print(unsigned char text),
+		print(unsigned int text),
+		print(unsigned long text),
+		print(String text),
+		println(String text);
 
 private:
 	bool

@@ -1,5 +1,14 @@
 # このノートはNefry(ESP32版)のリリースノートになります。
 
+## 0.8.0
+
+NefryのWebConsole機能の追加
+
+新規機能
+
+-  WebConsole機能の追加、それに関連する関数の追加
+- print,println,read,available,clearConsole関数の追加
+
 ## 0.7.2
 
 0.7.1で修正した内容を破棄
