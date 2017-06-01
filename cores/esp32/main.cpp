@@ -46,11 +46,16 @@ void NefryBackEnd(void *pvParameters) {
 	NefryConsole.beginWeb();
 	NefryUpdate.setupWebLocalUpdate();
 	for (;;) {
-		vTaskDelayUntil(&xLastWakeTime,10/portTICK_PERIOD_MS);
-		NefryWeb.run();
-		NefryWebServer.run();
-		Nefry.pollingSW();
-		Nefry.nefry_loop();
+		if (Nefry.getNefryState() == 1) {
+			NefryWebServer.run();
+		}
+		else {
+			vTaskDelayUntil(&xLastWakeTime, 10 / portTICK_PERIOD_MS);
+			NefryWeb.run();
+			NefryWebServer.run();
+			Nefry.pollingSW();
+			Nefry.nefry_loop();
+		}
 	}
 }
 

@@ -36,6 +36,7 @@ void Nefry_lib::nefry_init() {
 	enableSW();
 	delay(50);
 	_bootMode = 0;
+	setNefryState(0);
 	setLed(0x00, 0x0f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
@@ -326,4 +327,13 @@ void Nefry_lib::print(String text) { NefryConsole.print(text); }
 void Nefry_lib::clearConsole() { NefryConsole.clearConsole(); }
 int Nefry_lib::available(){ return NefryConsole.available(); }
 String Nefry_lib::read(){ return NefryConsole.read(); }
+
+void Nefry_lib::setNefryState(int state)
+{
+	_nefryState = state;
+}
+int Nefry_lib::getNefryState()
+{
+	return _nefryState;
+}
 Nefry_lib Nefry;
