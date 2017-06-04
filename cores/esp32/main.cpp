@@ -45,7 +45,6 @@ void NefryBackEnd(void *pvParameters) {
 	NefryWebServer.begin();
 	NefryConsole.beginWeb();
 	NefryUpdate.setupWebLocalUpdate();
-	NefryUpdate.setupWebOnlineUpdate();
 	for (;;) {
 		if (Nefry.getNefryState() == 1) {
 			NefryWebServer.run();

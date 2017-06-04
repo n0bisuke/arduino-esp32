@@ -104,118 +104,113 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 		Nefry.setNefryState(0);
 	});
 }
-
-int Nefry_Update::autoUpdate(String url, String domain) {
-	Nefry.setNefryState(1);
+/*
+int Nefry_lib::autoUpdate(String url, String domain) {
+	pushSW_flg = 1;
 	IPAddress ip = WiFi.localIP();
 	if (ip.toString().equals("0.0.0.0")) {
-		Nefry.println(F("not connected to the Internet"));
+		println(F("not connected to the Internet"));
 	}
 	else {
-		Nefry.println(F("autoUpdateStart"));
+		println(F("autoUpdateStart"));
 		ESPhttpUpdate.rebootOnUpdate(false);
 		switch (ESPhttpUpdate.update(domain, 80, "/nefry.php", url)) {
 		case HTTP_UPDATE_FAILED:
-			Nefry.setNefryState(0);
+			pushSW_flg = 0;
 			Serial.println(url);
-			Nefry.println(F("[update] Update failed."));
+			println(F("[update] Update failed."));
 			Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str());
-			Nefry.println(ESPhttpUpdate.getLastErrorString().c_str());
+			println(ESPhttpUpdate.getLastErrorString().c_str());
 			return ESPhttpUpdate.getLastError();
 			break;
 		case HTTP_UPDATE_NO_UPDATES:
-			Nefry.setNefryState(0);
-			Nefry.println(F("[update] no Update."));
+			pushSW_flg = 0;
+			println(F("[update] no Update."));
 			return true;
 			break;
 		case HTTP_UPDATE_OK:
-			Nefry.println(F("[update] Update ok."));
-			for (int i = 0; i < 10; i++) {
-				NefryWebServer.run();
-				delay(100);
-			}
-			Nefry.reset();
+			println(F("[update] Update ok."));
+			delay(2000);
+			reset();
 			break;
 		}
 	}
-	Nefry.setNefryState(0);
+	pushSW_flg = 0;
 	return false;
 }
 
-void Nefry_Update::setWebUpdate(String program_domain, String program_url) {
-	Nefry.setNefryState(1);
-	Nefry.clearConsole();
+void Nefry_lib::setWebUpdate(String program_domain, String program_url) {
+	pushSW_flg = 1;
+	ClearConsole();
 	IPAddress ip = WiFi.localIP();
-	NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Web Update"),
+	nefry_server.send(200, "text/html", createHtml(F("Nefry Web Update"),
 		F("<script type=\"text/javascript\" src=\"consolejs\"></script><script type=\"text/javascript\">reload(10000);</script>"),
 		F("<h1>Nefry Web Update</h1><p>自動で読み込まれるのでしばらくお待ちください。</p><div id=\"ajaxDiv\"></div><a href='/'>Back to top</a>")));
-	delay(500);
+	ndelay(500);
 	if (ip.toString().equals("0.0.0.0")) {
-		Nefry.println(F("Internet connection ... NG"));
-		Nefry.println(F("[UPDATE]It is not connected to the Internet.Please connect to the Internet ."));
+		println(F("Internet connection ... NG"));
+		println(F("[UPDATE]It is not connected to the Internet.Please connect to the Internet ."));
 	}
 	else {
-		Nefry.println(F("Internet connection ... OK"));
+		println(F("Internet connection ... OK"));
 		if (program_domain.length() > 0) {
+			if (program_url.length() > 0)program_url = escapeParameter(program_url);
 			//print(program_url);
 			program_url.concat("/arduino.bin");
 			ESPhttpUpdate.rebootOnUpdate(false);
 			String UPurl;
 			switch (ESPhttpUpdate.update(program_domain, 80, program_url)) {
 			case HTTP_UPDATE_FAILED:
-				Nefry.setNefryState(0);
 				Serial.println(program_url);
 				UPurl += program_domain;
 				UPurl += program_url;
-				Nefry.print(F("[UPDATE]アップデートに必要な情報が"));
-				Nefry.println(F("正しくありません。Update failed."));
-				Nefry.print(F("[UPDATE]URLを確認してください。"));
-				Nefry.print(F("Please check this URL : http://"));
-				Nefry.println(UPurl);
-				Nefry.print("ENDUP");
+				print(F("[UPDATE]アップデートに必要な情報が"));
+				println(F("正しくありません。Update failed."));
+				print(F("[UPDATE]URLを確認してください。"));
+				print(F("Please check this URL : http://"));
+				println(UPurl);
+				print("ENDUP");
 				break;
 			case HTTP_UPDATE_NO_UPDATES:
-				Nefry.print(F("[UPDATE] アップデートはありません。"));
-				Nefry.println(F("	Update no Updates."));
-				Nefry.print("ENDUP");
-				Nefry.setNefryState(0);
+				print(F("[UPDATE] アップデートはありません。"));
+				println(F("	Update no Updates."));
+				print("ENDUP");
 				break;
 			case HTTP_UPDATE_OK:
-				Nefry.print(F("[UPDATE] 更新完了、再起動します。"));
-				Nefry.println(F("Update OK"));
-				Nefry.print("ENDUP");
+				print(F("[UPDATE] 更新完了、再起動します。"));
+				println(F("Update OK"));
+				print("ENDUP");
+				ndelay(1000);
+				Nefry.setLedBlink(0x00, 0xff, 0xff, 250, 10);
 				Serial.println(F("[update] Update ok."));
-				delay(1000);
+				ndelay(4000);
 				Nefry.setLed(0x00, 0xff, 0xff);
-				for (int i = 0; i < 10; i++) {
-					NefryWebServer.run();
-					delay(100);
-				}
-				Nefry.reset();
+				ndelay(1000);
+				reset();
 				break;
 			}
 		}
 		else {
 			Serial.println(F("Rejected empty URL."));
-			Nefry.setNefryState(0);
-			Nefry.println(F("[UPDATE]Empty URL is not acceptable."));
-			Nefry.print("ENDUP");
+			pushSW_flg = 0;
+			println(F("[UPDATE]Empty URL is not acceptable."));
+			print("ENDUP");
 		}
 	}
 
-	Nefry.setNefryState(0);
+	pushSW_flg = 0;
 }
 
-void Nefry_Update::setupWebOnlineUpdate(void) {
-	NefryWebServer.getWebServer()->on("/web_update", [&]() {
-		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Web Update"), F("<style>label{margin:6px;width:200px;}input{margin:6px;width:95%;}</style>"),
+void Nefry_lib::setupWebOnlineUpdate(void) {
+	nefry_server.on("/web_update", [&]() {
+		nefry_server.send(200, "text/html", createHtml(F("Nefry Web Update"), F("<style>label{margin:6px;width:200px;}input{margin:6px;width:95%;}</style>"),
 			F("<h1>Nefry Web Update</h1>"
 				"<form method='get' action='program'><label>Program download Domain</label><input name='domain'id='URL' value='program.nefry.studio'><label>Program download URL</label><input name='URL'id='URL'  value=''>"
 				"<input type=\"button\" value=\"update\" onclick=\"return jsSubmit(this.form);\"></form><br><p>Default Program Download URL : program.nefry.studio</p><a href='/'>Back to top</a>")));
 	});
-	NefryWebServer.getWebServer()->on("/program", [&]() {
-		setWebUpdate(NefryWebServer.getWebServer()->arg("domain"), NefryWebServer.getWebServer()->arg("URL"));
+	nefry_server.on("/program", [&]() {
+		setWebUpdate(nefry_server.arg("domain"), nefry_server.arg("URL"));
 	});
 }
-
+*/
 Nefry_Update NefryUpdate;
