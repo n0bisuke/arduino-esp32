@@ -14,6 +14,8 @@
 
 #include "esp32-hal-bt.h"
 
+#if CONFIG_BT_ENABLED
+
 #include "bt.h"
 #include "esp_bt_defs.h"
 #include "esp_bt_main.h"
@@ -62,5 +64,20 @@ bool btStop(){
     return false;
 }
 
+#else
+bool btStarted()
+{
+    return false;
+}
 
+bool btStart()
+{
+    return false;
+}
+
+bool btStop()
+{
+    return false;
+}
+#endif
 

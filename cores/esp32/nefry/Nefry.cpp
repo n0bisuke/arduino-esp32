@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.6.2")
+#define LIBVERSION ("0.9.0")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -36,6 +36,7 @@ void Nefry_lib::nefry_init() {
 	enableSW();
 	delay(50);
 	_bootMode = 0;
+	setNefryState(0);
 	setLed(0x00, 0x0f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
@@ -49,6 +50,8 @@ void Nefry_lib::nefry_init() {
 
 	setLed(0x00, 0x8f, 0x00);
 	Serial.println(F("WiFi Startup"));
+	if (NefryDataStore.getModuleID().equals(""))
+		NefryDataStore.setModuleID(getDefaultModuleId());
 	NefryWiFi.begin();
 	setLed(0x00, 0xaf, 0x00);
 	/* IPaddress display表示 */
@@ -70,9 +73,7 @@ void Nefry_lib::nefry_init() {
 }
 
 void Nefry_lib::nefry_loop() {
-	//_dnsServer.processNextRequest();
 	NefryWiFi.run();
-
 }
 
 /* ModuleID */
@@ -288,4 +289,51 @@ void Nefry_lib::setStoreTitle(const char set[15], const int num)
 	return ;
 }
 
+String Nefry_lib::getDefaultModuleId() {
+	uint8_t macAddr[6];
+	char str[15];
+	char* moduleName;
+	WiFi.macAddress(macAddr);
+	switch (boardId)
+	{
+	case 0:case 1:
+		moduleName = "Nefry";
+		break;
+	}
+	sprintf(str, "%s-%02x%02x", moduleName, macAddr[6 - 2], macAddr[6 - 1]);
+	Serial.println(str);
+	return str;
+}
+
+void Nefry_lib::println(String text) { NefryConsole.println(text); }
+void Nefry_lib::println(float text) { NefryConsole.println(text); }
+void Nefry_lib::println(double text) { NefryConsole.println(text); }
+void Nefry_lib::println(char text) { NefryConsole.println(text); }
+void Nefry_lib::println(int text) { NefryConsole.println(text); }
+void Nefry_lib::println(long text) { NefryConsole.println(text); }
+void Nefry_lib::println(unsigned char text) { NefryConsole.println(text); }
+void Nefry_lib::println(unsigned int text) { NefryConsole.println(text); }
+void Nefry_lib::println(unsigned long text) { NefryConsole.println(text); }
+void Nefry_lib::print(float text) { NefryConsole.print(text); }
+void Nefry_lib::print(double text) { NefryConsole.print(text); }
+void Nefry_lib::print(char text) { NefryConsole.print(text); }
+void Nefry_lib::print(int text) { NefryConsole.print(text); }
+void Nefry_lib::print(long text) { NefryConsole.print(text); }
+void Nefry_lib::print(unsigned char text) { NefryConsole.print(text); }
+void Nefry_lib::print(unsigned int text) { NefryConsole.print(text); }
+void Nefry_lib::print(unsigned long text) { NefryConsole.print(text); }
+void Nefry_lib::print(String text) { NefryConsole.print(text); }
+
+void Nefry_lib::clearConsole() { NefryConsole.clearConsole(); }
+int Nefry_lib::available(){ return NefryConsole.available(); }
+String Nefry_lib::read(){ return NefryConsole.read(); }
+
+void Nefry_lib::setNefryState(int state)
+{
+	_nefryState = state;
+}
+int Nefry_lib::getNefryState()
+{
+	return _nefryState;
+}
 Nefry_lib Nefry;

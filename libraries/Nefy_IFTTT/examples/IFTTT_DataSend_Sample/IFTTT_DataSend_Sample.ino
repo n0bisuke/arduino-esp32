@@ -8,6 +8,7 @@ void setup() {
   Nefry.setStoreTitle("Event",1);     //Nefry DataStoreのタイトルを指定
   SecretKey = Nefry.getStoreStr(0);   //Nefry DataStoreからデータを取得
   Event = Nefry.getStoreStr(1);       //Nefry DataStoreからデータを取得
+  Nefry.enableSW();                   //SWを有効化
 }
  
 void loop() {

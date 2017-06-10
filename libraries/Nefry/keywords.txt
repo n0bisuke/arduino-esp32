@@ -67,6 +67,16 @@ getAddressStr			KEYWORD2
 setStoreTitle			KEYWORD2
 
 #######################################
+# Nefry Console
+#######################################
+print				KEYWORD2
+println				KEYWORD2
+clearConsole		KEYWORD2
+read				KEYWORD2
+available			KEYWORD2
+
+
+#######################################
 # Constants
 #######################################
  

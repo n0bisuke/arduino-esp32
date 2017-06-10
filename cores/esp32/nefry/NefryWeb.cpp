@@ -56,16 +56,17 @@ void Nefry_Web::beginWeb() {
 		content += Nefry.getAddressStr(WiFi.localIP());
 		content += F("</div><div>Module ID: ");
 		content += Nefry.getModuleID();
+		content += F("</div><div>");
+		if (Nefry.getWriteMode())content += F("WriteMode");
 		content += F(
-			"</div><div class=\"writemode\">"
 			"</div><ul>"
 			"<li><a href='/wifi_conf'>Setup WiFi</a>"
 			"<li><a href='/config'>Data Store</a>"
-			"<li><a href='/web_update'>Module Config</a>"
+			"<li><a href='/module'>Module Config</a>"
 			"<li><a href='/web_update'>Web Sketch Download</a>"
 			"<li><a href='/update'>Upload Sketch</a>"
-			"<li><a href='/console'>Web Console</a>"
 		);
+		//content += "<li><a href='/console'>Web Console</a>"
 		content += indexlink;
 		content += F("</ul><p>Nefry library:");
 		content += Nefry.getVersion();
@@ -101,6 +102,66 @@ void Nefry_Web::beginWeb() {
 		NefryDataStore.setBootSelector(1);
 		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Nefry Write mode"), "",
 			F("<h1>Nefry Write mode</h1><p>Reset start!</p><a href=\"/\">Back to top</a>")));
+		NefryWebServer.resetTimer(2);
+	});
+
+	NefryWebServer.getWebServer()->on("/module", [&]() {
+		String content = F(
+			"<h1>Module Config</h1>"
+			"<p>Nefryモジュールに関する設定をすることができます。</p><table><tr>"
+			"<th>Wifi Sport</th><td>"
+		);
+		content += WiFi.SSID();
+		content += F("</td></tr><tr><th>IP Address</th><td>");
+		content += Nefry.getAddressStr(WiFi.localIP());
+		content += F("</td></tr><tr><th>SubnetMask</th><td>");
+		content += Nefry.getAddressStr(WiFi.subnetMask());
+		content += F("</td></tr><tr><th>Gateway IP Address</th><td>");
+		content += Nefry.getAddressStr(WiFi.gatewayIP());
+		content += F("</td></tr><tr><th>MAC Address</th><td>");
+		content += WiFi.macAddress();
+		content += F("</td></tr><tr><th>Module ID</th><td>");
+		content += Nefry.getModuleID();
+		content += F("</td></tr><tr><th>Nefry library</th><td>");
+		content += Nefry.getVersion();
+		content += F("</td></tr><tr><th>Running ProgramName　</th><td>");
+		content += Nefry.getProgramName();
+		content += F("</td></tr><tr><th></th><td>");
+		if(Nefry.getWriteMode())content += F("WriteMode");
+		content += F(
+			"</td></tr></table></br><form method='get'action='setmodule'><div class=\"row\"><label>Module ID:</label>"
+			"<div><input name=\"id\"maxlength=\"32\"value=\""
+		);
+		content += Nefry.getModuleID();
+		content += F(
+			"\"></div></div>"
+			"<div class=\"row\"><label>Module class:</label><div><input name=\"cls\"maxlength=\"32\"value=\"");
+		content += Nefry.getModuleClass();
+		content += F(
+			"\"></div></div>"
+			"<div class=\"row\"><label>Nefry WiFi Pass:</label><div><input type=\"password\"name=\"pwd\"maxlength=\"64\"></div></div>"
+			"<div class=\"row\"><label>Nefry User:</label><div><input name=\"user\"maxlength=\"32\"value=\"");
+		content += Nefry.getUser();
+		content += F("\"></div></div><div class = \"row\"><label>Nefry User Pass:</label><div><input type=\"password\"name=\"uPas\"maxlength=\"32\"value=\"\"></div></div>");
+		content += F("<div class=\"psrow\"><div><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form>"
+			"<div><form method='get'action='reset'><input type=\"button\"value=\"Restart\"onclick=\"return jsSubmit(this.form);\"></form></div>"
+			"<div><form method='get'action='onreset'><input type=\"button\"value=\"Write Mode\"onclick=\"return jsSubmit(this.form);\"></form></div>"
+			" </div><a href=\"/\">Back to top</a>");
+		
+		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Module Config"),"",content));
+	});
+
+	NefryWebServer.getWebServer()->on("/setmodule", [&]() {
+		String pwd = NefryWebServer.getWebServer()->arg("pwd");
+		String upwd = NefryWebServer.getWebServer()->arg("uPas");
+		Nefry.setModuleID(NefryWebServer.getWebServer()->arg("id"));
+		Nefry.setModuleClass(NefryWebServer.getWebServer()->arg("cls"));
+		if(pwd.length() > 0)
+			Nefry.setModulePass(pwd);
+		Nefry.setUser(NefryWebServer.getWebServer()->arg("user"));
+		if (upwd.length() > 0)
+			Nefry.setUserPass(upwd);
+		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Save Module Config"), "", F("<h1>Nefry Module Set</h1><p>Saveing & Restart...</p><a href=\"/\">Back to top</a>")));
 		NefryWebServer.resetTimer(2);
 	});
 }
