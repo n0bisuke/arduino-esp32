@@ -51,8 +51,8 @@ typedef void(*GeneralFunction) (String AzureData);
 class AzureIoTHub
 {
 public:
-	int senddata = 0;
-	bool connect(),
+	int _senddata = 0;
+	bool connect(int timeout = 3),
 		push(DataElement *data);
 	void begin(String cs),
 		begin(int cs = 0);

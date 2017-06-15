@@ -18,10 +18,37 @@ void AzureIoTHub::callback(char * topic, byte * payload, unsigned int length)
 
 void AzureIoTHub::begin(int cs) {
 	Nefry.setStoreTitle("IoTHubKey",cs);
-	begin(Nefry.getStoreStr(cs));
+	if (Nefry.getStoreStr(cs).length() < 0) {
+		begin(Nefry.getStoreStr(cs));
+	}
+	else {
+		Nefry.println("Lack of data");
+		while (1)delay(1);
+	}
 }
 
 void AzureIoTHub::begin(String cs){
+	int _datacheck = 0,_strcheck = 0;
+	while (1) {
+		if (_strcheck=cs.indexOf(";", _strcheck) != -1) {
+			_datacheck++;
+		}
+		else {
+			break;
+		}
+	}
+	if (_datacheck != 3)return;
+	_datacheck = 0;
+	_strcheck = 0;
+	while (1) {
+		if (_strcheck = cs.indexOf("=", _strcheck) != -1) {
+			_datacheck++;
+		}
+		else {
+			break;
+		}
+	}
+	if (_datacheck != 3)return;
 	cloud.host = GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 0), '=', 1));
 	cloud.id = GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 1), '=', 1));
 	cloud.key = (char*)GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 2), '=', 1));
@@ -42,10 +69,10 @@ bool AzureIoTHub::push(DataElement *data){
 	free(sendData);
 }
 
-bool AzureIoTHub::connect()
+bool AzureIoTHub::connect(int timeout)
 {
-	
-	while (!mqtt.connected()) {
+	int _loopconuter = 0;
+	while (!mqtt.connected()&&_loopconuter<timeout) {
 		Serial.print(F("Attempting MQTT connection..."));
 		if (mqtt.connect(cloud.id, cloud.hubUser, cloud.fullSas)) {
 			Serial.println(F("connected"));
@@ -58,6 +85,7 @@ bool AzureIoTHub::connect()
 			Serial.println(F(" try again in 5 seconds"));
 			// Wait 5 seconds before retrying
 			delay(5000);
+			_loopconuter++;
 		}
 	}
 	mqtt.loop();
@@ -140,7 +168,7 @@ DataElement::DataElement() {
 	paJsonObj = aJson.createObject();
 	aJson.addItemToObject(paJsonObj, "params", params);
 	aJson.addStringToObject(paJsonObj, "Dev", cloud.id);
-	aJson.addNumberToObject(paJsonObj, "Id",++(Azure.senddata));
+	aJson.addNumberToObject(paJsonObj, "Id",++(Azure._senddata));
 }
 
 DataElement::DataElement(char *json_string) {
