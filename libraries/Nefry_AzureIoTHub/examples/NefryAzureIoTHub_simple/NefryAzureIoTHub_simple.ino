@@ -1,7 +1,7 @@
-#include <AzureIoTHub.h>
+#include <NefryAzureIoTHub.h>
 #include <Nefry.h>
 void setup() {
-  Azure.begin(); //YourKey Example:"HostName=YourHost.azure-devices.net;DeviceId=YourDevice;SharedAccessKey=" ‚ğConfig‚Å“ü—Í‚µ‚Ü‚·
+  Azure.begin(); //YourKey Example:"HostName=YourHost.azure-devices.net;DeviceId=YourDevice;SharedAccessKey=" ã‚’Configã§å…¥åŠ›ã—ã¾ã™
   Azure.setCallback(azureCallback);
 }
 
@@ -24,6 +24,3 @@ void loop() {
     delay(250);
   }
 }
-
-
-

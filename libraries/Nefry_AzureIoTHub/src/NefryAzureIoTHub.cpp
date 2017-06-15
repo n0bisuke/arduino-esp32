@@ -1,4 +1,4 @@
-#include "AzureIoTHub.h"
+ï»¿#include "NefryAzureIoTHub.h"
 
 WiFiClientSecure tlsClient;
 
@@ -18,37 +18,26 @@ void AzureIoTHub::callback(char * topic, byte * payload, unsigned int length)
 
 void AzureIoTHub::begin(int cs) {
 	Nefry.setStoreTitle("IoTHubKey",cs);
-	if (Nefry.getStoreStr(cs).length() < 0) {
-		begin(Nefry.getStoreStr(cs));
+	begin(Nefry.getStoreStr(cs));
+}
+int AzureIoTHub::dataCheck(String base, char search) {
+	int sh = 0;
+	for (int i = 0; i < base.length(); i++) {
+		if (base[i] == search) {
+			sh++;
+		}
 	}
-	else {
+	return sh;
+}
+void AzureIoTHub::begin(String cs){
+	if (dataCheck(cs, ';') != 2) {
 		Nefry.println("Lack of data");
 		while (1)delay(1);
 	}
-}
-
-void AzureIoTHub::begin(String cs){
-	int _datacheck = 0,_strcheck = 0;
-	while (1) {
-		if (_strcheck=cs.indexOf(";", _strcheck) != -1) {
-			_datacheck++;
-		}
-		else {
-			break;
-		}
+	if (dataCheck(cs, '=')!= 4) {
+		Nefry.println("Lack of data");
+		while (1)delay(1);
 	}
-	if (_datacheck != 3)return;
-	_datacheck = 0;
-	_strcheck = 0;
-	while (1) {
-		if (_strcheck = cs.indexOf("=", _strcheck) != -1) {
-			_datacheck++;
-		}
-		else {
-			break;
-		}
-	}
-	if (_datacheck != 3)return;
 	cloud.host = GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 0), '=', 1));
 	cloud.id = GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 1), '=', 1));
 	cloud.key = (char*)GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 2), '=', 1));
@@ -60,7 +49,7 @@ void AzureIoTHub::begin(String cs){
 }
 
  void AzureIoTHub::setCallback(GeneralFunction _az){
-	 mqtt.setCallback(this->callback);//Azure‚©‚ç‚Ìƒf[ƒ^‚ğó‚¯‚½ƒR[ƒ‹ƒoƒbƒN‚·‚é
+	 mqtt.setCallback(this->callback);//Azureã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’å—ã‘ãŸæ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã™ã‚‹
 	 az = _az;
  }
 bool AzureIoTHub::push(DataElement *data){
@@ -77,7 +66,7 @@ bool AzureIoTHub::connect(int timeout)
 		if (mqtt.connect(cloud.id, cloud.hubUser, cloud.fullSas)) {
 			Serial.println(F("connected"));
 			// ... and resubscribe
-			mqtt.subscribe(cloud.getUrl);//Azure‚©‚ç‚Ìƒf[ƒ^‚ğŠÄ‹‚·‚é
+			mqtt.subscribe(cloud.getUrl);//Azureã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç›£è¦–ã™ã‚‹
 		}
 		else {
 			Serial.print(F("failed, rc="));

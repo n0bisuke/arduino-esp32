@@ -60,6 +60,7 @@ public:
 private:
 	static GeneralFunction az;
 	static void callback(char* topic, byte* payload, unsigned int length);
+	int dataCheck(String base, char search);
 	const char *GetStringValue(String value);
 	String splitStringByIndex(String data, char separator, int index),
 		urlEncode(const char* msg),

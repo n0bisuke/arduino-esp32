@@ -6,6 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+NefryAzureIoTHub	KEYWORD1
 AzureIoTHub	KEYWORD1
 DataElement	KEYWORD1
 
@@ -21,6 +22,7 @@ connect 	KEYWORD2
 push		KEYWORD2
 loop		KEYWORD2
 begin		KEYWORD2
+setCallback KEYWORD2
 
 
 #######################################
