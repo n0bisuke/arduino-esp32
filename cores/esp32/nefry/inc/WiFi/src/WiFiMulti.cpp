@@ -47,7 +47,7 @@ uint8_t WiFiMulti::run(void)
 
     int8_t scanResult;
     uint8_t status = WiFi.status();
-	if (status != WL_CONNECTED || status == WL_NO_SSID_AVAIL || status == WL_IDLE_STATUS || status == WL_CONNECT_FAILED) {
+    if(status != WL_CONNECTED || status == WL_NO_SSID_AVAIL || status == WL_IDLE_STATUS || status == WL_CONNECT_FAILED) {
 
         scanResult = WiFi.scanNetworks();
         if(scanResult == WIFI_SCAN_RUNNING) {
@@ -117,16 +117,13 @@ uint8_t WiFiMulti::run(void)
 
                 WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase, bestChannel, bestBSSID);
                 status = WiFi.status();
-				int wifiTimout = 0;
+
                 // wait for connection or fail
                 while(status != WL_CONNECTED && status != WL_NO_SSID_AVAIL && status != WL_CONNECT_FAILED) {
-                    delay(50);
+                    delay(10);
                     status = WiFi.status();
-					Serial.print(status);
-					wifiTimout++;
-					if (wifiTimout > 70)break;
                 }
-				Serial.println();
+
                 IPAddress ip;
                 uint8_t * mac;
                 switch(status) {

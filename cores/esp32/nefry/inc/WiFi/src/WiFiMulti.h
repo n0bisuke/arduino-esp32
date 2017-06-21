@@ -37,12 +37,8 @@
 #endif
 #endif
 
-//#define DEBUG_WIFI_MULTI_SERIAL
-
-#ifndef DEBUG_WIFI_MULTI_SERIAL
+#ifndef DEBUG_WIFI_MULTI
 #define DEBUG_WIFI_MULTI(...)
-#else
-#define DEBUG_WIFI_MULTI Serial.printf
 #endif
 
 typedef struct {
