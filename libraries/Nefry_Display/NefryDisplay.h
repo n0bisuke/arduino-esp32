@@ -1,6 +1,6 @@
 ﻿#ifndef NefryDisplay_h
 #define NefryDisplay_h
-#include <Arduino.h>
+
 
 class Nefry_Display
 {

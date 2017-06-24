@@ -29,7 +29,7 @@
 #define SSD1306Wire_h
 
 #include "OLEDDisplay.h"
-#include <Wire.h>
+#include "../Wire/src/Wire.h"
 
 class SSD1306Wire : public OLEDDisplay {
   private:
