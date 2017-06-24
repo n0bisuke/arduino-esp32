@@ -7,7 +7,7 @@ menu.DebugLevel=Core Debug Level
 nefrybt.name=Nefry BT
 
 nefrybt.upload.tool=esptool
-nefrybt.upload.maximum_size=1044464
+nefrybt.upload.maximum_size=1310720
 nefrybt.upload.maximum_data_size=294912
 nefrybt.upload.wait_for_upload_port=true
 
@@ -50,7 +50,7 @@ nefrybt.menu.DebugLevel.verbose.build.code_debug=5
 esp32.name=ESP32 Dev Module
 
 esp32.upload.tool=esptool
-esp32.upload.maximum_size=1044464
+esp32.upload.maximum_size=1310720
 esp32.upload.maximum_data_size=294912
 esp32.upload.wait_for_upload_port=true
 
