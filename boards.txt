@@ -7,7 +7,7 @@ menu.DebugLevel=Core Debug Level
 nefrybt.name=Nefry BT
 
 nefrybt.upload.tool=esptool
-nefrybt.upload.maximum_size=1044464
+nefrybt.upload.maximum_size=1310720
 nefrybt.upload.maximum_data_size=294912
 nefrybt.upload.wait_for_upload_port=true
 
