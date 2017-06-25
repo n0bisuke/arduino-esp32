@@ -136,7 +136,7 @@ void Nefry_Conf::beginWeb() {
 			"<div><form method='get'action='onreset'><input type=\"button\"value=\"Write Mode\"onclick=\"return jsSubmit(this.form);\"></form></div>"
 			" </div><a href=\"/\">Back to top</a>");
 
-		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Module Config"), "", content));
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Module Config"), "", content));
 	});
 
 	NefryWebServer.getWebServer()->on("/setmodule", [&]() {
@@ -149,7 +149,7 @@ void Nefry_Conf::beginWeb() {
 		Nefry.setUser(NefryWebServer.getWebServer()->arg("user"));
 		if (upwd.length() > 0)
 			Nefry.setUserPass(upwd);
-		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Save Module Config"), "", F("<h1>Nefry Module Set</h1><p>Saveing & Restart...</p><a href=\"/\">Back to top</a>")));
+		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Save Module Config"), "", F("<h1>Nefry Module Set</h1><p>Saveing & Restart...</p><a href=\"/\">Back to top</a>")));
 		NefryWebServer.resetTimer(2);
 	});
 }
