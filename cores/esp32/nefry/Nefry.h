@@ -9,6 +9,7 @@
 #include "./NefryDataStore.h"
 #include "NefryConfig.h"
 #include "NefryConsole.h"
+#include "NefryDisplay.h"
 
 // Offset:         W          R          G          B
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
