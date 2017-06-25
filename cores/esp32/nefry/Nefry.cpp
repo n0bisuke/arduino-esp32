@@ -309,19 +309,17 @@ void Nefry_lib::setStoreTitle(const char set[15], const int num)
 }
 
 String Nefry_lib::getDefaultModuleId() {
-	uint8_t macAddr[6];
-	char str[15];
 	char* moduleName;
-	WiFi.macAddress(macAddr);
+	String _devstr,ms;
 	switch (boardId)
 	{
 	case 0:case 1:
-		moduleName = "Nefry";
+		moduleName = "NefryBT";
 		break;
 	}
-	sprintf(str, "%s-%02x%02x", moduleName, macAddr[6 - 2], macAddr[6 - 1]);
-	Serial.println(str);
-	return str;
+	_devstr = WiFi.macAddress();
+	_devstr.replace(":", "");
+	return moduleName + (String)"-" + _devstr.substring(8);
 }
 
 void Nefry_lib::println(String text) { NefryConsole.println(text); }
