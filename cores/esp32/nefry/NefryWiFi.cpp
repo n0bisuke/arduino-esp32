@@ -75,7 +75,7 @@ run関数で返す値
 	if (initflgWifi == false)return 1;
 	if (getWifiTimeout() == -1)return 1;
 	if (getWifiTimeout() != 0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
-	uint8_t wifiStatus = wifiMulti.run(Nefry.getWriteMode());
+	uint8_t wifiStatus = wifiMulti.run(Nefry.getBootMode());
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
 		if (wifiStatus == WL_CONNECTED) {
