@@ -16,10 +16,16 @@ ConnectPass	: Nefryが接続するWiFiのパスワードを保存するときに
 
 bool initflgWifi = false;
 void Nefry_WiFi::begin() {
+	NefryDisplay.clear();
+	NefryDisplay.setFont(ArialMT_Plain_16);
+	NefryDisplay.drawString(10, 14, "Scanning WiFi");
+	NefryDisplay.drawProgressBar(14, 44, 100, 14, 0);
+	NefryDisplay.display();
 	WiFi.persistent(false);
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
 	dataCache();
+	scanWiFi();								//WiFiを検索し、Webページに表示する
 	setWifiTimeout(0);						//無制限で自動接続する
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
@@ -37,13 +43,6 @@ void Nefry_WiFi::begin() {
 	delay(20);
 	int loopCounter = 0;
 	run();
-	if (WiFi.status() == WL_CONNECTED) {
-		Nefry.setLed(0, 100, 100);
-	}
-	else {
-		Nefry.setLed(200, 0, 0);
-	}
-	scanWiFi();								//WiFiを検索し、Webページに表示する
 	/* Nefryが発信するWiFiの設定*/
 	if (Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
@@ -54,7 +53,7 @@ void Nefry_WiFi::begin() {
 	}
 	setWifiTimeout(6);//6回目で自動接続をタイムアウトする
 	setWifiTimeoutClear();
-	delay(1000);
+	delay(100);
 }
 
 uint8_t prevWifiStatus = WL_IDLE_STATUS;
@@ -76,7 +75,7 @@ run関数で返す値
 	if (initflgWifi == false)return 1;
 	if (getWifiTimeout() == -1)return 1;
 	if (getWifiTimeout() != 0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
-	uint8_t wifiStatus = wifiMulti.run();
+	uint8_t wifiStatus = wifiMulti.run(Nefry.getBootMode());
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
 		if (wifiStatus == WL_CONNECTED) {
@@ -280,6 +279,8 @@ String Nefry_WiFi::getlistWifi() {
 }
 
 void Nefry_WiFi::scanWiFi(void) {
+	NefryDisplay.drawProgressBar(14, 44, 100, 14, 10);
+	NefryDisplay.display();
 	int founds = WiFi.scanNetworks();
 	Serial.println();
 	Serial.println(F("scan done"));
@@ -313,6 +314,8 @@ void Nefry_WiFi::scanWiFi(void) {
 		network_html += F("</ol>");
 		network_list += F("</datalist>");
 	}
+	NefryDisplay.drawProgressBar(14, 44, 100, 14, 25);
+	NefryDisplay.display();
 }
 void Nefry_WiFi::dataCache()
 {
