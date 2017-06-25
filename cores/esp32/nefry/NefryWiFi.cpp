@@ -43,13 +43,6 @@ void Nefry_WiFi::begin() {
 	delay(20);
 	int loopCounter = 0;
 	run();
-	if (WiFi.status() == WL_CONNECTED) {
-		Nefry.setLed(0, 100, 100);
-	}
-	else {
-		Nefry.setLed(200, 0, 0);
-	}
-	
 	/* Nefryが発信するWiFiの設定*/
 	if (Nefry.getWriteMode() || NefryDataStore.getModulePass().length() == 0) {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str());
@@ -60,7 +53,7 @@ void Nefry_WiFi::begin() {
 	}
 	setWifiTimeout(6);//6回目で自動接続をタイムアウトする
 	setWifiTimeoutClear();
-	delay(1000);
+	delay(100);
 }
 
 uint8_t prevWifiStatus = WL_IDLE_STATUS;
