@@ -12,6 +12,7 @@ bool Nefry_Display::begin()
 	_nefrySsdDisplay.flipScreenVertically();
 	_nefrySsdDisplay.setContrast(120);
 
+	/* BoardIDで表示する内容をできるようにする */
 	_nefrySsdDisplay.drawXbm(0, 0, nefrybt_img_width, nefrybt_img_height, nefrybt_img_bits);
 	_nefrySsdDisplay.display();
 	return true;
@@ -30,7 +31,7 @@ void Nefry_Display::end()
 void Nefry_Display::drawString(int16_t x, int16_t y, String text, int16_t maxLineWidth)
 {
 	/* スクロール機能未実装 */
-	if (maxLineWidth == 0)maxLineWidth = 128;
+	if (maxLineWidth == 0)maxLineWidth = 127;
 	_nefrySsdDisplay.drawStringMaxWidth(x, y, maxLineWidth, text);
 }
 uint16_t Nefry_Display::getStringWidth(const char * text, uint16_t length)
