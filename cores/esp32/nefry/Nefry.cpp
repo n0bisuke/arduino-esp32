@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.9.1")
+#define LIBVERSION ("0.9.2")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -32,31 +32,27 @@ Adafruit_NeoPixel _NefryLED[40];
 //main 
 
 void Nefry_lib::nefry_init() {
+	/* Display設定 */
+	delay(10);
+	NefryDisplay.begin();//logo表示
 	beginLed(1, 16, NEO_GRB);
+	setLed(0x00, 0x0f, 0x00);
 	enableSW();
 	delay(50);
 	_bootMode = 0;
 	setNefryState(0);
-	setLed(0x00, 0x0f, 0x00);
+	setLed(0x00, 0x4f, 0x00);
 	Serial.begin(115200);
 	Serial.println(F("\n\nStartup"));
 	Serial.println(F("\n\nNefry Startup"));
 	NefryDataStore.begin();
-	setLed(0x00, 0x2f, 0x00);
-	/* Display設定 */
-	setLed(0x00, 0x4f, 0x00);
-	/* Module状況表示 */
-	setLed(0x00, 0x6f, 0x00);
-
+	delay(500);
 	setLed(0x00, 0x8f, 0x00);
 	Serial.println(F("WiFi Startup"));
-	if (NefryDataStore.getModuleID().equals(""))
-		NefryDataStore.setModuleID(getDefaultModuleId());
+	if (NefryDataStore.getModuleID().equals("")) { NefryDataStore.setModuleID(getDefaultModuleId()); }
+	if (readSW()) { _bootMode = 2; }
 	NefryWiFi.begin();
-	setLed(0x00, 0xaf, 0x00);
-	/* IPaddress display表示 */
 	setLed(0x00, 0xcf, 0x00);
-	setLed(0x00, 0xef, 0x00);
 	if (NefryDataStore.getBootSelector() == 1 || readSW()) {
 		setLed(0x0f, 0xff, 0xff);
 		NefryDataStore.setBootSelector(0);
@@ -66,8 +62,31 @@ void Nefry_lib::nefry_init() {
 		_bootMode = 1;
 	}
 	disableSW();
+	setLed(0x00, 0xef, 0x00);
 	NefryConfig.begin();
 	Serial.println(F("\nServer started"));
+	/* Module状況表示 */
+	/* IPaddress display表示 */
+	NefryDisplay.clear();
+	NefryDisplay.setFont(Arimo_12);
+	NefryDisplay.setTextAlignment(TEXT_ALIGN_LEFT);
+	String _disModuleStr = NefryDataStore.getModuleID() + "  Info";
+	int _disssidpos = 128 - NefryDisplay.getStringWidth(_disModuleStr);
+	NefryDisplay.drawString(_disssidpos / 2,0 , _disModuleStr);
+	_disModuleStr = "SSID:"+WiFi.SSID();
+	_disssidpos = 20;
+	if (NefryDisplay.getStringWidth(_disModuleStr) > 128) {
+		_disssidpos = 12;
+	}
+	NefryDisplay.drawString(0, _disssidpos, _disModuleStr);
+	NefryDisplay.drawString(0, 38, "IP:" + getAddressStr(WiFi.localIP()));
+	_disModuleStr = "NormalMode";
+	if (_bootMode == 2) {
+		_disModuleStr = "WriteMode";
+	}
+	NefryDisplay.drawString(0, 50, _disModuleStr);
+	NefryDisplay.drawString(85, 50, LIBVERSION);
+	NefryDisplay.display();
 	setLed(0x00, 0xff, 0xff);
 	
 }
@@ -290,19 +309,17 @@ void Nefry_lib::setStoreTitle(const char set[15], const int num)
 }
 
 String Nefry_lib::getDefaultModuleId() {
-	uint8_t macAddr[6];
-	char str[15];
 	char* moduleName;
-	WiFi.macAddress(macAddr);
+	String _devstr,ms;
 	switch (boardId)
 	{
 	case 0:case 1:
-		moduleName = "Nefry";
+		moduleName = "NefryBT";
 		break;
 	}
-	sprintf(str, "%s-%02x%02x", moduleName, macAddr[6 - 2], macAddr[6 - 1]);
-	Serial.println(str);
-	return str;
+	_devstr = WiFi.macAddress();
+	_devstr.replace(":", "");
+	return moduleName + (String)"-" + _devstr.substring(8);
 }
 
 void Nefry_lib::println(String text) { NefryConsole.println(text); }

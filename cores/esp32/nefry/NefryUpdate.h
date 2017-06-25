@@ -3,7 +3,7 @@
 
 
 #include "NefryWebServer.h"
-#include "inc\Update\src\Update.h"
+#include "inc/Update/src/Update.h"
 #include "Nefry.h"
 
 
