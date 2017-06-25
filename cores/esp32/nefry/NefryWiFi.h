@@ -6,6 +6,7 @@
 #include "./inc/Preferences/src/Preferences.h"
 #include "NefryWeb.h"
 #include "NefryWebServer.h"
+#include "NefryDisplay.h"
 
 class Nefry_WiFi
 {
