@@ -117,7 +117,7 @@ uint8_t WiFiMulti::run(int mode)
 				NefryDisplay.setFont(ArialMT_Plain_16);
 				NefryDisplay.drawString(10, 0, "Connecting WiFi");
 				String _ssidstr = (String)bestNetwork.ssid;
-				int _ssiddispy = 24;
+				int _ssiddispy = 20;
 				if (_ssidstr.length() > 8) {
 					NefryDisplay.setFont(ArialMT_Plain_10);
 					if (_ssidstr.length() > 17) {
