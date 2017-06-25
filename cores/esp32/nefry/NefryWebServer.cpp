@@ -25,7 +25,6 @@ void Nefry_webserver::run() {
 	_nefryWebServer.handleClient();
 	if (resetFlg == true) {
 		countdown -= 1;
-		Serial.println(countdown);
 		if (countdown <= 0) {
 			Nefry.reset();
 		}
