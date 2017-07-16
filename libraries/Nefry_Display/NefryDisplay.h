@@ -1,6 +1,7 @@
 ﻿#ifndef NefryDisplay_h
 #define NefryDisplay_h
 #include <Arduino.h>
+#include "ssd1306/SSD1306.h"
 class Nefry_Display
 {
 public:
@@ -24,9 +25,6 @@ public:
 	// 表示に必要な幅を計算します。
 	uint16_t getStringWidth(String text);
 
-	// 文字列配置位置指定(左揃え、中央揃え、右揃え、)
-	// TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER_BOTH
-	void setTextAlignment(OLEDDISPLAY_TEXT_ALIGNMENT textAlignment);
 
 	// フォントセット
 	// フォント作成ツール http://oleddisplay.squix.ch

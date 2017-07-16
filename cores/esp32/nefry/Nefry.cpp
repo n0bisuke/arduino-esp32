@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.9.2")
+#define LIBVERSION ("0.9.3")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -69,7 +69,7 @@ void Nefry_lib::nefry_init() {
 	/* IPaddress display表示 */
 	NefryDisplay.clear();
 	NefryDisplay.setFont(Arimo_12);
-	NefryDisplay.setTextAlignment(TEXT_ALIGN_LEFT);
+	//NefryDisplay.setTextAlignment(TEXT_ALIGN_LEFT);
 	String _disModuleStr = NefryDataStore.getModuleID() + "  Info";
 	int _disssidpos = 128 - NefryDisplay.getStringWidth(_disModuleStr);
 	NefryDisplay.drawString(_disssidpos / 2,0 , _disModuleStr);

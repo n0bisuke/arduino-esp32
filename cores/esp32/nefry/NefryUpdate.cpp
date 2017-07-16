@@ -9,6 +9,7 @@ http://opensource.org/licenses/mit-license.php
 
 #include "NefryUpdate.h"
 void Nefry_Update::setupWebLocalUpdate(void) {
+	int updateTotalSize,updateCurrentSize = 0;
 	int count = 0;
 	bool err = false;
 	NefryWebServer.getWebServer()->on("/update", HTTP_GET, [&]() {
@@ -22,6 +23,7 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 		if (NefryWebServer.getWebServer()->uri() != "/upload_sketch") return;
 		Nefry.setNefryState(1);
 		HTTPUpload& upload = NefryWebServer.getWebServer()->upload();
+		updateTotalSize  = upload.totalSize;
 		Serial.printf("Sketch: %s Uploading\n", upload.filename.c_str());
 		String file_name = String(upload.filename.c_str());
 		count++;
@@ -38,6 +40,7 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 				if (!Update.begin())Update.printError(Serial);
 			}
 			else if (upload.status == UPLOAD_FILE_WRITE) {
+				updateCurrentSize += upload.currentSize;
 				if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
 					Update.printError(Serial);
 					Nefry.setLed(0xFF, 0x0, 0x0);
