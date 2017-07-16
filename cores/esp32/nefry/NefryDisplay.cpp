@@ -44,10 +44,6 @@ uint16_t Nefry_Display::getStringWidth(String text)
 }
 Nefry_Display NefryDisplay;
 
-void Nefry_Display::setTextAlignment(OLEDDISPLAY_TEXT_ALIGNMENT textAlignment)
-{
-	_nefrySsdDisplay.setTextAlignment(textAlignment);
-}
 
 void Nefry_Display::setFont(const char * fontData)
 {
