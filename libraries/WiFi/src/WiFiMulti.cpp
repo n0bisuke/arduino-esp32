@@ -42,7 +42,7 @@ bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
     return APlistAdd(ssid, passphrase);
 }
 
-uint8_t WiFiMulti::run(void)
+uint8_t WiFiMulti::run(int mode)
 {
 
     int8_t scanResult;
@@ -50,6 +50,10 @@ uint8_t WiFiMulti::run(void)
     if(status != WL_CONNECTED || status == WL_NO_SSID_AVAIL || status == WL_IDLE_STATUS || status == WL_CONNECT_FAILED) {
 
         scanResult = WiFi.scanNetworks();
+		if (mode == 0) {
+			NefryDisplay.drawProgressBar(14, 44, 100, 14, 40);
+			NefryDisplay.display();
+		}
         if(scanResult == WIFI_SCAN_RUNNING) {
             // scan is running
             return WL_NO_SSID_AVAIL;
@@ -108,7 +112,22 @@ uint8_t WiFiMulti::run(void)
 
             // clean up ram
             WiFi.scanDelete();
-
+			if (mode == 0) {
+				NefryDisplay.clear();
+				NefryDisplay.setFont(ArialMT_Plain_16);
+				NefryDisplay.drawString(10, 0, "Connecting WiFi");
+				String _ssidstr = (String)bestNetwork.ssid;
+				int _ssiddispy = 20;
+				if (_ssidstr.length() > 8) {
+					NefryDisplay.setFont(ArialMT_Plain_10);
+					if (_ssidstr.length() > 17) {
+						_ssiddispy = 18;
+					}
+				}
+				NefryDisplay.drawString(10, _ssiddispy, "SSID:"+ _ssidstr,114);
+				NefryDisplay.drawProgressBar(14, 44, 100, 14, 50);
+				NefryDisplay.display();
+			}
             DEBUG_WIFI_MULTI("\n\n");
             delay(0);
 
@@ -117,13 +136,22 @@ uint8_t WiFiMulti::run(void)
 
                 WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase, bestChannel, bestBSSID);
                 status = WiFi.status();
-
+				int wifiTimout = 0;
                 // wait for connection or fail
                 while(status != WL_CONNECTED && status != WL_NO_SSID_AVAIL && status != WL_CONNECT_FAILED) {
-                    delay(10);
+                    delay(50);
                     status = WiFi.status();
+					wifiTimout++;
+					if (wifiTimout > 50)break;
+					if (mode == 0) {
+						NefryDisplay.drawProgressBar(14, 44, 100, 14, 50+ wifiTimout);
+						NefryDisplay.display();
+					}
                 }
-
+				if (mode == 0) {
+					NefryDisplay.drawProgressBar(14, 44, 100, 14, 100);
+					NefryDisplay.display();
+				}
                 IPAddress ip;
                 uint8_t * mac;
                 switch(status) {
