@@ -2,6 +2,31 @@
 
 ## 0.9.3
 
+ESP32ライブラリ更新(d8330cc)(2017/7/17まで)
+JavaScriptで制御ができるFirmata対応
+
+新規機能
+
+- 下位互換対応のため以下の関数追加
+getlistWiFi
+createHtml
+setIndexLink
+getDisplayInfo
+getWebServer
+getConfStr
+setConfHtmlStr
+setConfStr
+setStoreTitleStr
+getConfValue
+setConfHtmlValue
+setConfValue
+setStoreTitleValue
+getModuleName
+
+
+## 0.9.3
+
+ESP32ライブラリ更新(13bb22d)(2017/7/7まで)
 JavaScriptで制御ができるFirmata対応
 
 新規機能
