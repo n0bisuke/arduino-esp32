@@ -4,12 +4,13 @@
 #include <Esp.h>
 #include "./inc/led/Adafruit_NeoPixel.h"
 #include "./inc/Preferences/src/Preferences.h"
-//#include "NefryWebServer.h"
 #include "NefryWiFi.h"
 #include "./NefryDataStore.h"
 #include "NefryConfig.h"
 #include "NefryConsole.h"
 #include "NefryDisplay.h"
+#include "NefryWeb.h"
+#include "NefryWebServer.h"
 
 // Offset:         W          R          G          B
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
@@ -30,8 +31,8 @@ public:
 		setModuleClass(String className),
 		setUser(String user),
 		setUserPass(String pass),
-		setStoreValue(long value, int pointer),
-		setStoreStr(String str, int pointer),
+		setStoreValue(long value,const int pointer),
+		setStoreStr(String str,const int pointer),
 		getWriteMode(),
 		readSW(),
 		getPollingSW();
@@ -40,16 +41,19 @@ public:
 		getModuleID(),
 		getModuleClass(),
 		getUser(),
-		getStoreStr(int pointer),
+		getStoreStr(const int pointer),
 		getVersion(),
 		getProgramName(),
 		getAddressStr(IPAddress ip),
 		getDefaultModuleId(),
 		/* Console */
-		read();
+		read(),
+		
+		getlistWifi(),
+		createHtml(String title, String head, String body);
 
 	long
-		getStoreValue(int pointer),
+		getStoreValue(const int pointer),
 		getBootMode();
 
 	int
@@ -64,7 +68,7 @@ public:
 		setLed(const int r, const int g, const int b, const char w = 122, const int pin = 16, const int num = 0),
 		setLed(String _colorStr, const char w = 122, const int pin = 16, const int num = 0),
 		addWiFi(String ssid, String pass),
-		deleteWiFi(int id),
+		deleteWiFi(const int id),
 		saveWiFi(),
 		nefry_init(),
 		nefry_loop(),
@@ -100,7 +104,43 @@ public:
 		print(String text),
 		println(String text),
 
+		setIndexLink(const char title[32], const char url[32]),
+		getDisplayInfo(),
+
 		setNefryState(int state);
+
+		ESP32WebServer* getWebServer();
+
+		//下位互換
+
+	String getConfStr(const int num){
+		return getStoreStr(num);
+	}
+	void setConfHtmlStr(const char set[15], const int num){
+		setStoreTitle(set,num);
+	}
+	void setConfStr(const char *pt, const int num){
+		setStoreStr(pt,num);
+	}
+	void setStoreTitleStr(const char set[15], const int pt) {
+		setStoreTitle(set, pt);
+	}
+	int getConfValue(const int num){
+		return getStoreValue(num+10);
+	}
+	void setConfHtmlValue(const char set[15], const int num){
+		setStoreTitle(set,num+10);
+	}
+	void setConfValue(const int pt, const int num){
+		setStoreValue(num,pt+10);
+	}
+	void setStoreTitleValue(const char set[15], const int pt) {
+		setStoreTitle(set, pt+10);
+	}
+	String getModuleName(){
+		return getModuleID();
+	}
+
 
 private:
 	bool

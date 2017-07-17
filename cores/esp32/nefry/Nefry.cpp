@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("0.9.3")
+#define LIBVERSION ("0.9.4")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -67,9 +67,18 @@ void Nefry_lib::nefry_init() {
 	Serial.println(F("\nServer started"));
 	/* Module状況表示 */
 	/* IPaddress display表示 */
+	getDisplayInfo();
+	setLed(0x00, 0xff, 0xff);
+	
+}
+
+void Nefry_lib::nefry_loop() {
+	NefryWiFi.run();
+}
+
+void Nefry_lib::getDisplayInfo(){
 	NefryDisplay.clear();
 	NefryDisplay.setFont(Arimo_12);
-	//NefryDisplay.setTextAlignment(TEXT_ALIGN_LEFT);
 	String _disModuleStr = NefryDataStore.getModuleID() + "  Info";
 	int _disssidpos = 128 - NefryDisplay.getStringWidth(_disModuleStr);
 	NefryDisplay.drawString(_disssidpos / 2,0 , _disModuleStr);
@@ -87,12 +96,6 @@ void Nefry_lib::nefry_init() {
 	NefryDisplay.drawString(0, 50, _disModuleStr);
 	NefryDisplay.drawString(85, 50, LIBVERSION);
 	NefryDisplay.display();
-	setLed(0x00, 0xff, 0xff);
-	
-}
-
-void Nefry_lib::nefry_loop() {
-	NefryWiFi.run();
 }
 
 /* ModuleID */
@@ -352,5 +355,18 @@ void Nefry_lib::setNefryState(int state)
 int Nefry_lib::getNefryState()
 {
 	return _nefryState;
+}
+
+String Nefry_lib::createHtml(String title, String head, String body){
+	return NefryWeb.createHtml(title,head,body);
+}
+void Nefry_lib::setIndexLink(const char title[32], const char url[32]){
+	NefryWeb.setIndexLink(title,url);
+}
+ESP32WebServer* Nefry_lib::getWebServer(){
+	return NefryWebServer.getWebServer();
+}
+String Nefry_lib::getlistWifi(){
+	return NefryWiFi.getlistWifi();
 }
 Nefry_lib Nefry;

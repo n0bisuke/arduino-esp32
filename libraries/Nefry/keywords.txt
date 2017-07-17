@@ -65,6 +65,20 @@ getProgramName			KEYWORD2
 getVersion			KEYWORD2
 getAddressStr			KEYWORD2
 setStoreTitle			KEYWORD2
+getlistWiFi			KEYWORD2
+createHtml			KEYWORD2
+setIndexLink		KEYWORD2
+getDisplayInfo		KEYWORD2
+getWebServer		KEYWORD2
+getConfStr			KEYWORD2
+setConfHtmlStr		KEYWORD2
+setConfStr			KEYWORD2
+setStoreTitleStr	KEYWORD2
+getConfValue		KEYWORD2
+setConfHtmlValue	KEYWORD2
+setConfValue		KEYWORD2
+setStoreTitleValue	KEYWORD2
+getModuleName		KEYWORD2
 
 #######################################
 # Nefry Console
