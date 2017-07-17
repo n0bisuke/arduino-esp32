@@ -13,8 +13,8 @@ ModulePass	: Nefryが発信するWiFiパスワード
 ModuleClass	: Nefryのモジュールが属するクラス
 user		: Nefryでログイン機能を使うときに使用するユーザ名
 userPass	: Nefryでログイン機能を使うときに使用するパスワード
-StoreValue	: Nefryの環境変数を保存するときに使用する。(0-7)の範囲で保存する。末端に数字が追加される long型
-StoreStr	: Nefryの環境変数を保存するときに使用する。(0-7)の範囲で保存する。末端に数字が追加される String型
+StoreValue	: Nefryの環境変数を保存するときに使用する。(0-9)の範囲で保存する。末端に数字が追加される long型
+StoreStr	: Nefryの環境変数を保存するときに使用する。(0-9)の範囲で保存する。末端に数字が追加される String型
 */
 
 #include "NefryConfig.h"

@@ -25,7 +25,7 @@ void Nefry_WiFi::begin() {
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
 	dataCache();
-	scanWiFi();								//WiFiを検索し、Webページに表示する
+	scanWiFi(true);								//WiFiを検索し、Webページに表示する
 	setWifiTimeout(0);						//無制限で自動接続する
 	Serial.println("Saved WiFi List");
 	Serial.println(getlistWifi());
@@ -128,8 +128,7 @@ run関数で返す値
 	return -1;
 }
 
-void Nefry_WiFi::beginWeb()
-{
+void Nefry_WiFi::beginWeb(){
 	NefryWebServer.getWebServer()->on("/wifi_conf", [&]() {
 		String content = F(
 			"<h1>Nefry Wifi Set</h1>"
@@ -278,7 +277,12 @@ String Nefry_WiFi::getlistWifi() {
 	return lisWifi;
 }
 
-void Nefry_WiFi::scanWiFi(void) {
+void Nefry_WiFi::scanWiFi(bool fastbootMode) {
+	if(fastbootMode == false){
+		NefryDisplay.clear();
+		NefryDisplay.setFont(ArialMT_Plain_16);
+		NefryDisplay.drawString(10, 14, "Scanning WiFi");
+	}
 	NefryDisplay.drawProgressBar(14, 44, 100, 14, 10);
 	NefryDisplay.display();
 	int founds = WiFi.scanNetworks();
@@ -314,7 +318,11 @@ void Nefry_WiFi::scanWiFi(void) {
 		network_html += F("</ol>");
 		network_list += F("</datalist>");
 	}
-	NefryDisplay.drawProgressBar(14, 44, 100, 14, 25);
+	if(fastbootMode == false){
+		NefryDisplay.drawProgressBar(14, 44, 100, 14, 100);
+	}else{
+		NefryDisplay.drawProgressBar(14, 44, 100, 14, 25);
+	}
 	NefryDisplay.display();
 }
 void Nefry_WiFi::dataCache()

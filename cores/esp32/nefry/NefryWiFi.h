@@ -17,7 +17,8 @@ public:
 		addWifi(String ssid, String pwd),
 		setWifiTimeout(int count),
 		setWifiTimeoutClear(),
-		saveWifi();
+		saveWifi(),
+		scanWiFi(bool fastbootMode = false);
 
 	int 
 		run(),
@@ -34,7 +35,7 @@ private:
 	WiFiMulti wifiMulti;
 	String network_html, network_list;
 	void
-		scanWiFi(),
+		
 		dataCache();
 		
 	String escapeParameter(String param),
