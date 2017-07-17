@@ -120,7 +120,7 @@ public:
 		setStoreTitle(set,num);
 	}
 	void setConfStr(const char *pt, const int num){
-		setStoreStr(num,pt);
+		setStoreStr(pt,num);
 	}
 	void setStoreTitleStr(const char set[15], const int pt) {
 		setStoreTitle(set, pt);
