@@ -64,9 +64,9 @@ void Nefry_Web::beginWeb() {
 			"<li><a href='/config'>Data Store</a>"
 			"<li><a href='/module'>Module Config</a>"
 			"<li><a href='/web_update'>Web Sketch Download</a>"
-			"<li><a href='/update'>Upload Sketch</a>"
+			//"<li><a href='/update'>Upload Sketch</a>"
+			"<li><a href='/console'>Web Console</a>"
 		);
-		//content += "<li><a href='/console'>Web Console</a>"
 		content += indexlink;
 		content += F("</ul><p>Nefry library:");
 		content += Nefry.getVersion();

@@ -16,8 +16,8 @@ nefrybt.serial.disableRTS=true
 
 nefrybt.build.mcu=esp32
 nefrybt.build.core=esp32
-nefrybt.build.variant=esp32
-nefrybt.build.board=Nefry_Icing
+nefrybt.build.variant=nefrybt
+nefrybt.build.board=Nefry_BT
 
 nefrybt.build.f_cpu=240000000L
 nefrybt.build.flash_mode=dio
@@ -25,12 +25,12 @@ nefrybt.build.flash_size=4MB
 
 nefrybt.build.flash_freq=80m
 
-nefrybt.menu.UploadSpeed.512000.windows=512000
+nefrybt.menu.UploadSpeed.921600.windows=921600
+nefrybt.menu.UploadSpeed.921600.upload.speed=921600
+nefrybt.menu.UploadSpeed.512000=512000
 nefrybt.menu.UploadSpeed.512000.upload.speed=512000
 nefrybt.menu.UploadSpeed.115200=115200
 nefrybt.menu.UploadSpeed.115200.upload.speed=115200
-nefrybt.menu.UploadSpeed.921600=921600
-nefrybt.menu.UploadSpeed.921600.upload.speed=921600
 
 nefrybt.menu.DebugLevel.none=None
 nefrybt.menu.DebugLevel.none.build.code_debug=0
