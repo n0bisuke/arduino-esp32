@@ -63,8 +63,8 @@ void Nefry_Web::beginWeb() {
 			"<li><a href='/wifi_conf'>Setup WiFi</a>"
 			"<li><a href='/config'>Data Store</a>"
 			"<li><a href='/module'>Module Config</a>"
-			"<li><a href='/web_update'>Web Sketch Download</a>"
-			//"<li><a href='/update'>Upload Sketch</a>"
+			//"<li><a href='/web_update'>Web Sketch Download</a>"
+			"<li><a href='/update'>Upload Sketch</a>"
 			"<li><a href='/console'>Web Console</a>"
 		);
 		content += indexlink;
