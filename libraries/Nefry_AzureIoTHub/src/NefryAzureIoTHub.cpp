@@ -29,7 +29,7 @@ int AzureIoTHub::dataCheck(String base, char search) {
 	}
 	return sh;
 }
-void AzureIoTHub::begin(String cs){
+bool AzureIoTHub::begin(String cs){
 	if (dataCheck(cs, ';') != 2) {
 		Nefry.println("Lack of data");
 		return false;
