@@ -9,4 +9,4 @@
 
 ## ESP32Dev Board PINMAP
 
-![Pin Functions](https://nefry.studio/img/nefrybt_pinmap/png)
+![Pin Functions](https://nefry.studio/img/nefrybt_pinmap.png)
