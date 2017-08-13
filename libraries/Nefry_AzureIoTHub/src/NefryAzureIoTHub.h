@@ -54,7 +54,7 @@ public:
 	int _senddata = 0;
 	bool connect(int timeout = 3),
 		push(DataElement *data);
-	void begin(String cs),
+	bool begin(String cs),
 		begin(int cs = 0);
 	void setCallback(GeneralFunction _az);
 private:

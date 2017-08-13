@@ -16,9 +16,9 @@ void AzureIoTHub::callback(char * topic, byte * payload, unsigned int length)
 	az(_azuredata);
 }
 
-void AzureIoTHub::begin(int cs) {
+bool AzureIoTHub::begin(int cs) {
 	Nefry.setStoreTitle("IoTHubKey",cs);
-	begin(Nefry.getStoreStr(cs));
+	return begin(Nefry.getStoreStr(cs));
 }
 int AzureIoTHub::dataCheck(String base, char search) {
 	int sh = 0;
@@ -32,11 +32,11 @@ int AzureIoTHub::dataCheck(String base, char search) {
 void AzureIoTHub::begin(String cs){
 	if (dataCheck(cs, ';') != 2) {
 		Nefry.println("Lack of data");
-		while (1)delay(1);
+		return false;
 	}
 	if (dataCheck(cs, '=')!= 4) {
 		Nefry.println("Lack of data");
-		while (1)delay(1);
+		return false;
 	}
 	cloud.host = GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 0), '=', 1));
 	cloud.id = GetStringValue(splitStringByIndex(splitStringByIndex(cs, ';', 1), '=', 1));
@@ -46,6 +46,7 @@ void AzureIoTHub::begin(String cs){
 	cloud.fullSas = GetStringValue(createIotHubSas(cloud.key, urlEncode(cloud.host) + "/devices/" + (String)cloud.id));
 	cloud.getUrl = GetStringValue("devices/" + (String)cloud.id + "/messages/devicebound/#");
 	mqtt.setServer(cloud.host, 8883);
+	return true;
 }
 
  void AzureIoTHub::setCallback(GeneralFunction _az){
