@@ -9,7 +9,7 @@
 #include "./nefry/NefryConsole.h"
 #include "./nefry/NefryUpdate.h"
 
-//#if CONFIG_AUTOSTART_ARDUINO
+#if CONFIG_AUTOSTART_ARDUINO
 
 #if CONFIG_FREERTOS_UNICORE
 #define ARDUINO_RUNNING_CORE 0
@@ -19,18 +19,19 @@
 
 void loopTask(void *pvParameters)
 {
-	while (Nefry.getBootMode() == -1) {}
+	while (Nefry.getBootMode() == -1) { delay(1); }
 	while (Nefry.getBootMode() == 0) {
 		Nefry.pollingSW();
+		delay(1);
 	}
 	if (Nefry.getWriteMode() != true) {
 		delay(500);
 		setup();
 	}
 	for(;;) {
-		delay(10);
+		delay(5);
         micros(); //update overflow
-		if (Nefry.getWriteMode() != true) {
+		if (Nefry.getWriteMode() != true && Nefry.getNefryState() != 1) {
 			loop();
 		}
     }
@@ -48,7 +49,7 @@ void NefryBackEnd(void *pvParameters) {
 	NefryUpdate.setupWebLocalUpdate();
 	delay(500);
 	for (;;) {
-		delay(10);
+		delay(1);
 		if (Nefry.getNefryState() == 1) {
 			NefryWebServer.run();
 		}
@@ -65,7 +66,7 @@ void NefryBackEnd(void *pvParameters) {
 extern "C" void app_main()
 {
     initArduino();
-	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 8192, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 2048, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
 	xTaskCreatePinnedToCore(loopTask,      "loopTask",     8192, NULL, 2, NULL, ARDUINO_RUNNING_CORE);
 }
 
