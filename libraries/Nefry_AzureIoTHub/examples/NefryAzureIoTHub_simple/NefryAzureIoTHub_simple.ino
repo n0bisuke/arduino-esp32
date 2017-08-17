@@ -1,14 +1,17 @@
 #include <NefryAzureIoTHub.h>
 #include <Nefry.h>
 void setup() {
-  Azure.begin(); //YourKey Example:"HostName=YourHost.azure-devices.net;DeviceId=YourDevice;SharedAccessKey=" をConfigで入力します
+  while(!Azure.begin()){//YourKey Example:"HostName=YourHost.azure-devices.net;DeviceId=YourDevice;SharedAccessKey=" をConfigで入力します
+    Nefry.println("Azure begin Fault");
+    delay(1000);
+  }
   Azure.setCallback(azureCallback);
 }
 
 void azureCallback(String s) {
-  Serial.print("azure Message arrived [");
-  Serial.print(s);
-  Serial.println("] ");
+  Nefry.print("Azure Message arrived [");
+  Nefry.print(s);
+  Nefry.println("] ");
 }
 
 void loop() {

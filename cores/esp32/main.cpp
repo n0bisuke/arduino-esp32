@@ -19,17 +19,19 @@
 
 void loopTask(void *pvParameters)
 {
-	while (Nefry.getBootMode() == -1) {}
+	while (Nefry.getBootMode() == -1) { delay(1); }
 	while (Nefry.getBootMode() == 0) {
 		Nefry.pollingSW();
+		delay(1);
 	}
 	if (Nefry.getWriteMode() != true) {
 		delay(500);
 		setup();
 	}
 	for(;;) {
+		delay(5);
         micros(); //update overflow
-		if (Nefry.getWriteMode() != true) {
+		if (Nefry.getWriteMode() != true && Nefry.getNefryState() != 1) {
 			loop();
 		}
     }
@@ -45,7 +47,9 @@ void NefryBackEnd(void *pvParameters) {
 	NefryWebServer.begin();
 	NefryConsole.beginWeb();
 	NefryUpdate.setupWebLocalUpdate();
+	delay(500);
 	for (;;) {
+		delay(1);
 		if (Nefry.getNefryState() == 1) {
 			NefryWebServer.run();
 		}
@@ -62,8 +66,8 @@ void NefryBackEnd(void *pvParameters) {
 extern "C" void app_main()
 {
     initArduino();
-	xTaskCreatePinnedToCore(loopTask,      "loopTask",     8192, NULL, 2, NULL,1);
-	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 8192, NULL, 1, NULL,0);
+	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 2048, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+	xTaskCreatePinnedToCore(loopTask,      "loopTask",     8192, NULL, 2, NULL, ARDUINO_RUNNING_CORE);
 }
 
 #endif

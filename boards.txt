@@ -1,5 +1,6 @@
 menu.UploadSpeed=Upload Speed
 menu.FlashFreq=Flash Frequency
+menu.FlashMode=Flash Mode
 menu.DebugLevel=Core Debug Level
 
 ##############################################################
@@ -22,15 +23,23 @@ nefrybt.build.board=Nefry_BT
 nefrybt.build.f_cpu=240000000L
 nefrybt.build.flash_mode=dio
 nefrybt.build.flash_size=4MB
-
+nefrybt.build.boot=bootloader
 nefrybt.build.flash_freq=80m
 
-nefrybt.menu.UploadSpeed.921600.windows=921600
+nefrybt.menu.UploadSpeed.921600=921600
 nefrybt.menu.UploadSpeed.921600.upload.speed=921600
-nefrybt.menu.UploadSpeed.512000=512000
-nefrybt.menu.UploadSpeed.512000.upload.speed=512000
 nefrybt.menu.UploadSpeed.115200=115200
 nefrybt.menu.UploadSpeed.115200.upload.speed=115200
+nefrybt.menu.UploadSpeed.256000.windows=256000
+nefrybt.menu.UploadSpeed.256000.upload.speed=256000
+nefrybt.menu.UploadSpeed.230400.windows.upload.speed=256000
+nefrybt.menu.UploadSpeed.230400=230400
+nefrybt.menu.UploadSpeed.230400.upload.speed=230400
+nefrybt.menu.UploadSpeed.460800.linux=460800
+nefrybt.menu.UploadSpeed.460800.macosx=460800
+nefrybt.menu.UploadSpeed.460800.upload.speed=460800
+nefrybt.menu.UploadSpeed.512000.windows=512000
+nefrybt.menu.UploadSpeed.512000.upload.speed=512000
 
 nefrybt.menu.DebugLevel.none=None
 nefrybt.menu.DebugLevel.none.build.code_debug=0
@@ -63,8 +72,20 @@ esp32.build.variant=esp32
 esp32.build.board=ESP32_DEV
 
 esp32.build.f_cpu=240000000L
-esp32.build.flash_mode=dio
 esp32.build.flash_size=4MB
+esp32.build.flash_mode=dio
+esp32.build.boot=bootloader
+
+esp32.menu.FlashMode.qio=QIO
+esp32.menu.FlashMode.qio.build.flash_mode=dio
+esp32.menu.FlashMode.qio.build.boot=bootloader_qio
+esp32.menu.FlashMode.dio=DIO
+esp32.menu.FlashMode.dio.build.flash_mode=dio
+esp32.menu.FlashMode.qout=QOUT
+esp32.menu.FlashMode.qout.build.flash_mode=dout
+esp32.menu.FlashMode.qout.build.boot=bootloader_qio
+esp32.menu.FlashMode.dout=DOUT
+esp32.menu.FlashMode.dout.build.flash_mode=dout
 
 esp32.menu.FlashFreq.80=80MHz
 esp32.menu.FlashFreq.80.build.flash_freq=80m
@@ -98,5 +119,4 @@ esp32.menu.DebugLevel.debug=Debug
 esp32.menu.DebugLevel.debug.build.code_debug=4
 esp32.menu.DebugLevel.verbose=Verbose
 esp32.menu.DebugLevel.verbose.build.code_debug=5
-
 
