@@ -36,6 +36,7 @@ void Nefry_lib::nefry_init() {
 	delay(10);
 	NefryDisplay.begin();//logo表示
 	beginLed(1, 16, NEO_GRB);
+	setLedBlink(0, 0, 0, false, 0);
 	setLed(0x00, 0x0f, 0x00);
 	enableSW();
 	delay(50);
@@ -51,7 +52,15 @@ void Nefry_lib::nefry_init() {
 	Serial.println(F("WiFi Startup"));
 	if (NefryDataStore.getModuleID().equals("")) { NefryDataStore.setModuleID(getDefaultModuleId()); }
 	if (readSW()) { _bootMode = 2; }
+	setLedBlink(0, 0xbf, 0, true, 100);
 	NefryWiFi.begin();
+	Serial.println("WiFi connected");
+	Serial.print("SSID: ");
+	Serial.println(WiFi.SSID());
+	Serial.print("IP address: ");
+	Serial.println(WiFi.localIP());
+	setLedBlink(0, 0, 0, false, 0);
+	delay(100);
 	setLed(0x00, 0xcf, 0x00);
 	if (NefryDataStore.getBootSelector() == 1 || readSW()) {
 		setLed(0x0f, 0xff, 0xff);
@@ -368,5 +377,21 @@ ESP32WebServer* Nefry_lib::getWebServer(){
 }
 String Nefry_lib::getlistWifi(){
 	return NefryWiFi.getlistWifi();
+}
+
+void Nefry_lib::LedBlinkTask() {
+	if (_nefryLedBlinkState[3] == true) {
+		setLed(_nefryLedBlinkState[0], _nefryLedBlinkState[1], _nefryLedBlinkState[2], 100, 16, 0);
+		delay(_nefryLedBlinkState[4]);
+		setLed(0,0,0,0, 16, 0);
+		delay(_nefryLedBlinkState[4]);
+	}
+}
+void Nefry_lib::setLedBlink(int red,int green,int blue,bool EN,int wait) {
+	_nefryLedBlinkState[0] = red;
+	_nefryLedBlinkState[1] = green;
+	_nefryLedBlinkState[2] = blue;
+	_nefryLedBlinkState[3] = EN;
+	_nefryLedBlinkState[4] = wait;
 }
 Nefry_lib Nefry;

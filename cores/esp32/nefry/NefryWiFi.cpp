@@ -51,7 +51,7 @@ void Nefry_WiFi::begin() {
 	else {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str(), NefryDataStore.getModulePass().c_str());
 	}
-	setWifiTimeout(6);//6回目で自動接続をタイムアウトする
+	setWifiTimeout(3);//3回目で自動接続をタイムアウトする
 	setWifiTimeoutClear();
 	delay(100);
 }
@@ -85,6 +85,7 @@ run関数で返す値
 			Serial.println(WiFi.SSID());
 			Serial.print("IP address: ");
 			Serial.println(WiFi.localIP());
+			Nefry.getDisplayInfo();
 			return 0;
 		}
 		prevWifiStatus = wifiStatus;

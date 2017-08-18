@@ -107,7 +107,9 @@ public:
 		setIndexLink(const char title[32], const char url[32]),
 		getDisplayInfo(),
 
-		setNefryState(int state);
+		setNefryState(int state),
+		setLedBlink(int red, int green, int blue, bool EN, int wait),
+		LedBlinkTask();
 
 		ESP32WebServer* getWebServer();
 
@@ -152,7 +154,7 @@ private:
 		_bootMode = -1,	/* Boot状態を管理　-1:初期化中 0:起動中 1:通常起動 2:書き込みモード */
 		hextonum(char c),
 		_nefryState = 0;
-	
+	int _nefryLedBlinkState[5];
 	const char * program;
 };
 extern Nefry_lib Nefry;
