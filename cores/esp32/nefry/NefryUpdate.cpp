@@ -15,26 +15,51 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 	NefryWebServer.getWebServer()->on("/update", HTTP_GET, [&]() {
 		Nefry.print("UPDNF");
 		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Upload Sketch"), "",
-			F("<h1>Upload Sketch</h1> <p>Upload a binary file of sketch.</p><form method=\"POST\" action=\"/upload_sketch\" enctype=\"multipart/form-data\">"
-				"<input type=\"file\" name=\"sketch\"><div class=\"footer\"><input type=\"submit\"value=\"Upload\"></div></form><a href=\"/\">Back to top</a>")));
+			F("<h1>Upload Sketch</h1> <p>Upload a binary file of sketch.</p><form id=\"form1\">"
+				"<input type=\"file\" name=\"sketch\"><div class=\"footer\"><button type=\"button\" onclick=\"ExecUpload()\">Upload</button></div></form>"
+				"Update Status : <progress id=\"prog1\" max=100 value=0 width:\"auto\"></progress><span id=\"pv\" >0</span>% <span id=\"end\" ></span><br><a href=\"/\">Back to top</a>"
+				"<script type=\"text/javascript\">\n"
+				"    function ExecUpload() {\n"
+				"      var progressValue = document.getElementById('pv');\n"
+				"      var endvalue = document.getElementById('end');\n"
+				"      var o = document.getElementById('prog1');\n"
+				"      var formObj = document.getElementById(\"form1\");\n"
+				"      var data = new FormData(formObj);\n"
+				"      var xmlhttp;\n"
+				"	   if (window.XMLHttpRequest) {\n"
+				"        xmlhttp = new XMLHttpRequest();\n"
+				"      } else {\n"
+				"        xmlhttp = new ActiveXObject(\"Microsoft.XMLHTTP\");\n"
+				"      }\n"
+				"      xmlhttp.open(\"POST\", \"/upload_sketch\", true);\n"
+				"      xmlhttp.onreadystatechange = function () {\n"
+				"        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {\n"
+				"         endvalue.innerHTML =xmlhttp.responseText;\n"
+				"        }\n"
+				"      };\n"
+				"      xmlhttp.upload.addEventListener(\"progress\", function(ev){\n"
+				"         console.log(ev.loaded,ev.total);\n"
+				"         o.value = ev.loaded/ ev.total*100;\n"
+				"         progressValue.innerHTML =Math.floor(ev.loaded/ ev.total*100);\n"
+				"      });\n"
+				"      xmlhttp.send(data);\n"
+				"    }\n"
+				"</script>\n")));
 	});
 
 	NefryWebServer.getWebServer()->onFileUpload([&]() {
 		if (NefryWebServer.getWebServer()->uri() != "/upload_sketch") return;
 		Nefry.setNefryState(1);
+		
 		HTTPUpload& upload = NefryWebServer.getWebServer()->upload();
 		updateTotalSize  = upload.totalSize;
-		Serial.printf("Sketch: %s Uploading\n", upload.filename.c_str());
 		String file_name = String(upload.filename.c_str());
 		count++;
+		delay(1);
 		if (file_name.endsWith("bin")) {
 			err = false;
-			if (count % 10 == 1) {
-				Nefry.setLed(0xff, 0xff, 0x0);
-				delay(10);
-				Nefry.setLed(0xff, 0xff, 0x0, 0);
-			}
 			if (upload.status == UPLOAD_FILE_START) {
+				Nefry.setLedBlink(0,125, 0, true, 10);
 				Serial.println("ok");
 				Serial.setDebugOutput(true);
 				if (!Update.begin())Update.printError(Serial);
@@ -54,16 +79,11 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 			else if (upload.status == UPLOAD_FILE_END) {
 				if (Update.end(true)) {
 					Nefry.print("Update Success:"+ (String)upload.totalSize +"\nRebooting...\n");
-					Nefry.setLed(0x0, 0x0, 0xFF);
-					delay(1500);
-					Nefry.setLed(0xFF, 0x0, 0x0, 0);
-
 				}
 				else {
 					Update.printError(Serial);
 					Nefry.setLed(0xFF, 0x0, 0x0);
 					delay(1000);
-					Nefry.setLed(0xFF, 0x0, 0x0, 0);
 					err = true;
 					Nefry.println(F("File Err. Failed to update"));
 					Nefry.setNefryState(0);
@@ -73,11 +93,6 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 			yield();
 		}
 		else {
-			if (count % 15 == 1) {
-				Nefry.setLed(0xFF, 0x0, 0x0);
-				delay(10);
-				Nefry.setLed(0xFF, 0x0, 0x0, 0);
-			}
 			Serial.println(F("err"));
 			Nefry.println(F("File Err. Failed to update"));
 			Nefry.setNefryState(0);
@@ -88,15 +103,16 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 	NefryWebServer.getWebServer()->on("/upload_sketch", HTTP_POST, [&]() {
 		Nefry.clearConsole();
 		if (err == false) {
+			Nefry.setLedBlink(0, 0, 255, true, 100);
 			Nefry.println((Update.hasError()) ? "Update Err" : "Upload Success");
+			NefryWebServer.getWebServer()->send(200, "text/html", (Update.hasError()) ? "Update Err" : "Upload Success");
 		}
 		else {
 			Nefry.println(F("Failed to update"));
+			NefryWebServer.getWebServer()->send(200, "text/html", F("Failed to update"));
 			Nefry.setNefryState(0);
+			Nefry.setLedBlink(0, 0, 0, false, 100);
 		}
-		NefryWebServer.getWebServer()->send(200, "text/html", NefryWeb.createHtml(F("Nefry Upload Sketch"),
-			F("<script type=\"text/javascript\" src=\"consolejs\"></script><script type=\"text/javascript\">clearInterval(timer);loadDoc();</script>"),
-			F("<h1>Nefry Update</h1><div id=\"ajaxDiv\"></div><a href='/'>Back to top</a>")));
 		if (err == false) {
 			for (int i = 0; i < 10; i++) {
 				NefryWebServer.run();
@@ -104,6 +120,7 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 			}
 			Nefry.reset();
 		}
+		Nefry.setLedBlink(0, 0, 0, false, 100)
 		Nefry.setNefryState(0);
 	});
 }
