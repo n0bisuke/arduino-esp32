@@ -120,7 +120,7 @@ void Nefry_Update::setupWebLocalUpdate(void) {
 			}
 			Nefry.reset();
 		}
-		Nefry.setLedBlink(0, 0, 0, false, 100)
+		Nefry.setLedBlink(0, 0, 0, false, 100);
 		Nefry.setNefryState(0);
 	});
 }
