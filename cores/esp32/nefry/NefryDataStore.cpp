@@ -25,9 +25,14 @@ void NefryDataStore_lib::clear()
 
 bool NefryDataStore_lib::setModuleID(String id)
 {
-	_readCacheStr[10] = id;
+	if (id.equals("")) {
+		_readCacheStr[10] = Nefry.getDefaultModuleId();
+	}
+	else {
+		_readCacheStr[10] = id;
+	}
 	_readCacheFlg[10] = true;
-	return nefryDataStorePreferences.putString("ModuleID",id);
+	return nefryDataStorePreferences.putString("ModuleID", _readCacheStr[10]);
 }
 
 bool NefryDataStore_lib::setBootSelector(int mode)
