@@ -20,6 +20,7 @@ nefrybt.build.mcu=esp32
 nefrybt.build.core=esp32
 nefrybt.build.variant=nefrybt
 nefrybt.build.board=Nefry_BT
+nefrybt.build.partitions=default
 
 nefrybt.build.f_cpu=240000000L
 nefrybt.build.flash_mode=dio
