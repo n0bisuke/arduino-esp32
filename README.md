@@ -4,7 +4,7 @@
 [Arduino core for ESP32 WiFi chip](https://github.com/espressif/arduino-esp32)をベースにして開発しています。
 NefryBTはArduinoIDEで開発することができる開発ボードになります。
 
-##開発環境を整える
+## 開発環境を整える
 
 NefryBTのArduinoIDEでの開発環境は詳しくはこちらを参照していただくと整えることができます。
 ArduinoIDEの設定欄に入れるURLは開発版と安定版の2つがあります。
@@ -26,7 +26,7 @@ http://nefry.studio/develop/package_devnefrybt_index.json
 ## 開発について
 NefryBTは適宜バージョンアップをしてArduinoIDEのボードマネージャーからインストールすることができます。
 最新の機能についてはこのレポジトリを参照していただくことで試すことができます。
-###導入方法
+### 導入方法
 他の方法もありますが、おすすめなのはArduinoIDEに上の手順でインストールし、一度インストールしたフォルダを置き換える手順がお勧めです。
 1. ArduinoIDEの設定欄より、NefryBTライブラリがインストールされている場所を探します。
 2. そのフォルダにpackegeフォルダがあります。下記に書いたパスを順に下ってください。
