@@ -62,12 +62,20 @@ void NefryBackEnd(void *pvParameters) {
 		}
 	}
 }
+void NefryLedBlink(void *pvParameters)
+{
+	for (;;) {
+		delay(5);
+		Nefry.LedBlinkTask();
+	}
+}
 
 extern "C" void app_main()
 {
     initArduino();
-	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 2048, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
+	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
 	xTaskCreatePinnedToCore(loopTask,      "loopTask",     8192, NULL, 2, NULL, ARDUINO_RUNNING_CORE);
+	xTaskCreatePinnedToCore(&NefryLedBlink,"NefryLedBlink",1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
 
 #endif

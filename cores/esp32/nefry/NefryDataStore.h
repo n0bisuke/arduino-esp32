@@ -2,6 +2,7 @@
 #define NefryDataStore_h
 
 #include "./inc/Preferences/src/Preferences.h"
+#include "Nefry.h"
 /*
 ModuleID	: Nefryモジュール名 & Nefryが発信するSSID
 ModulePass	: Nefryが発信するWiFiパスワード

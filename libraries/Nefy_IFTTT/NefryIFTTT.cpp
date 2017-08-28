@@ -30,6 +30,22 @@ bool Nefry_IFTTT::send(String event, String Secretkey, String data1, String data
 		client.println(_data.length());
 		client.println();
 		client.println(_data);
+		client.println();
+		unsigned long timeout = millis();
+		while (client.available() == 0) {
+			if (millis() - timeout > 5000) {
+				Serial.println(">>> Client Timeout !");
+				client.stop();
+				return false;
+			}
+		}
+		// Read all the lines of the reply from server and print them to Serial
+		while (client.available()) {
+			String line = client.readStringUntil('\r');
+			Serial.print(line);
+		}
+		Serial.println();
+		Serial.println("closing connection");
 		delay(10);
 		return true;
 	}

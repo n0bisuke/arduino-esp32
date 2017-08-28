@@ -51,7 +51,7 @@ void Nefry_WiFi::begin() {
 	else {
 		WiFi.softAP(NefryDataStore.getModuleID().c_str(), NefryDataStore.getModulePass().c_str());
 	}
-	setWifiTimeout(6);//6回目で自動接続をタイムアウトする
+	setWifiTimeout(3);//3回目で自動接続をタイムアウトする
 	setWifiTimeoutClear();
 	delay(100);
 }
@@ -85,6 +85,7 @@ run関数で返す値
 			Serial.println(WiFi.SSID());
 			Serial.print("IP address: ");
 			Serial.println(WiFi.localIP());
+			Nefry.getDisplayInfo();
 			return 0;
 		}
 		prevWifiStatus = wifiStatus;
@@ -140,7 +141,7 @@ void Nefry_WiFi::beginWeb(){
 			//println(_WifiTimeOutCount);
 			content += F("<button type=\"button\"onclick=\"location.href='/wifiCount'\">WiFiAutoConnectionCount Clear</button>");
 		}
-		content += F("<button type=\"button\"onclick=\"location.href='/wifiReload'\">Reload</button><input type=\"button\"value=\"Sava\"onclick=\"return jsSubmit(this.form);\"></div></form><a href=\"/\">Back to top</a></div><div>");
+		content += F("<button type=\"button\"onclick=\"location.href='/wifiReload'\">Reload</button><input type=\"button\"value=\"Save\"onclick=\"return jsSubmit(this.form);\"></div></form><a href=\"/\">Back to top</a></div><div>");
 		content += network_html;
 		content += network_list;
 		content += F("</div><div><h1>Saved WiFi List</h1><p>Delete WiFi Select</p><form  name=\"myForm\" method='get' action='delete_wifi'>");

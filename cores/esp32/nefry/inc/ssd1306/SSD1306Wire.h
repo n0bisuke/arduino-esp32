@@ -80,7 +80,7 @@ class SSD1306Wire : public OLEDDisplay {
         // If the minBoundY wasn't updated
         // we can savely assume that buffer_back[pos] == buffer[pos]
         // holdes true for all values of pos
-        if (minBoundY == ~0) return;
+        if (minBoundY == 255) return;
 
         sendCommand(COLUMNADDR);
         sendCommand(minBoundX);
