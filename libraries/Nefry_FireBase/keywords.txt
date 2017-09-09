@@ -1,0 +1,26 @@
+#######################################
+# Syntax Coloring Map For nefry
+#######################################
+# Class
+#######################################
+
+NefryFireBase	KEYWORD1
+DataElement		KEYWORD1
+
+#######################################
+# Methods and Functions
+#######################################
+
+send			KEYWORD2
+read		  	KEYWORD2
+remove			KEYWORD2
+update			KEYWORD2
+write	   		KEYWORD2
+setValue		KEYWORD2
+getString		KEYWORD2
+getInt			KEYWORD2
+getFloat		KEYWORD2
+
+#######################################
+# Constants
+#######################################

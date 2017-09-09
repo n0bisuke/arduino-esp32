@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("1.0.3")
+#define LIBVERSION ("1.0.4")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -35,7 +35,7 @@ void Nefry_lib::nefry_init() {
 	/* Display設定 */
 	delay(10);
 	NefryDisplay.begin();//logo表示
-	beginLed(1, 16, NEO_GRB);
+	beginLed(1, 16, NEO_GRBW + NEO_KHZ400);
 	setLedBlink(0, 0, 0, false, 0);
 	setLed(0x00, 0x0f, 0x00);
 	enableSW();
@@ -280,8 +280,12 @@ void Nefry_lib::beginLed(const int num, const int pin, uint8_t t = NEO_GRB) {
 	_NefryLED[pin].begin();
 }
 void Nefry_lib::setLed(const int r, const int g, const int b, const char w, const int pin, const int num) {
+	_NefryLED[pin].setPixelColor(num,0, 0, 0);
+	delay(1);
+	_NefryLED[pin].show();
 	_NefryLED[pin].setBrightness(w);
-	_NefryLED[pin].setPixelColor(num, r, g, b);
+	_NefryLED[pin].setPixelColor(num, map(r,0,255,0,150), g, b);
+	delay(1);
 	_NefryLED[pin].show();
 }
 void Nefry_lib::setLed(String _colorStr, const char w, const int pin, const int num) {
