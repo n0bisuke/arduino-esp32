@@ -8,7 +8,7 @@ void setup() {
   //FastSensingで必要な情報を入力し、初期化をします
   //https://console.fastsensing.com/devicesからデバイスとチャンネル
   //begin(デバイス、チャンネル1、チャンネル2、チャンネル3)
-  fastSensing.begin("itt2nntteluqhj7y", "szjfvm37", "dt6ye274", "egndkcft");
+  fastSensing.begin("device", "channel1", "channel2", "channel3");
 }
 
 void loop() {
