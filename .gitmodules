@@ -3,4 +3,4 @@
 	url = https://github.com/wamisnet/ConfigurableFirmata.git
 [submodule "libraries/Nefry_ThingSpeak/src/include"]
 	path = libraries/Nefry_ThingSpeak/src/include
-url=git@github.com:wamisnet/thingspeak-arduino.git
+url=https://github.com/wamisnet/thingspeak-arduino.git
