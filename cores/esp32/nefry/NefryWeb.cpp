@@ -49,7 +49,7 @@ void Nefry_Web::beginWeb() {
 	NefryWebServer.getWebServer()->on("/", [&]() {
 		String content = F(
 			"<h1>Hello from Nefry!</h1>"
-			"<div>Wifi Sport: "
+			"<div>Wifi Spot: "
 		);
 		content += WiFi.SSID();
 		content += F("</div><div>IP Address: ");
