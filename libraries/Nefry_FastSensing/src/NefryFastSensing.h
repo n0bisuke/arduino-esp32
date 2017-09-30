@@ -30,10 +30,11 @@ public:
 		 setValue(unsigned char channelNum, int v),
 		 setValue(unsigned char channelNum, String v),
 		 setValue(unsigned char channelNum, double v);
-	void begin(String deviceID, char channel1[9], char channel2[9], char channel3[9]);
+	void begin(String deviceID, const char channel1[9], const char channel2[9], const char channel3[9]),
+		 begin(int deviceID=0,int channel1=1,int channel2=2,int channel3=3);
 private:
 	bool dataFlg[3];
-	char* channelKey[3];
+	const char* channelKey[3];
 	String sendData;
 };
 #endif
