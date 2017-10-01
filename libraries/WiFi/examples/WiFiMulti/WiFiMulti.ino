@@ -5,6 +5,7 @@
 
 #include <WiFi.h>
 #include <WiFiMulti.h>
+#include <Nefry.h>
 
 WiFiMulti wifiMulti;
 
@@ -28,7 +29,7 @@ void setup()
 
 void loop()
 {
-    if(wifiMulti.run() != WL_CONNECTED) {
+    if(wifiMulti.run(Nefry.getBootMode()) != WL_CONNECTED) {
         Serial.println("WiFi not connected!");
         delay(1000);
     }
