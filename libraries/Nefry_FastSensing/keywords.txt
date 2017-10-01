@@ -1,0 +1,20 @@
+#######################################
+# Syntax Coloring Map For nefry
+#######################################
+# Class
+#######################################
+
+NefryFastSensing	KEYWORD1
+DataElement			KEYWORD1
+
+#######################################
+# Methods and Functions
+#######################################
+
+push			KEYWORD2
+setValue		KEYWORD2
+begin			KEYWORD2
+
+#######################################
+# Constants
+#######################################

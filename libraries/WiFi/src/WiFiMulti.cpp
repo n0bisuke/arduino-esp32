@@ -51,8 +51,8 @@ uint8_t WiFiMulti::run(int mode)
 
         scanResult = WiFi.scanNetworks();
 		if (mode == 0) {
-			NefryDisplay.drawProgressBar(14, 44, 100, 14, 40);
-			NefryDisplay.display();
+			//NefryDisplay.drawProgressBar(14, 44, 100, 14, 40);
+			//NefryDisplay.display();
 		}
         if(scanResult == WIFI_SCAN_RUNNING) {
             // scan is running
@@ -113,20 +113,20 @@ uint8_t WiFiMulti::run(int mode)
             // clean up ram
             WiFi.scanDelete();
 			if (mode == 0) {
-				NefryDisplay.clear();
-				NefryDisplay.setFont(ArialMT_Plain_16);
-				NefryDisplay.drawString(10, 0, "Connecting WiFi");
+				//NefryDisplay.clear();
+				//NefryDisplay.setFont(ArialMT_Plain_16);
+				//NefryDisplay.drawString(10, 0, "Connecting WiFi");
 				String _ssidstr = (String)bestNetwork.ssid;
 				int _ssiddispy = 20;
 				if (_ssidstr.length() > 8) {
-					NefryDisplay.setFont(ArialMT_Plain_10);
+					//NefryDisplay.setFont(ArialMT_Plain_10);
 					if (_ssidstr.length() > 17) {
 						_ssiddispy = 18;
 					}
 				}
-				NefryDisplay.drawString(10, _ssiddispy, "SSID:"+ _ssidstr,114);
-				NefryDisplay.drawProgressBar(14, 44, 100, 14, 50);
-				NefryDisplay.display();
+				//NefryDisplay.drawString(10, _ssiddispy, "SSID:"+ _ssidstr,114);
+				//NefryDisplay.drawProgressBar(14, 44, 100, 14, 50);
+				//NefryDisplay.display();
 			}
             DEBUG_WIFI_MULTI("\n\n");
             delay(0);
@@ -144,13 +144,13 @@ uint8_t WiFiMulti::run(int mode)
 					wifiTimout++;
 					if (wifiTimout > 50)break;
 					if (mode == 0) {
-						NefryDisplay.drawProgressBar(14, 44, 100, 14, 50+ wifiTimout);
-						NefryDisplay.display();
+						//NefryDisplay.drawProgressBar(14, 44, 100, 14, 50+ wifiTimout);
+						//NefryDisplay.display();
 					}
                 }
 				if (mode == 0) {
-					NefryDisplay.drawProgressBar(14, 44, 100, 14, 100);
-					NefryDisplay.display();
+					//NefryDisplay.drawProgressBar(14, 44, 100, 14, 100);
+					//NefryDisplay.display();
 				}
                 IPAddress ip;
                 

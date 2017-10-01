@@ -97,7 +97,7 @@ void Nefry_Conf::beginWeb() {
 		String content = F(
 			"<h1>Module Config</h1>"
 			"<p>Nefryモジュールに関する設定をすることができます。</p><table><tr>"
-			"<th>Wifi Sport</th><td>"
+			"<th>Wifi Spot</th><td>"
 		);
 		content += WiFi.SSID();
 		content += F("</td></tr><tr><th>IP Address</th><td>");

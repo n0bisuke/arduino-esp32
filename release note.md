@@ -1,5 +1,15 @@
 # このノートはNefry(ESP32版)のリリースノートになります。
 
+## 1.0.6
+ThingSpeakライブラリ、FastSensingライブラリを新規追加
+
+
+新規対応
+
+- ThingSpeakライブラリ追加
+- FastSensingライブラリ追加
+
+
 ## 1.0.5
 BLE仮サポート
 

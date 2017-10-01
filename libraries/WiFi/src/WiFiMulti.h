@@ -30,7 +30,7 @@
 #undef min
 #undef max
 #include <vector>
-#include <NefryDisplay.h>
+//#include "NefryDisplay.h"
 
 #ifdef DEBUG_ESP_WIFI
 #ifdef DEBUG_ESP_PORT
@@ -55,7 +55,7 @@ public:
 
     bool addAP(const char* ssid, const char *passphrase = NULL);
 
-    uint8_t run(int mode);
+    uint8_t run(int mode = 1);
 
 private:
     std::vector<WifiAPlist_t> APlist;
