@@ -3,7 +3,7 @@
 
 #include <WiFiClientSecure.h>
 #include <Nefry.h>
-#include "include/aJson/aJson.h"
+#include "include/aJson/aJSON.h"
 class DataElement {
 public:
 	DataElement();

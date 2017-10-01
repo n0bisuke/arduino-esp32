@@ -41,8 +41,8 @@
 #else
 #include <pgmspace.h>
 #endif
-#include "include/aJson/aJSON.h"
-#include "include/aJson/stringbuffer.h"
+#include "aJSON.h"
+#include "stringbuffer.h"
 
 /******************************************************************************
  * Definitions

@@ -12,7 +12,7 @@
 #include <WiFi.h>
 #include "utility/WiFiClientStream.h"
 #include "utility/WiFiServerStream.h"
-
+#include <Wire.h>
  // define your port number here, you will need this to open a TCP connection to your Arduino
 #define NETWORK_PORT 3030
 
