@@ -13,7 +13,7 @@ install:
   - cmd: git submodule update --init --recursive
   - cmd: SET PATH=%PATH%;C:\Python27\Scripts
   - cmd: pip install -U https://github.com/platformio/platformio/archive/develop.zip
-  - cmd: platformio platform install https://github.com/platformio/platform-espressif32.git#feature/stage
+  - cmd: platformio platform install https://github.com/Nefry-Community/platform-espressif32.git#feature/support_nefry
 
 test_script:
   - cmd: platformio ci -b esp32dev -b nano32 -b node32s
