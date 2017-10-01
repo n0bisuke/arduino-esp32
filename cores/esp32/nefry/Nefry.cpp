@@ -325,7 +325,7 @@ void Nefry_lib::setStoreTitle(const char set[15], const int num)
 }
 
 String Nefry_lib::getDefaultModuleId() {
-	char* moduleName;
+	String moduleName;
 	String _devstr,ms;
 	switch (boardId)
 	{
