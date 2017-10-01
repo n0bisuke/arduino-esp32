@@ -18,7 +18,7 @@ void setup()
     wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
     Serial.println("Connecting Wifi...");
-    if(wifiMulti.run() == WL_CONNECTED) {
+    if(wifiMulti.run(Nefry.getBootMode()) == WL_CONNECTED) {
         Serial.println("");
         Serial.println("WiFi connected");
         Serial.println("IP address: ");

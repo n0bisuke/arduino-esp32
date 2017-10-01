@@ -35,7 +35,7 @@ void Nefry_lib::nefry_init() {
 	/* Display設定 */
 	delay(10);
 	NefryDisplay.begin();//logo表示
-	beginLed(1, 16, NEO_GRBW + NEO_KHZ400);
+	beginLed((const int)1, (const int)16, (uint8_t)NEO_GRBW);
 	setLedBlink(0, 0, 0, false, 0);
 	setLed(0x00, 0x0f, 0x00);
 	enableSW();
