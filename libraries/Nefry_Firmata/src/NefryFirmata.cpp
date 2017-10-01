@@ -222,4 +222,5 @@ NefryFirmata::NefryFirmata() {
 bool NefryFirmata::begin()
 {
 	initFirmata();
+	return true;
 }
