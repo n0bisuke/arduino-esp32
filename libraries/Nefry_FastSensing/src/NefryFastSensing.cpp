@@ -7,7 +7,7 @@ Copyright (c) 2017 wami
 
 #include "NefryFastSensing.h"
 String _deviceID, _channelID1,_channelID2, _channelID3;
-void NefryFastSensing::begin(String deviceID, char channel1[9], char channel2[9], char channel3[9]){
+void NefryFastSensing::begin(String deviceID,const char channel1[9],const char channel2[9],const char channel3[9]){
 	_deviceID = deviceID;
 	channelKey[0] = channel1;
 	channelKey[1] = channel2;
@@ -16,6 +16,11 @@ void NefryFastSensing::begin(String deviceID, char channel1[9], char channel2[9]
 		dataFlg[i] = false;
 	}
 	sendData = "";
+}
+
+void NefryFastSensing::begin(int deviceID, int channel1, int channel2, int channel3)
+{
+	begin(Nefry.getStoreStr(deviceID), Nefry.getStoreStr(channel1).c_str(), Nefry.getStoreStr(channel2).c_str(), Nefry.getStoreStr(channel3).c_str());
 }
 
 bool NefryFastSensing::push() {

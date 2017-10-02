@@ -27,7 +27,6 @@
 
 #include "bt_defs.h"
 #include "bt_target.h"
-#include "gki.h"
 #include "hcidefs.h"
 
 #include "rfcdefs.h"
@@ -115,7 +114,6 @@ UINT8           conn_addr_type;         /* local device address type for this co
 BD_ADDR         active_remote_addr;     /* remote address used on this connection */
 UINT8           active_remote_addr_type;         /* local device address type for this connection */
 BD_FEATURES     peer_le_features;       /* Peer LE Used features mask for the device */
-tBTM_UPDATE_CONN_PARAM_CBACK *update_conn_param_cb;
 tBTM_SET_PKT_DATA_LENGTH_CBACK *p_set_pkt_data_cback;
 tBTM_LE_SET_PKT_DATA_LENGTH_PARAMS data_length_params;
 #endif
@@ -367,7 +365,7 @@ typedef struct {
 typedef struct {
     tBTM_ESCO_INFO   esco;              /* Current settings             */
 #if BTM_SCO_HCI_INCLUDED == TRUE
-    BUFFER_Q         xmit_data_q;       /* SCO data transmitting queue  */
+    fixed_queue_t   *xmit_data_q;       /* SCO data transmitting queue  */
 #endif
     tBTM_SCO_CB     *p_conn_cb;         /* Callback for when connected  */
     tBTM_SCO_CB     *p_disc_cb;         /* Callback for when disconnect */
@@ -418,6 +416,15 @@ void btm_sco_chk_pend_rolechange (UINT16 hci_handle);
 ** Define structure for Security Service Record.
 ** A record exists for each service registered with the Security Manager
 */
+#define BTM_SEC_OUT_FLAGS   (BTM_SEC_OUT_AUTHENTICATE | BTM_SEC_OUT_ENCRYPT | BTM_SEC_OUT_AUTHORIZE)
+#define BTM_SEC_IN_FLAGS    (BTM_SEC_IN_AUTHENTICATE | BTM_SEC_IN_ENCRYPT | BTM_SEC_IN_AUTHORIZE)
+
+#define BTM_SEC_OUT_LEVEL4_FLAGS   (BTM_SEC_OUT_AUTHENTICATE | BTM_SEC_OUT_ENCRYPT | \
+                                        BTM_SEC_OUT_MITM | BTM_SEC_MODE4_LEVEL4)
+
+#define BTM_SEC_IN_LEVEL4_FLAGS    (BTM_SEC_IN_AUTHENTICATE | BTM_SEC_IN_ENCRYPT | \
+                                        BTM_SEC_IN_MITM | BTM_SEC_MODE4_LEVEL4)
+
 typedef struct {
     UINT32          mx_proto_id;        /* Service runs over this multiplexer protocol */
     UINT32          orig_mx_chan_id;    /* Channel on the multiplexer protocol    */
@@ -865,14 +872,29 @@ typedef struct {
     UINT8                   busy_level; /* the current busy level */
     BOOLEAN                 is_paging;  /* TRUE, if paging is in progess */
     BOOLEAN                 is_inquiry; /* TRUE, if inquiry is in progess */
-    BUFFER_Q                page_queue;
+    fixed_queue_t           *page_queue;
     BOOLEAN                 paging;
     BOOLEAN                 discing;
-    BUFFER_Q                sec_pending_q;  /* pending sequrity requests in tBTM_SEC_QUEUE_ENTRY format */
+    fixed_queue_t           *sec_pending_q;  /* pending sequrity requests in tBTM_SEC_QUEUE_ENTRY format */
 #if  (!defined(BT_TRACE_VERBOSE) || (BT_TRACE_VERBOSE == FALSE))
     char state_temp_buffer[BTM_STATE_BUFFER_SIZE];
 #endif
 } tBTM_CB;
+
+typedef struct{
+  //connection parameters update callback
+  tBTM_UPDATE_CONN_PARAM_CBACK *update_conn_param_cb;
+}tBTM_CallbackFunc;
+
+extern tBTM_CallbackFunc conn_param_update_cb;
+/* security action for L2CAP COC channels */
+#define BTM_SEC_OK                1
+#define BTM_SEC_ENCRYPT           2    /* encrypt the link with current key */
+#define BTM_SEC_ENCRYPT_NO_MITM   3    /* unauthenticated encryption or better */
+#define BTM_SEC_ENCRYPT_MITM      4    /* authenticated encryption */
+#define BTM_SEC_ENC_PENDING       5    /* wait for link encryption pending */
+
+typedef UINT8 tBTM_SEC_ACTION;
 
 /*
 #ifdef __cplusplus
@@ -892,6 +914,7 @@ extern tBTM_CB *btm_cb_ptr;
 ********************************************
 */
 void         btm_init (void);
+void         btm_free (void);
 
 /* Internal functions provided by btm_inq.c
 *******************************************
@@ -1077,6 +1100,10 @@ BOOLEAN btm_sec_is_a_bonded_dev (BD_ADDR bda);
 void btm_consolidate_dev(tBTM_SEC_DEV_REC *p_target_rec);
 BOOLEAN btm_sec_is_le_capable_dev (BD_ADDR bda);
 BOOLEAN btm_ble_init_pseudo_addr (tBTM_SEC_DEV_REC *p_dev_rec, BD_ADDR new_pseudo_addr);
+extern BOOLEAN btm_ble_start_sec_check(BD_ADDR bd_addr, UINT16 psm, BOOLEAN is_originator,
+                            tBTM_SEC_CALLBACK *p_callback, void *p_ref_data);
+extern tBTM_SEC_SERV_REC *btm_sec_find_first_serv (CONNECTION_TYPE conn_type, UINT16 psm);
+
 #endif /* BLE_INCLUDED */
 
 tINQ_DB_ENT *btm_inq_db_new (BD_ADDR p_bda);
