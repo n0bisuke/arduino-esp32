@@ -18,8 +18,9 @@
 
 #ifndef __FUTURE_H__
 #define __FUTURE_H__
+// #pragma once
 
-#include "semaphore.h"
+#include "osi_arch.h"
 
 struct future {
     bool ready_can_be_called;

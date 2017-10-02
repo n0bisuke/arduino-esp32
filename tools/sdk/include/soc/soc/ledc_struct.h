@@ -13,11 +13,6 @@
 // limitations under the License.
 #ifndef _SOC_LEDC_STRUCT_H_
 #define _SOC_LEDC_STRUCT_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef volatile struct {
     struct {
         struct {
@@ -248,9 +243,4 @@ typedef volatile struct {
     uint32_t date;                                     /*This register represents the version .*/
 } ledc_dev_t;
 extern ledc_dev_t LEDC;
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif  /* _SOC_LEDC_STRUCT_H_ */

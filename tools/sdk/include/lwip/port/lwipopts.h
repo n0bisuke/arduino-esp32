@@ -37,7 +37,6 @@
 #include <sys/time.h>
 #include <sys/fcntl.h>
 #include "esp_task.h"
-#include "esp_system.h"
 #include "sdkconfig.h"
 
 /* Enable all Espressif-only options */
@@ -66,7 +65,7 @@
  */
 #define SMEMCPY(dst,src,len)            memcpy(dst,src,len)
 
-#define LWIP_RAND       esp_random
+#define LWIP_RAND       rand
 
 /*
    ------------------------------------
@@ -294,11 +293,6 @@
  *         for the event. This is the default.
 */
 #define TCP_MSS                         CONFIG_TCP_MSS
-
-/**
- * TCP_MSL: The maximum segment lifetime in milliseconds
- */
-#define TCP_MSL                         CONFIG_TCP_MSL
 
 /**
  * TCP_MAXRTX: Maximum number of retransmissions of data segments.

@@ -46,7 +46,7 @@ void NefryBackEnd(void *pvParameters) {
 	NefryConfig.beginWeb();
 	NefryWebServer.begin();
 	NefryConsole.beginWeb();
-	NefryUpdate.beginWeb();
+	NefryUpdate.setupWebLocalUpdate();
 	delay(500);
 	for (;;) {
 		delay(1);

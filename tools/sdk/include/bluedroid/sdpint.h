@@ -26,7 +26,6 @@
 #define  SDP_INT_H
 
 #include "bt_target.h"
-#include "bt_defs.h"
 #include "sdp_api.h"
 #include "l2c_api.h"
 

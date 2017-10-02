@@ -25,7 +25,7 @@
 #define BTA_SYS_H
 
 #include "bt_target.h"
-#include "bt_defs.h"
+#include "gki.h"
 
 /*****************************************************************************
 **  Constants and data types

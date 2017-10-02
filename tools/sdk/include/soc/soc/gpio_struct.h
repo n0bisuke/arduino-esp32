@@ -13,11 +13,6 @@
 // limitations under the License.
 #ifndef _SOC_GPIO_STRUCT_H_
 #define _SOC_GPIO_STRUCT_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef volatile struct {
     uint32_t bt_select;                             /*NA*/
     uint32_t out;                                   /*GPIO0~31 output value*/
@@ -206,9 +201,4 @@ typedef volatile struct {
     } func_out_sel_cfg[40];
 } gpio_dev_t;
 extern gpio_dev_t GPIO;
-
-#ifdef __cplusplus
-}
-#endif
-
 #endif  /* _SOC_GPIO_STRUCT_H_ */
