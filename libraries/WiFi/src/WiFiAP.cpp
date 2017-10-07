@@ -37,7 +37,6 @@ extern "C" {
 #include <esp_wifi.h>
 #include <esp_event_loop.h>
 #include <lwip/ip_addr.h>
-#include "apps/dhcpserver_options.h"
 }
 
 

@@ -1,5 +1,6 @@
 ﻿#include "NefryDisplay.h"
 #include "NefryBTimg.h"
+#include <string>
 
 SSD1306  _nefrySsdDisplay(0x3c, SDA, SCL);
 
@@ -34,6 +35,27 @@ void Nefry_Display::drawString(int16_t x, int16_t y, String text, int16_t maxLin
 	if (maxLineWidth == 0)maxLineWidth = 127;
 	_nefrySsdDisplay.drawStringMaxWidth(x, y, maxLineWidth, text);
 }
+
+void Nefry_Display::drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t loopCount, int16_t scrollSpeed)
+{
+	int16_t maxLineWidth = 127;
+	uint16_t textWidth = getStringWidth(text);
+	String tempText = text;
+
+	if (textWidth > maxLineWidth)
+	{
+		int16_t strIndex = loopCount / scrollSpeed;
+		int textLength = text.length();
+		int16_t scrollNum = strIndex % textLength;
+		String h_text = text.substring(0, scrollNum);
+		String l_text = text.substring(scrollNum);
+		l_text.concat(h_text);
+		tempText = l_text;
+	}
+	Serial.println(tempText);
+	_nefrySsdDisplay.drawString(x, y, tempText);
+}
+
 uint16_t Nefry_Display::getStringWidth(const char * text, uint16_t length)
 {
 	return _nefrySsdDisplay.getStringWidth(text,length);
