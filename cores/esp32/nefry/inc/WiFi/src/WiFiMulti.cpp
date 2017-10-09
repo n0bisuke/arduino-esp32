@@ -41,14 +41,14 @@ bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
 {
     return APlistAdd(ssid, passphrase);
 }
-String ssid = "";
+String _nefryDisplaySsid = "";
 int wifiDisplayScroll = 0;
 void setDisplaySSID() {
 	NefryDisplay.setFont(ArialMT_Plain_16);
 	NefryDisplay.drawString(10, 0, "Connecting WiFi");
 	NefryDisplay.setFont(ArialMT_Plain_10);
 	NefryDisplay.drawString(10, 20, "SSID:");
-	NefryDisplay.drawStringWithHScroll(45, 20,ssid , 3);
+	NefryDisplay.drawStringWithHScroll(45, 20, _nefryDisplaySsid, 3);
 	NefryDisplay.drawProgressBar(14, 44, 100, 14, 50+ wifiDisplayScroll);
 }
 uint8_t WiFiMulti::run(int mode)
@@ -122,7 +122,7 @@ uint8_t WiFiMulti::run(int mode)
             WiFi.scanDelete();
 			if (mode == 0) {
 				wifiDisplayScroll = 0;
-				ssid = (String)bestNetwork.ssid;
+				_nefryDisplaySsid = (String)bestNetwork.ssid;
 				NefryDisplay.setAutoScrollFlg(true);
 				NefryDisplay.autoScrollFunc(setDisplaySSID);
 			}
