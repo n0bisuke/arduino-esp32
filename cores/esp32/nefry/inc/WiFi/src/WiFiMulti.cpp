@@ -41,10 +41,18 @@ bool WiFiMulti::addAP(const char* ssid, const char *passphrase)
 {
     return APlistAdd(ssid, passphrase);
 }
-
+String ssid = "";
+int wifiDisplayScroll = 0;
+void setDisplaySSID() {
+	NefryDisplay.setFont(ArialMT_Plain_16);
+	NefryDisplay.drawString(10, 0, "Connecting WiFi");
+	NefryDisplay.setFont(ArialMT_Plain_10);
+	NefryDisplay.drawString(10, 20, "SSID:");
+	NefryDisplay.drawStringWithHScroll(45, 20,ssid , 3);
+	NefryDisplay.drawProgressBar(14, 44, 100, 14, 50+ wifiDisplayScroll);
+}
 uint8_t WiFiMulti::run(int mode)
 {
-
     int8_t scanResult;
     uint8_t status = WiFi.status();
     if(status != WL_CONNECTED || status == WL_NO_SSID_AVAIL || status == WL_IDLE_STATUS || status == WL_CONNECT_FAILED) {
@@ -113,20 +121,10 @@ uint8_t WiFiMulti::run(int mode)
             // clean up ram
             WiFi.scanDelete();
 			if (mode == 0) {
-				NefryDisplay.clear();
-				NefryDisplay.setFont(ArialMT_Plain_16);
-				NefryDisplay.drawString(10, 0, "Connecting WiFi");
-				String _ssidstr = (String)bestNetwork.ssid;
-				int _ssiddispy = 20;
-				if (_ssidstr.length() > 8) {
-					NefryDisplay.setFont(ArialMT_Plain_10);
-					if (_ssidstr.length() > 17) {
-						_ssiddispy = 18;
-					}
-				}
-				NefryDisplay.drawString(10, _ssiddispy, "SSID:"+ _ssidstr,114);
-				NefryDisplay.drawProgressBar(14, 44, 100, 14, 50);
-				NefryDisplay.display();
+				wifiDisplayScroll = 0;
+				ssid = (String)bestNetwork.ssid;
+				NefryDisplay.setAutoScrollFlg(true);
+				NefryDisplay.autoScrollFunc(setDisplaySSID);
 			}
             DEBUG_WIFI_MULTI("\n\n");
             delay(0);
@@ -136,21 +134,16 @@ uint8_t WiFiMulti::run(int mode)
 
                 WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase, bestChannel, bestBSSID);
                 status = WiFi.status();
-				int wifiTimout = 0;
+				
                 // wait for connection or fail
                 while(status != WL_CONNECTED && status != WL_NO_SSID_AVAIL && status != WL_CONNECT_FAILED) {
-                    delay(50);
+                    delay(70);
                     status = WiFi.status();
-					wifiTimout++;
-					if (wifiTimout > 50)break;
-					if (mode == 0) {
-						NefryDisplay.drawProgressBar(14, 44, 100, 14, 50+ wifiTimout);
-						NefryDisplay.display();
-					}
+					wifiDisplayScroll++;
+					if (wifiDisplayScroll > 50)break;
                 }
 				if (mode == 0) {
-					NefryDisplay.drawProgressBar(14, 44, 100, 14, 100);
-					NefryDisplay.display();
+					wifiDisplayScroll = 50;
 				}
                 IPAddress ip;
                 

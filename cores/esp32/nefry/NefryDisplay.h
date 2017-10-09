@@ -23,7 +23,7 @@ public:
 
 	// 画面幅を超えた分は水平スクロールをする
 	// scrollSpeed分ループすると一文字進む（scrollSpeedが少ない程速い）
-	void drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t loopCount = 0, int16_t scrollSpeed = 1);
+	void drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t scrollSpeed = 1);
 
 	// 表示に必要な幅を計算します。
 	uint16_t getStringWidth(const char* text, uint16_t length);
@@ -95,6 +95,20 @@ public:
 	// 上下反転
 	void flipScreenVertically();
 
+	// 自動スクロール機能有効無効化 trueの時有効化
+	void setAutoScrollFlg(bool scroll);
+
+	bool _scrollMode = false;
+
+	typedef void(*GeneralFunction) (void);
+	//自動スクロールで表示したいものをセットする
+	void autoScrollFunc(GeneralFunction func);
+
+	void autoScrollTask ();
+
+private:
+	GeneralFunction _func = NULL;
+	uint16_t _scrollTextCount = 0;
 };
 extern Nefry_Display NefryDisplay;
 #endif

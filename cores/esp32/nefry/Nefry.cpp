@@ -76,7 +76,7 @@ void Nefry_lib::nefry_init() {
 	Serial.println(F("\nServer started"));
 	/* Module状況表示 */
 	/* IPaddress display表示 */
-	getDisplayInfo();
+	printDeviceInfo();
 	setLed(0x00, 0xff, 0xff);
 	
 }
@@ -85,26 +85,27 @@ void Nefry_lib::nefry_loop() {
 	NefryWiFi.run();
 }
 
-void Nefry_lib::getDisplayInfo(){
-	NefryDisplay.clear();
+void Nefry_lib::printDeviceInfo()
+{
+	NefryDisplay.setAutoScrollFlg(true);
+	NefryDisplay.autoScrollFunc(getNefryDisplayInfo);
+}
+
+
+void getNefryDisplayInfo(){
 	NefryDisplay.setFont(Arimo_12);
-	String _disModuleStr = NefryDataStore.getModuleID() + "  Info";
+	String _disModuleStr = NefryDataStore.getModuleID() + "  Info   ";
 	int _disssidpos = 128 - NefryDisplay.getStringWidth(_disModuleStr);
-	NefryDisplay.drawString(_disssidpos / 2,0 , _disModuleStr);
-	_disModuleStr = "SSID:"+WiFi.SSID();
-	_disssidpos = 20;
-	if (NefryDisplay.getStringWidth(_disModuleStr) > 128) {
-		_disssidpos = 12;
-	}
-	NefryDisplay.drawString(0, _disssidpos, _disModuleStr);
-	NefryDisplay.drawString(0, 38, "IP:" + getAddressStr(WiFi.localIP()));
+	NefryDisplay.drawStringWithHScroll(_disssidpos / 2,0 , _disModuleStr,20);
+	NefryDisplay.drawString(0, 20, "SSID:");
+	NefryDisplay.drawStringWithHScroll(35, 20, WiFi.SSID() + "     ", 10);
+	NefryDisplay.drawString(0, 38, "IP:" + Nefry.getAddressStr(WiFi.localIP()));
 	_disModuleStr = "NormalMode";
-	if (_bootMode == 2) {
+	if (Nefry.getBootMode() == 2) {
 		_disModuleStr = "WriteMode";
 	}
 	NefryDisplay.drawString(0, 50, _disModuleStr);
 	NefryDisplay.drawString(85, 50, LIBVERSION);
-	NefryDisplay.display();
 }
 
 /* ModuleID */
@@ -195,6 +196,7 @@ void Nefry_lib::reset() {
 	ESP.restart();
 	delay(500);
 }
+
 
 void Nefry_lib::deleteWiFi(int id)
 {
