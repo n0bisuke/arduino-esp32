@@ -8,6 +8,7 @@
 #include "./nefry/NefryConfig.h"
 #include "./nefry/NefryConsole.h"
 #include "./nefry/NefryUpdate.h"
+#include "./nefry/NefryDisplay.h"
 
 #if CONFIG_AUTOSTART_ARDUINO
 
@@ -46,7 +47,7 @@ void NefryBackEnd(void *pvParameters) {
 	NefryConfig.beginWeb();
 	NefryWebServer.begin();
 	NefryConsole.beginWeb();
-	NefryUpdate.beginWeb();
+	NefryUpdate.setupWebLocalUpdate();
 	delay(500);
 	for (;;) {
 		delay(1);
@@ -65,8 +66,10 @@ void NefryBackEnd(void *pvParameters) {
 void NefryLedBlink(void *pvParameters)
 {
 	for (;;) {
-		delay(5);
+		delay(10);
 		Nefry.LedBlinkTask();
+		delay(10);
+		NefryDisplay.autoScrollTask();
 	}
 }
 
@@ -75,7 +78,7 @@ extern "C" void app_main()
     initArduino();
 	xTaskCreatePinnedToCore(&NefryBackEnd, "NefryBackEnd", 4096, NULL, 1, NULL, ARDUINO_RUNNING_CORE);
 	xTaskCreatePinnedToCore(loopTask,      "loopTask",     8192, NULL, 2, NULL, ARDUINO_RUNNING_CORE);
-	xTaskCreatePinnedToCore(&NefryLedBlink,"NefryLedBlink",1024, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
+	xTaskCreatePinnedToCore(&NefryLedBlink,"NefryLedBlink",2048, NULL, 3, NULL, ARDUINO_RUNNING_CORE);
 }
 
 #endif

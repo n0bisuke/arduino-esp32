@@ -202,7 +202,6 @@ protected:
     bool _reuse = false;
     uint16_t _tcpTimeout = HTTPCLIENT_DEFAULT_TCP_TIMEOUT;
     bool _useHTTP10 = false;
-    bool _secure = false;
 
     String _uri;
     String _protocol;

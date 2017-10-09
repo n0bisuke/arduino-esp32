@@ -32,6 +32,9 @@ normalDisplay		KEYWORD2
 setContrast			KEYWORD2
 flipScreenVertically	KEYWORD2
 end					KEYWORD2
+drawStringWithHScroll	KEYWORD2
+setAutoScrollFlg		KEYWORD2
+autoScrollFunc			KEYWORD2
 
 #######################################
 # Constants

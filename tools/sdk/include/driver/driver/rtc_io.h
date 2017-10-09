@@ -18,7 +18,6 @@
 #include <stdint.h>
 #include "esp_err.h"
 #include "driver/gpio.h"
-#include "soc/rtc_gpio_channel.h"
 
 #ifdef __cplusplus
 extern "C" {

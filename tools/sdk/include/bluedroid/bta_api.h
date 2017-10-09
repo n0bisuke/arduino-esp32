@@ -404,14 +404,6 @@ typedef void (tBTA_START_ADV_CMPL_CBACK) (tBTA_STATUS status);
 
 typedef tBTM_SET_PKT_DATA_LENGTH_CBACK tBTA_SET_PKT_DATA_LENGTH_CBACK;
 
-typedef tBTM_SET_LOCAL_PRIVACY_CBACK tBTA_SET_LOCAL_PRIVACY_CBACK;
-
-typedef tBTM_CMPL_CB tBTA_CMPL_CB;
-
-typedef tBTM_TX_POWER_RESULTS tBTA_TX_POWER_RESULTS;
-
-typedef tBTM_RSSI_RESULTS tBTA_RSSI_RESULTS;
-
 /* advertising channel map */
 #define BTA_BLE_ADV_CHNL_37 BTM_BLE_ADV_CHNL_37
 #define BTA_BLE_ADV_CHNL_38 BTM_BLE_ADV_CHNL_38
@@ -1410,12 +1402,6 @@ extern void BTA_DisableTestMode(void);
 *******************************************************************************/
 extern void BTA_DmSetDeviceName(char *p_name);
 
-extern void BTA_DmUpdateWhiteList(BOOLEAN add_remove,  BD_ADDR remote_addr);
-
-extern void BTA_DmBleReadAdvTxPower(tBTA_CMPL_CB *cmpl_cb);
-
-extern void BTA_DmBleReadRSSI(BD_ADDR remote_addr, tBTA_CMPL_CB *cmpl_cb);
-
 /*******************************************************************************
 **
 ** Function         BTA_DmSetVisibility
@@ -2049,11 +2035,11 @@ extern void BTA_DmSetRandAddress(BD_ADDR rand_addr);
 ** Description      Enable/disable privacy on the local device
 **
 ** Parameters:      privacy_enable   - enable/disabe privacy on remote device.
-**                  set_local_privacy_cback -callback to be called with result
+**
 ** Returns          void
 **
 *******************************************************************************/
-extern void BTA_DmBleConfigLocalPrivacy(BOOLEAN privacy_enable, tBTA_SET_LOCAL_PRIVACY_CBACK *set_local_privacy_cback);
+extern void BTA_DmBleConfigLocalPrivacy(BOOLEAN privacy_enable);
 
 /*******************************************************************************
 **
@@ -2222,7 +2208,7 @@ extern void BTA_BleDisableAdvInstance(UINT8 inst_id);
 **
 *******************************************************************************/
 extern void BTA_DmBleUpdateConnectionParams(BD_ADDR bd_addr, UINT16 min_int,
-        UINT16 max_int, UINT16 latency, UINT16 timeout);
+        UINT16 max_int, UINT16 latency, UINT16 timeout, tBTA_UPDATE_CONN_PARAM_CBACK *update_conn_param_cb);
 
 /*******************************************************************************
 **

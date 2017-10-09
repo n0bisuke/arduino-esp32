@@ -32,7 +32,6 @@ extern "C" {
 #include "freertos/queue.h"
 #include "freertos/ringbuf.h"
 #include <esp_types.h>
-#include "soc/uart_channel.h"
 
 #define UART_FIFO_LEN           (128)        /*!< Length of the hardware FIFO buffers */
 #define UART_INTR_MASK          0x1ff        /*!< mask of all UART interrupts */
@@ -268,20 +267,6 @@ esp_err_t uart_set_line_inverse(uart_port_t uart_num, uint32_t inverse_mask);
  *     - ESP_FAIL Parameter error
  */
 esp_err_t uart_set_hw_flow_ctrl(uart_port_t uart_num, uart_hw_flowcontrol_t flow_ctrl, uint8_t rx_thresh);
-
-/**
- * @brief Set software flow control.
- *
- * @param uart_num   UART_NUM_0, UART_NUM_1 or UART_NUM_2
- * @param enable     switch on or off
- * @param rx_thresh_xon  low water mark
- * @param rx_thresh_xoff high water mark
- *
- * @return
- *     - ESP_OK   Success
- *     - ESP_FAIL Parameter error
- */
- esp_err_t uart_set_sw_flow_ctrl(uart_port_t uart_num, bool enable, uint8_t rx_thresh_xon,  uint8_t rx_thresh_xoff);
 
 /**
  * @brief Get hardware flow control mode
@@ -601,7 +586,7 @@ int uart_write_bytes_with_break(uart_port_t uart_num, const char* src, size_t si
 int uart_read_bytes(uart_port_t uart_num, uint8_t* buf, uint32_t length, TickType_t ticks_to_wait);
 
 /**
- * @brief UART ring buffer flush. This will discard all data in the UART RX buffer.
+ * @brief UART ring buffer flush
  *
  * @param uart_num UART_NUM_0, UART_NUM_1 or UART_NUM_2
  *
