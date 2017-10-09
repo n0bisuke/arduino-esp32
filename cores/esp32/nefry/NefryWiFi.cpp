@@ -85,7 +85,7 @@ run関数で返す値
 			Serial.println(WiFi.SSID());
 			Serial.print("IP address: ");
 			Serial.println(WiFi.localIP());
-			Nefry.getDisplayInfo();
+			Nefry.printDeviceInfo();
 			return 0;
 		}
 		prevWifiStatus = wifiStatus;

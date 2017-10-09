@@ -19,7 +19,7 @@
 #define NEO_GBR  ((2 << 6) | (2 << 4) | (0 << 2) | (1))
 #define NEO_BRG  ((1 << 6) | (1 << 4) | (2 << 2) | (0))
 #define NEO_BGR  ((2 << 6) | (2 << 4) | (1 << 2) | (0))
-
+void getNefryDisplayInfo();
 
 class Nefry_lib
 {
@@ -65,7 +65,7 @@ public:
 		sleep(const int sec),
 		setProgramName(const char * pn),
 		beginLed(const int num, const int pin, uint8_t t),
-		setLed(const int r, const int g, const int b, const char w = 122, const int pin = 16, const int num = 0),
+		setLed(const int r, const int g, const int b, const char w = 80, const int pin = 16, const int num = 0),
 		setLed(String _colorStr, const char w = 122, const int pin = 16, const int num = 0),
 		addWiFi(String ssid, String pass),
 		deleteWiFi(const int id),
@@ -105,7 +105,7 @@ public:
 		println(String text),
 
 		setIndexLink(const char title[32], const char url[32]),
-		getDisplayInfo(),
+		printDeviceInfo(),
 
 		setNefryState(int state),
 		setLedBlink(int red, int green, int blue, bool EN, int wait),
