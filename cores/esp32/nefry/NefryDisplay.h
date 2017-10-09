@@ -2,7 +2,7 @@
 #define NefryDisplay_h
 #include <Arduino.h>
 #include "inc/ssd1306/SSD1306.h"
-
+#include "inc/ssd1306/OLEDDisplayFonts.h"
 
 class Nefry_Display
 {
@@ -23,7 +23,8 @@ public:
 
 	// 画面幅を超えた分は水平スクロールをする
 	// scrollSpeed分ループすると一文字進む（scrollSpeedが少ない程速い）
-	void drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t scrollSpeed = 1);
+	//scrollpointer/scrollSpeed の文字分進む
+	void drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t scrollSpeed = 1, int16_t scrollpointer = -1);
 
 	// 表示に必要な幅を計算します。
 	uint16_t getStringWidth(const char* text, uint16_t length);
@@ -109,6 +110,7 @@ public:
 private:
 	GeneralFunction _func = NULL;
 	uint16_t _scrollTextCount = 0;
+	int _nefryPrintDisplayValue = 0;
 };
 extern Nefry_Display NefryDisplay;
 #endif

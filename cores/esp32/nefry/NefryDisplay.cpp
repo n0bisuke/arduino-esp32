@@ -3,7 +3,7 @@
 #include <string>
 
 SSD1306  _nefrySsdDisplay(0x3c, SDA, SCL);
-
+String _nefryPrintDisplay1 = "", _nefryPrintDisplay2 = "", _nefryPrintDisplay3 = "";
 
 /* 初期化 */
 bool Nefry_Display::begin()
@@ -19,10 +19,40 @@ bool Nefry_Display::begin()
 	return true;
 }
 
+void setPrintDialogDisplay() {
+	NefryDisplay.setFont(Arimo_12);
+	NefryDisplay.drawString(15, 0,"Nefry PrintDialog");
+	NefryDisplay.drawStringWithHScroll(0, 20, _nefryPrintDisplay1,10);
+	NefryDisplay.drawStringWithHScroll(0, 35, _nefryPrintDisplay2, 10);
+	NefryDisplay.drawStringWithHScroll(0, 50, _nefryPrintDisplay3, 10);
+}
+
 /* 表示 */
 bool Nefry_Display::print(String s)
 {
-	/* 未実装 */
+	s += "  ";
+	if (_nefryPrintDisplayValue < 3) {
+		switch (_nefryPrintDisplayValue)
+		{
+		case 0:
+			_nefryPrintDisplay1 = s;
+			break;
+		case 1:
+			_nefryPrintDisplay2 = s;
+			break;
+		case 2:
+			_nefryPrintDisplay3 = s;
+			break;
+		}
+		_nefryPrintDisplayValue++;
+	}
+	else {
+		_nefryPrintDisplay1 = _nefryPrintDisplay2;
+		_nefryPrintDisplay2 = _nefryPrintDisplay3;
+		_nefryPrintDisplay3 = s;
+	}
+	setAutoScrollFlg(true);
+	autoScrollFunc(setPrintDialogDisplay);
 	return true;
 }
 void Nefry_Display::end()
@@ -36,14 +66,27 @@ void Nefry_Display::drawString(int16_t x, int16_t y, String text, int16_t maxLin
 	_nefrySsdDisplay.drawStringMaxWidth(x, y, maxLineWidth, text);
 }
 
-void Nefry_Display::drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t scrollSpeed)
+void Nefry_Display::drawStringWithHScroll(int16_t x, int16_t y, String text, int16_t scrollSpeed, int16_t scrollpointer)
 {
-	int16_t maxLineWidth = 127-x;
+	int16_t maxLineWidth = 127 - x;
 	int16_t textWidth = getStringWidth(text);
 	String tempText = text;
-	if (_scrollMode == true) {
-		if (textWidth > maxLineWidth){
-			long strIndex = _scrollTextCount / scrollSpeed;
+	if (scrollpointer == -1) {
+		if (_scrollMode == true) {
+			if (textWidth > maxLineWidth) {
+				long strIndex = _scrollTextCount / scrollSpeed;
+				int textLength = text.length();
+				long scrollNum = strIndex % textLength;
+				String h_text = text.substring(0, scrollNum);
+				String l_text = text.substring(scrollNum);
+				l_text.concat(h_text);
+				tempText = l_text;
+			}
+		}
+	}
+	else {
+		if (textWidth > maxLineWidth) {
+			long strIndex = scrollpointer / scrollSpeed;
 			int textLength = text.length();
 			long scrollNum = strIndex % textLength;
 			String h_text = text.substring(0, scrollNum);
