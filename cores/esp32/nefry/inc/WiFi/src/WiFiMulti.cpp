@@ -122,7 +122,8 @@ uint8_t WiFiMulti::run(int mode)
             WiFi.scanDelete();
 			if (mode == 0) {
 				wifiDisplayScroll = 0;
-				_nefryDisplaySsid = (String)bestNetwork.ssid;
+				String _nefryStrssid = bestNetwork.ssid;
+				_nefryDisplaySsid = _nefryStrssid;
 				NefryDisplay.setAutoScrollFlg(true);
 				NefryDisplay.autoScrollFunc(setDisplaySSID);
 			}
