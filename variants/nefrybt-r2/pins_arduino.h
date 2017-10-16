@@ -18,8 +18,8 @@ static const uint8_t SDA = 21;
 static const uint8_t SCL = 22;
 
 //Display
-static const uint8_t SDA2 = 21;
-static const uint8_t SCL2 = 22;
+static const uint8_t SDA2 = 17;
+static const uint8_t SCL2 = 5;
 
 static const uint8_t SS    = 25;
 static const uint8_t MOSI  = 23;
@@ -31,25 +31,25 @@ static const uint8_t D1 = 21;
 static const uint8_t D2 = 23;
 static const uint8_t D3 = 19;
 static const uint8_t D4 = 18;
+static const uint8_t D5 = 25;
+static const uint8_t D6 = 26;
+static const uint8_t D7 = 13;
+static const uint8_t D8 = 14;
 
-static const uint8_t A0 = 25;
-static const uint8_t A1 = 26;
-static const uint8_t A2 = 32;
-static const uint8_t A3 = 33;
-static const uint8_t A4 = 27;
-static const uint8_t A5 = 14;
-static const uint8_t A6 = 13;
-static const uint8_t A7 = 35;
+static const uint8_t A0 = 33;
+static const uint8_t A1 = 32;
+static const uint8_t A2 = 39;
+static const uint8_t A3 = 36;
 
-static const uint8_t T0 = 33;
-static const uint8_t T1 = 32;
-static const uint8_t T2 = 27;
-static const uint8_t T3 = 14;
-static const uint8_t T4 = 13;
+static const uint8_t T0 = 13;
+static const uint8_t T1 = 14;
+static const uint8_t T2 = 32;
+static const uint8_t T3 = 33;
+static const uint8_t T4 = 27;
 
 static const uint8_t DAC1 = 25;
 static const uint8_t DAC2 = 26;
 
-static const uint8_t  boardId = 1;//Nefry BT
+static const uint8_t  boardId = 2;//Nefry BT R2
 
 #endif /* Pins_Arduino_h */
