@@ -171,8 +171,9 @@ typedef struct {
     BT_HDR                  hdr;
     tBTA_GATT_AUTH_REQ      auth_req;
     UINT8                   num_attr;
-    tBTA_GATTC_ATTR_ID      *p_id_list;
-} tBTA_GATTC_API_READ_MULTI;
+    UINT16                  handles[GATT_MAX_READ_MULTI_HANDLES];
+    tBTA_GATTC_EVT          cmpl_evt;
+}tBTA_GATTC_API_READ_MULTI;
 
 typedef struct {
     BT_HDR                  hdr;
