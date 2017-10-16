@@ -6,6 +6,58 @@ menu.DebugLevel=Core Debug Level
 
 ##############################################################
 
+nefrybtr2.name=Nefry BT R2
+
+nefrybtr2.upload.tool=esptool
+nefrybtr2.upload.maximum_size=1703936
+nefrybtr2.upload.maximum_data_size=294912
+nefrybtr2.upload.wait_for_upload_port=true
+
+nefrybtr2.serial.disableDTR=true
+nefrybtr2.serial.disableRTS=true
+
+nefrybtr2.build.mcu=esp32
+nefrybtr2.build.core=esp32
+nefrybtr2.build.variant=nefrybt-r2
+nefrybtr2.build.board=Nefry_BT_R2
+nefrybtr2.build.partitions=default
+
+nefrybtr2.build.f_cpu=240000000L
+nefrybtr2.build.flash_mode=dio
+nefrybtr2.build.flash_size=4MB
+nefrybtr2.build.boot=bootloader
+nefrybtr2.build.flash_freq=80m
+
+nefrybtr2.menu.UploadSpeed.921600=921600
+nefrybtr2.menu.UploadSpeed.921600.upload.speed=921600
+nefrybtr2.menu.UploadSpeed.115200=115200
+nefrybtr2.menu.UploadSpeed.115200.upload.speed=115200
+nefrybtr2.menu.UploadSpeed.256000.windows=256000
+nefrybtr2.menu.UploadSpeed.256000.upload.speed=256000
+nefrybtr2.menu.UploadSpeed.230400.windows.upload.speed=256000
+nefrybtr2.menu.UploadSpeed.230400=230400
+nefrybtr2.menu.UploadSpeed.230400.upload.speed=230400
+nefrybtr2.menu.UploadSpeed.460800.linux=460800
+nefrybtr2.menu.UploadSpeed.460800.macosx=460800
+nefrybtr2.menu.UploadSpeed.460800.upload.speed=460800
+nefrybtr2.menu.UploadSpeed.512000.windows=512000
+nefrybtr2.menu.UploadSpeed.512000.upload.speed=512000
+
+nefrybtr2.menu.DebugLevel.none=None
+nefrybtr2.menu.DebugLevel.none.build.code_debug=0
+nefrybtr2.menu.DebugLevel.error=Error
+nefrybtr2.menu.DebugLevel.error.build.code_debug=1
+nefrybtr2.menu.DebugLevel.warn=Warn
+nefrybtr2.menu.DebugLevel.warn.build.code_debug=2
+nefrybtr2.menu.DebugLevel.info=Info
+nefrybtr2.menu.DebugLevel.info.build.code_debug=3
+nefrybtr2.menu.DebugLevel.debug=Debug
+nefrybtr2.menu.DebugLevel.debug.build.code_debug=4
+nefrybtr2.menu.DebugLevel.verbose=Verbose
+nefrybtr2.menu.DebugLevel.verbose.build.code_debug=5
+
+##############################################################
+
 nefrybt.name=Nefry BT
 
 nefrybt.upload.tool=esptool
