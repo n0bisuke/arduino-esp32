@@ -2,7 +2,7 @@
 #include "NefryBTimg.h"
 #include <string>
 
-SSD1306  _nefrySsdDisplay(0x3c, SDA, SCL);
+SSD1306  _nefrySsdDisplay(0x3c, SDA2, SCL2);
 String _nefryPrintDisplay1 = "", _nefryPrintDisplay2 = "", _nefryPrintDisplay3 = "";
 
 /* 初期化 */
