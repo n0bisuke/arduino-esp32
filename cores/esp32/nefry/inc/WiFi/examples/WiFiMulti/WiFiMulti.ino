@@ -5,6 +5,7 @@
 
 #include <WiFi.h>
 #include <WiFiMulti.h>
+#include <Nefry.h>
 
 WiFiMulti wifiMulti;
 
@@ -18,7 +19,7 @@ void setup()
     wifiMulti.addAP("ssid_from_AP_3", "your_password_for_AP_3");
 
     Serial.println("Connecting Wifi...");
-    if(wifiMulti.run() == WL_CONNECTED) {
+    if(wifiMulti.run(Nefry.getBootMode()) == WL_CONNECTED) {
         Serial.println("");
         Serial.println("WiFi connected");
         Serial.println("IP address: ");
@@ -28,7 +29,7 @@ void setup()
 
 void loop()
 {
-    if(wifiMulti.run() != WL_CONNECTED) {
+    if(wifiMulti.run(Nefry.getBootMode()) != WL_CONNECTED) {
         Serial.println("WiFi not connected!");
         delay(1000);
     }
