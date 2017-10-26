@@ -1,4 +1,4 @@
-// Nefry Beacon
+// Nefry Eddystone
 // Copyright(C) 2017 wami
 //
 // This program is free software : you can redistribute it and/or modify
@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _NEFRY_BEACON_H_
-#define _NEFRY_BEACON_H_
+
+#ifndef _NEFRY_EDDYSTONE_H_
+#define _NEFRY_EDDYSTONE_H_
 
 #include "sdkconfig.h"
 
@@ -33,19 +34,17 @@
 
 struct ble_gap_adv_params_s;
 
-class NefryBeacon {
+class NefryEddystone {
     public:
         /**
          * Start BLE Advertising
          *
-         * @param[in] uuid  UUID
-         * @param[in] major  major
-         * @param[in] minor  minor
+         * @param[in] url URL
          *
          * @return true on success
          *
          */
-        bool begin(uint8_t uuid[16], uint16_t major, uint16_t minor);
+        bool begin(String url);
 
         /**
          * Stop BLE Advertising
@@ -53,6 +52,13 @@ class NefryBeacon {
          * @return none
          */
         bool end(void);
+
+    private:
+		bool setUrl(String url);
+
+		bool setUrl(String url, int mode);
+    private:
+
 };
 
 #endif

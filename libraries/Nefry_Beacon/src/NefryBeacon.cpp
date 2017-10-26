@@ -1,11 +1,11 @@
-// Nefry Beacon 
+// Nefry Beacon
 // Copyright(C) 2017 wami
 //
 // This program is free software : you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
@@ -15,9 +15,6 @@
 // along with this program.If not, see <http://www.gnu.org/licenses/>.
 
 #include "sdkconfig.h"
-
-#define CONFIG_BT_ENABLED
-#define CONFIG_BLUEDROID_ENABLED
 
 #if defined(CONFIG_BT_ENABLED) && defined(CONFIG_BLUEDROID_ENABLED)
 
@@ -54,30 +51,20 @@ uint8_t ibeacon_packet[] = {
  * BLE Arduino
  *
  * */
-
-NefryBeacon::NefryBeacon()
-{
-}
-
-NefryBeacon::~NefryBeacon(void)
-{
-    end();
-}
-
 bool NefryBeacon::begin(uint8_t uuid[16],uint16_t major,uint16_t minor){
 	for (int i = 0; i < 16; i++) {
 		ibeacon_packet[9 + i] = uuid[i];
 	}
-	
+
 	ibeacon_packet[25] = major>>8 & 0xFF;
 	ibeacon_packet[26] = major & 0xFF;
 
 	ibeacon_packet[27] = minor >> 8 & 0xFF;
 	ibeacon_packet[28] = minor & 0xFF;
-	
+
 	for (int i = 0; i < 30; i++) {
-		Serial.print(ibeacon_packet[i]);
-		Serial.print(":");
+		//Serial.print(ibeacon_packet[i]);
+		//Serial.print(":");
 	}
 	//Serial.println("btStart");
 	if (!btStarted() && !btStart()) {
@@ -115,8 +102,9 @@ bool NefryBeacon::end()
 		esp_bluedroid_disable();
 		esp_bluedroid_deinit();
 		btStop();
+    return true;
 	}
-	return true;
+	return false;
 }
 
 #endif
