@@ -37,6 +37,7 @@ extern "C" {
 #include <esp_wifi.h>
 #include <esp_event_loop.h>
 #include <lwip/ip_addr.h>
+#include "apps/dhcpserver_options.h"
 }
 
 
@@ -88,7 +89,8 @@ static bool softap_config_equal(const wifi_config_t& lhs, const wifi_config_t& r
  * @param ssid_hidden       Network cloaking (0 = broadcast SSID, 1 = hide SSID)
  * @param max_connection    Max simultaneous connected clients, 1 - 4.
 */
-bool WiFiAPClass::softAP(const char* ssid, const char* passphrase, int channel, int ssid_hidden, int max_connection){
+bool WiFiAPClass::softAP(const char* ssid, const char* passphrase, int channel, int ssid_hidden, int max_connection)
+{
 
     if(!WiFi.enableAP(true)) {
         // enable AP failed
@@ -139,8 +141,8 @@ bool WiFiAPClass::softAP(const char* ssid, const char* passphrase, int channel, 
  * @param gateway       gateway IP
  * @param subnet        subnet mask
  */
-
-bool WiFiAPClass::softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet){
+bool WiFiAPClass::softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet)
+{
 
     if(!WiFi.enableAP(true)) {
         // enable AP failed

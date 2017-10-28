@@ -37,6 +37,7 @@
 #include <sys/time.h>
 #include <sys/fcntl.h>
 #include "esp_task.h"
+#include "esp_system.h"
 #include "sdkconfig.h"
 
 /* Enable all Espressif-only options */
@@ -65,7 +66,7 @@
  */
 #define SMEMCPY(dst,src,len)            memcpy(dst,src,len)
 
-#define LWIP_RAND       rand
+#define LWIP_RAND       esp_random
 
 /*
    ------------------------------------
@@ -220,10 +221,7 @@
    ---------- AUTOIP options ----------
    ------------------------------------
 */
-#if CONFIG_MDNS
- /**
-  * LWIP_AUTOIP==1: Enable AUTOIP module.
-  */
+#ifdef CONFIG_LWIP_AUTOIP
 #define LWIP_AUTOIP                     1
 
 /**
@@ -239,8 +237,13 @@
 * be prepared to handle a changing IP address when DHCP overrides
 * AutoIP.
 */
-#define LWIP_DHCP_AUTOIP_COOP_TRIES     2
-#endif
+#define LWIP_DHCP_AUTOIP_COOP_TRIES     CONFIG_LWIP_AUTOIP_TRIES
+
+#define LWIP_AUTOIP_MAX_CONFLICTS CONFIG_LWIP_AUTOIP_MAX_CONFLICTS
+
+#define LWIP_AUTOIP_RATE_LIMIT_INTERVAL CONFIG_LWIP_AUTOIP_RATE_LIMIT_INTERVAL
+
+#endif /* CONFIG_LWIP_AUTOIP */
 
 /*
    ----------------------------------
@@ -293,6 +296,11 @@
  *         for the event. This is the default.
 */
 #define TCP_MSS                         CONFIG_TCP_MSS
+
+/**
+ * TCP_MSL: The maximum segment lifetime in milliseconds
+ */
+#define TCP_MSL                         CONFIG_TCP_MSL
 
 /**
  * TCP_MAXRTX: Maximum number of retransmissions of data segments.
@@ -361,7 +369,7 @@
    ---------- LOOPIF options ----------
    ------------------------------------
 */
-#if CONFIG_MDNS
+#ifdef CONFIG_LWIP_NETIF_LOOPBACK
 /**
  * LWIP_NETIF_LOOPBACK==1: Support sending packets with a destination IP
  * address equal to the netif IP address, looping them back up the stack.
@@ -372,7 +380,7 @@
  * LWIP_LOOPBACK_MAX_PBUFS: Maximum number of pbufs on queue for loopback
  * sending for each netif (0 = disabled)
  */
-#define LWIP_LOOPBACK_MAX_PBUFS         8
+#define LWIP_LOOPBACK_MAX_PBUFS         CONFIG_LWIP_LOOPBACK_MAX_PBUFS
 #endif
 
 /*
@@ -410,7 +418,7 @@
  * The queue size value itself is platform-dependent, but is passed to
  * sys_mbox_new() when tcpip_init is called.
  */
-#define TCPIP_MBOX_SIZE                 32
+#define TCPIP_MBOX_SIZE                 CONFIG_TCPIP_RECVMBOX_SIZE
 
 /**
  * DEFAULT_UDP_RECVMBOX_SIZE: The mailbox size for the incoming packets on a
@@ -500,24 +508,32 @@
  */
 #define SO_REUSE                        CONFIG_LWIP_SO_REUSE
 
-#if CONFIG_MDNS
 /**
  * SO_REUSE_RXTOALL==1: Pass a copy of incoming broadcast/multicast packets
  * to all local matches if SO_REUSEADDR is turned on.
  * WARNING: Adds a memcpy for every packet if passing to more than one pcb!
  */
-#define SO_REUSE_RXTOALL                1
-#endif
+#define SO_REUSE_RXTOALL                CONFIG_LWIP_SO_REUSE_RXTOALL
 
 /*
    ----------------------------------------
    ---------- Statistics options ----------
    ----------------------------------------
 */
+
 /**
  * LWIP_STATS==1: Enable statistics collection in lwip_stats.
  */
-#define LWIP_STATS                      0
+#define LWIP_STATS                      CONFIG_LWIP_STATS
+
+#if LWIP_STATS
+
+/**
+ * LWIP_STATS_DISPLAY==1: Compile in the statistics output functions.
+ */
+#define LWIP_STATS_DISPLAY              CONFIG_LWIP_STATS
+#endif
+
 
 /*
    ---------------------------------
@@ -668,7 +684,7 @@
  * The peer *is* in the ARP table if it requested our address before.
  * Also notice that this slows down input processing of every IP packet!
  */
-#define ETHARP_TRUST_IP_MAC             1
+#define ETHARP_TRUST_IP_MAC             CONFIG_LWIP_ETHARP_TRUST_IP_MAC
 
 
 /* Enable all Espressif-only options */
@@ -686,8 +702,8 @@
 #define ESP_IP4_ATON                    1
 #define ESP_LIGHT_SLEEP                 1
 #define ESP_L2_TO_L3_COPY               CONFIG_L2_TO_L3_COPY
-#define ESP_STATS_MEM                   0
-#define ESP_STATS_DROP                  0
+#define ESP_STATS_MEM                   CONFIG_LWIP_STATS
+#define ESP_STATS_DROP                  CONFIG_LWIP_STATS
 #define ESP_STATS_TCP                   0
 #define ESP_DHCP_TIMER                  1
 #define ESP_LWIP_LOGI(...)              ESP_LOGI("lwip", __VA_ARGS__)

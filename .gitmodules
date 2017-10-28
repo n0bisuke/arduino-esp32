@@ -3,4 +3,8 @@
 	url = https://github.com/wamisnet/ConfigurableFirmata.git
 [submodule "libraries/Nefry_ThingSpeak/src/include"]
 	path = libraries/Nefry_ThingSpeak/src/include
-url=https://github.com/wamisnet/thingspeak-arduino.git
+	url=https://github.com/wamisnet/thingspeak-arduino.git
+[submodule "libraries/BLE"]
+	path = libraries/BLE
+	url = https://github.com/nkolban/ESP32_BLE_Arduino.git
+

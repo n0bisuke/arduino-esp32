@@ -27,7 +27,6 @@
 
 #include "bt_defs.h"
 #include "btm_api.h"
-#include "gki.h"
 #include "bt_common_types.h"
 
 #define CHANNEL_MAP_LEN    5
@@ -164,12 +163,12 @@ typedef UINT8   tBTM_BLE_SFP;
 
 /* default connection interval min */
 #ifndef BTM_BLE_CONN_INT_MIN_DEF
-#define BTM_BLE_CONN_INT_MIN_DEF     24      /* recommended min: 30ms  = 24 * 1.25 */
+#define BTM_BLE_CONN_INT_MIN_DEF     10      /* recommended min: 12.5 ms  = 10 * 1.25 */
 #endif
 
 /* default connection interval max */
 #ifndef BTM_BLE_CONN_INT_MAX_DEF
-#define BTM_BLE_CONN_INT_MAX_DEF     40      /* recommended max: 50 ms = 56 * 1.25 */
+#define BTM_BLE_CONN_INT_MAX_DEF     12      /* recommended max: 15 ms = 12 * 1.25 */
 #endif
 
 /* default slave latency */
@@ -861,6 +860,20 @@ tBTM_BLE_SCAN_SETUP_CBACK bta_ble_scan_setup_cb;
 extern "C" {
 #endif
 */
+
+/*******************************************************************************
+**
+** Function         BTM_BleRegiseterConnParamCallback
+**
+** Description      register connection parameters update callback func
+**
+** Parameters:      update_conn_param_cb
+**
+** Returns          void
+**
+*******************************************************************************/
+void BTM_BleRegiseterConnParamCallback(tBTM_UPDATE_CONN_PARAM_CBACK *update_conn_param_cb);
+
 /*******************************************************************************
 **
 ** Function         BTM_SecAddBleDevice
@@ -1192,6 +1205,22 @@ tBTM_STATUS BTM_BleWriteScanRspRaw(UINT8 *p_raw_scan_rsp, UINT32 raw_scan_rsp_le
 *******************************************************************************/
 //extern
 tBTM_STATUS BTM_BleObserve(BOOLEAN start, UINT32 duration,
+                           tBTM_INQ_RESULTS_CB *p_results_cb, tBTM_CMPL_CB *p_cmpl_cb);
+
+/*******************************************************************************
+**
+** Function         BTM_BleScan
+**
+** Description      This procedure keep the device listening for advertising
+**                  events from a broadcast device.
+**
+** Parameters       start: start or stop scan.
+**
+** Returns          void
+**
+*******************************************************************************/
+//extern
+tBTM_STATUS BTM_BleScan(BOOLEAN start, UINT32 duration,
                            tBTM_INQ_RESULTS_CB *p_results_cb, tBTM_CMPL_CB *p_cmpl_cb);
 
 
@@ -1596,7 +1625,7 @@ tBTM_STATUS BTM_BleBroadcast(BOOLEAN start);
 **
 *******************************************************************************/
 //extern
-BOOLEAN BTM_BleConfigPrivacy(BOOLEAN enable);
+BOOLEAN BTM_BleConfigPrivacy(BOOLEAN enable, tBTM_SET_LOCAL_PRIVACY_CBACK *set_local_privacy_cabck);
 
 /*******************************************************************************
 **
@@ -1682,7 +1711,7 @@ void BTM_BleTurnOnPrivacyOnRemote(BD_ADDR bd_addr,
 **
 *******************************************************************************/
 //extern
-BOOLEAN BTM_BleUpdateAdvWhitelist(BOOLEAN add_remove, BD_ADDR emote_bda);
+BOOLEAN BTM_BleUpdateAdvWhitelist(BOOLEAN add_remove, BD_ADDR emote_bda, tBTM_ADD_WHITELIST_CBACK *add_wl_cb);
 
 /*******************************************************************************
 **

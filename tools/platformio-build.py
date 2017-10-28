@@ -69,7 +69,6 @@ env.Prepend(
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "newlib"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "nvs_flash"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "openssl"),
-        join(FRAMEWORK_DIR, "tools", "sdk", "include", "soc"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "spi_flash"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "sdmmc"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "tcpip_adapter"),
@@ -77,6 +76,8 @@ env.Prepend(
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "vfs"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "wear_levelling"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "xtensa-debug-module"),
+        join(FRAMEWORK_DIR, "tools", "sdk", "include", "console"),
+        join(FRAMEWORK_DIR, "tools", "sdk", "include", "soc"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "newlib"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "coap"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "wpa_supplicant"),
@@ -91,7 +92,7 @@ env.Prepend(
         join(FRAMEWORK_DIR, "tools", "sdk", "ld")
     ],
     LIBS=[
-        "gcc", "stdc++", "app_trace", "app_update", "bootloader_support", "bt", "btdm_app", "c", "c_nano", "coap", "coexist", "core", "cxx", "driver", "esp32", "ethernet", "expat", "fatfs", "freertos", "hal", "heap", "jsmn", "json", "log", "lwip", "m", "mbedtls", "mdns", "micro-ecc", "net80211", "newlib", "nghttp", "nvs_flash", "openssl", "phy", "pp", "rtc", "sdmmc", "smartconfig", "soc", "spi_flash", "tcpip_adapter", "ulp", "vfs", "wear_levelling", "wpa", "wpa2", "wpa_supplicant", "wps", "xtensa-debug-module"
+        "gcc", "app_trace", "app_update", "bootloader_support", "bt", "btdm_app", "c", "c_nano", "coap", "coexist", "console", "core", "cxx", "driver", "esp32", "esp_adc_cal", "espnow", "ethernet", "expat", "fatfs", "freertos", "hal", "heap", "jsmn", "json", "log", "lwip", "m", "mbedtls", "mdns", "micro-ecc", "net80211", "newlib", "nghttp", "nvs_flash", "openssl", "phy", "pp", "pthread", "rtc", "sdmmc", "smartconfig", "soc", "spi_flash", "spiffs", "tcpip_adapter", "ulp", "vfs", "wear_levelling", "wpa", "wpa2", "wpa_supplicant", "wps", "xtensa-debug-module", "stdc++"
     ],
 
     UPLOADERFLAGS=[
