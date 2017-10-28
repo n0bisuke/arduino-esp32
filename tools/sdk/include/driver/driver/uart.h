@@ -106,8 +106,7 @@ typedef struct {
     uart_parity_t parity;               /*!< UART parity mode*/
     uart_stop_bits_t stop_bits;         /*!< UART stop bits*/
     uart_hw_flowcontrol_t flow_ctrl;    /*!< UART HW flow control mode (cts/rts)*/
-    uint8_t rx_flow_ctrl_thresh;        /*!< UART HW RTS threshold*/
-    bool use_ref_tick;                  /*!< Set to true if UART should be clocked from REF_TICK */
+    uint8_t rx_flow_ctrl_thresh ;       /*!< UART HW RTS threshold*/
 } uart_config_t;
 
 /**
