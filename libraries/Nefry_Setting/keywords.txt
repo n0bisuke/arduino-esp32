@@ -4,13 +4,10 @@
 # Class
 #######################################
 
-NefryIFTTT			KEYWORD1
-IFTTT				KEYWORD1
+NefrySetting			KEYWORD1
 #######################################
 # Methods and Functions 
 #######################################	
-
-send				KEYWORD2
 
 #######################################
 # Constants
