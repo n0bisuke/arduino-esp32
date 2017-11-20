@@ -49,16 +49,19 @@ void Nefry_lib::nefry_init() {
 	NefryDataStore.begin();
 	delay(500);
 	setLed(0x00, 0x8f, 0x00);
-	Serial.println(F("WiFi Startup"));
-	if (NefryDataStore.getModuleID().equals("")) { NefryDataStore.setModuleID(getDefaultModuleId()); }
-	if (readSW()) { _bootMode = 2; }
-	setLedBlink(0, 0xbf, 0, true, 100);
-	NefryWiFi.begin();
-	Serial.println("WiFi connected");
-	Serial.print("SSID: ");
-	Serial.println(WiFi.SSID());
-	Serial.print("IP address: ");
-	Serial.println(WiFi.localIP());
+
+	if(Nefry.getWifiEnabled()) {
+		Serial.println(F("WiFi Startup"));
+		if (NefryDataStore.getModuleID().equals("")) { NefryDataStore.setModuleID(getDefaultModuleId()); }
+		if (readSW()) { _bootMode = 2; }
+		setLedBlink(0, 0xbf, 0, true, 100);
+		NefryWiFi.begin();
+		Serial.println("WiFi connected");
+		Serial.print("SSID: ");
+		Serial.println(WiFi.SSID());
+		Serial.print("IP address: ");
+		Serial.println(WiFi.localIP());
+	}
 	setLedBlink(0, 0, 0, false, 0);
 	delay(100);
 	setLed(0x00, 0xcf, 0x00);
@@ -76,13 +79,17 @@ void Nefry_lib::nefry_init() {
 	Serial.println(F("\nServer started"));
 	/* Module状況表示 */
 	/* IPaddress display表示 */
-	printDeviceInfo();
+	if(Nefry.getWifiEnabled()){
+		printDeviceInfo();
+	}
 	setLed(0x00, 0xff, 0xff);
 	
 }
 
 void Nefry_lib::nefry_loop() {
-	NefryWiFi.run();
+	if(Nefry.getWifiEnabled()){
+		NefryWiFi.run();
+	}
 }
 
 void Nefry_lib::printDeviceInfo()
@@ -400,4 +407,18 @@ void Nefry_lib::setLedBlink(int red,int green,int blue,bool EN,int wait) {
 	_nefryLedBlinkState[3] = EN;
 	_nefryLedBlinkState[4] = wait;
 }
+
+// Wi-FiのON/OFF
+void Nefry_lib::enableWifi() {
+	_wifiEnableFlg = true;
+}
+
+void Nefry_lib::disableWifi() {
+	_wifiEnableFlg = false;
+}
+
+bool Nefry_lib::getWifiEnabled() {
+	return _wifiEnableFlg;
+}
+
 Nefry_lib Nefry;
