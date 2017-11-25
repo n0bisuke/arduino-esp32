@@ -9,6 +9,7 @@
 #include "./nefry/NefryConsole.h"
 #include "./nefry/NefryUpdate.h"
 #include "./nefry/NefryDisplay.h"
+#include "./nefry/NefrySetting.h"
 
 #if CONFIG_AUTOSTART_ARDUINO
 
@@ -17,7 +18,7 @@
 #else
 #define ARDUINO_RUNNING_CORE 1
 #endif
-
+NefrySetting _nefrySetting;
 void loopTask(void *pvParameters)
 {
 	while (Nefry.getBootMode() == -1) { delay(1); }
@@ -41,6 +42,7 @@ void loopTask(void *pvParameters)
 void NefryBackEnd(void *pvParameters) {
 	TickType_t xLastWakeTime;
 	xLastWakeTime = xTaskGetTickCount();
+	_nefrySetting.setupSetting();
 	Nefry.nefry_init();
 	NefryWeb.begin();
 	NefryWiFi.beginWeb();

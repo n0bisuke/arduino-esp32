@@ -57,6 +57,7 @@ env.Prepend(
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "bt"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "driver"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "esp32"),
+        join(FRAMEWORK_DIR, "tools", "sdk", "include", "esp_adc_cal"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "ethernet"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "fatfs"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "freertos"),
@@ -71,6 +72,7 @@ env.Prepend(
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "openssl"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "spi_flash"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "sdmmc"),
+        join(FRAMEWORK_DIR, "tools", "sdk", "include", "spiffs"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "tcpip_adapter"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "ulp"),
         join(FRAMEWORK_DIR, "tools", "sdk", "include", "vfs"),
@@ -111,6 +113,7 @@ env.Append(
         "-T", "esp32.common.ld",
         "-T", "esp32.rom.ld",
         "-T", "esp32.peripherals.ld",
+        "-T", "esp32.rom.spiram_incompatible_fns.ld",
         "-u", "ld_include_panic_highint_hdl"
     ],
 
