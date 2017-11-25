@@ -83,12 +83,16 @@ void Nefry_lib::nefry_init() {
 		printDeviceInfo();
 	}
 	setLed(0x00, 0xff, 0xff);
-	
+	_nefryWifiWait = 0;
 }
 
 void Nefry_lib::nefry_loop() {
 	if(Nefry.getWifiEnabled()){
-		NefryWiFi.run();
+		_nefryWifiWait++;
+		if (_nefryWifiWait > 1000) {//WiFiに接続する間隔を10秒ごとに修正
+			_nefryWifiWait = 0;
+			NefryWiFi.run();
+		}
 	}
 }
 

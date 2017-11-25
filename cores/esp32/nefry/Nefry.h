@@ -163,7 +163,8 @@ private:
 	int 
 		_bootMode = -1,	/* Boot状態を管理　-1:初期化中 0:起動中 1:通常起動 2:書き込みモード */
 		hextonum(char c),
-		_nefryState = 0;
+		_nefryState = 0,
+		_nefryWifiWait;
 	int _nefryLedBlinkState[5];
 	const char * program;
 };
