@@ -1,12 +1,11 @@
 name=Nefry(ESP32)Module
 version=1.1.0
 
-runtime.tools.xtensa-esp32-elf-gcc.path={runtime.platform.path}/tools/xtensa-esp32-elf
+runtime.tools.xtensa-esp32-elf-gcc.path={runtime.tools.xtensa-esp32-elf-gcc.path}/xtensa-esp32-elf
 
-tools.esptool.path={runtime.tools.esptool.path}/
-tools.esptool.cmd=esptool
-tools.esptool.cmd.linux=esptool.py
-tools.esptool.cmd.windows=esptool.exe
+tools.esptool.cmd={runtime.tools.esptool.path}/esptool
+tools.esptool.cmd.linux={runtime.platform.path}/esptool.py
+tools.esptool.cmd.windows={runtime.tools.esptool.path}/esptool.exe
 
 tools.esptool.network_cmd=python "{runtime.platform.path}/tools/espota.py"
 tools.esptool.network_cmd.windows="{runtime.platform.path}/tools/espota.exe"
@@ -79,8 +78,8 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.f
 recipe.objcopy.eep.pattern={tools.gen_esp32part.cmd} -q "{runtime.platform.path}/tools/partitions/{build.partitions}.csv" "{build.path}/{build.project_name}.partitions.bin"
 
 ## Create hex
-recipe.objcopy.hex.pattern="{tools.esptool.path}/{tools.esptool.cmd}" --chip esp32 elf2image --flash_mode "{build.flash_mode}" --flash_freq "{build.flash_freq}" --flash_size "{build.flash_size}" -o "{build.path}/{build.project_name}.bin" "{build.path}/{build.project_name}.elf"
-recipe.objcopy.hex.pattern.linux=python "{tools.esptool.path}/{tools.esptool.cmd}" --chip esp32 elf2image --flash_mode "{build.flash_mode}" --flash_freq "{build.flash_freq}" --flash_size "{build.flash_size}" -o "{build.path}/{build.project_name}.bin" "{build.path}/{build.project_name}.elf"
+recipe.objcopy.hex.pattern="{tools.esptool.cmd}" --chip esp32 elf2image --flash_mode "{build.flash_mode}" --flash_freq "{build.flash_freq}" --flash_size "{build.flash_size}" -o "{build.path}/{build.project_name}.bin" "{build.path}/{build.project_name}.elf"
+recipe.objcopy.hex.pattern.linux=python "{tools.esptool.cmd}" --chip esp32 elf2image --flash_mode "{build.flash_mode}" --flash_freq "{build.flash_freq}" --flash_size "{build.flash_size}" -o "{build.path}/{build.project_name}.bin" "{build.path}/{build.project_name}.elf"
 
 ## Save hex
 recipe.output.tmp_file={build.project_name}.bin
@@ -97,6 +96,6 @@ tools.esptool.upload.protocol=esp32
 tools.esptool.upload.params.verbose=
 tools.esptool.upload.params.quiet=
 
-tools.esptool.upload.pattern="{path}/{cmd}" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{build.path}/{build.project_name}.bin" 0x8000 "{build.path}/{build.project_name}.partitions.bin"
-tools.esptool.upload.pattern.linux=python "{path}/{cmd}" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{build.path}/{build.project_name}.bin" 0x8000 "{build.path}/{build.project_name}.partitions.bin"
+tools.esptool.upload.pattern="{cmd}" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{build.path}/{build.project_name}.bin" 0x8000 "{build.path}/{build.project_name}.partitions.bin"
+tools.esptool.upload.pattern.linux=python "{cmd}" --chip esp32 --port "{serial.port}" --baud {upload.speed}  --before default_reset --after hard_reset write_flash -z --flash_mode {build.flash_mode} --flash_freq {build.flash_freq} --flash_size detect 0xe000 "{runtime.platform.path}/tools/partitions/boot_app0.bin" 0x1000 "{runtime.platform.path}/tools/sdk/bin/bootloader_{build.boot}_{build.flash_freq}.bin" 0x10000 "{build.path}/{build.project_name}.bin" 0x8000 "{build.path}/{build.project_name}.partitions.bin"
 tools.esptool.upload.network_pattern={network_cmd} -i "{serial.port}" -p "{network.port}" "--auth={network.password}" -f "{build.path}/{build.project_name}.bin"
