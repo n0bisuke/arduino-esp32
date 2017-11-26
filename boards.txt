@@ -25,7 +25,7 @@ nefrybtr2.build.partitions=default
 nefrybtr2.build.f_cpu=240000000L
 nefrybtr2.build.flash_mode=dio
 nefrybtr2.build.flash_size=4MB
-nefrybtr2.build.boot=bootloader
+nefrybtr2.build.boot=dio
 nefrybtr2.build.flash_freq=80m
 
 nefrybtr2.menu.UploadSpeed.921600=921600
@@ -77,8 +77,8 @@ nefrybt.build.partitions=default
 nefrybt.build.f_cpu=240000000L
 nefrybt.build.flash_mode=dio
 nefrybt.build.flash_size=4MB
-nefrybt.build.boot=bootloader
 nefrybt.build.flash_freq=80m
+nefrybt.build.boot=dio
 
 nefrybt.menu.UploadSpeed.921600=921600
 nefrybt.menu.UploadSpeed.921600.upload.speed=921600
@@ -127,44 +127,15 @@ esp32.build.board=ESP32_DEV
 
 esp32.build.f_cpu=240000000L
 esp32.build.flash_size=4MB
+esp32.build.flash_freq=80m
 esp32.build.flash_mode=dio
-esp32.build.boot=bootloader
+esp32.build.boot=dio
 esp32.build.partitions=default
-
-esp32.menu.FlashMode.qio=QIO
-esp32.menu.FlashMode.qio.build.flash_mode=dio
-esp32.menu.FlashMode.qio.build.boot=bootloader_qio
-esp32.menu.FlashMode.dio=DIO
-esp32.menu.FlashMode.dio.build.flash_mode=dio
-esp32.menu.FlashMode.qout=QOUT
-esp32.menu.FlashMode.qout.build.flash_mode=dout
-esp32.menu.FlashMode.qout.build.boot=bootloader_qio
-esp32.menu.FlashMode.dout=DOUT
-esp32.menu.FlashMode.dout.build.flash_mode=dout
-
-esp32.menu.FlashFreq.80=80MHz
-esp32.menu.FlashFreq.80.build.flash_freq=80m
-esp32.menu.FlashFreq.40=40MHz
-esp32.menu.FlashFreq.40.build.flash_freq=40m
-
-esp32.menu.FlashSize.4M=4MB (32Mb)
-esp32.menu.FlashSize.4M.build.flash_size=4MB
-esp32.menu.FlashSize.2M=2MB (16Mb)
-esp32.menu.FlashSize.2M.build.flash_size=2MB
-esp32.menu.FlashSize.2M.build.partitions=minimal
 
 esp32.menu.UploadSpeed.921600=921600
 esp32.menu.UploadSpeed.921600.upload.speed=921600
 esp32.menu.UploadSpeed.115200=115200
 esp32.menu.UploadSpeed.115200.upload.speed=115200
-esp32.menu.UploadSpeed.256000.windows=256000
-esp32.menu.UploadSpeed.256000.upload.speed=256000
-esp32.menu.UploadSpeed.230400.windows.upload.speed=256000
-esp32.menu.UploadSpeed.230400=230400
-esp32.menu.UploadSpeed.230400.upload.speed=230400
-esp32.menu.UploadSpeed.460800.linux=460800
-esp32.menu.UploadSpeed.460800.macosx=460800
-esp32.menu.UploadSpeed.460800.upload.speed=460800
 esp32.menu.UploadSpeed.512000.windows=512000
 esp32.menu.UploadSpeed.512000.upload.speed=512000
 

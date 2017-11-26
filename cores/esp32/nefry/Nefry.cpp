@@ -24,7 +24,7 @@ BootMode
 1 : WriteMode切替をする
 */
 
-#define LIBVERSION ("1.1.2")
+#define LIBVERSION ("1.1.3")
 #include "Nefry.h"
 
 Adafruit_NeoPixel _NefryLED[40];
@@ -49,16 +49,19 @@ void Nefry_lib::nefry_init() {
 	NefryDataStore.begin();
 	delay(500);
 	setLed(0x00, 0x8f, 0x00);
-	Serial.println(F("WiFi Startup"));
-	if (NefryDataStore.getModuleID().equals("")) { NefryDataStore.setModuleID(getDefaultModuleId()); }
-	if (readSW()) { _bootMode = 2; }
-	setLedBlink(0, 0xbf, 0, true, 100);
-	NefryWiFi.begin();
-	Serial.println("WiFi connected");
-	Serial.print("SSID: ");
-	Serial.println(WiFi.SSID());
-	Serial.print("IP address: ");
-	Serial.println(WiFi.localIP());
+
+	if(Nefry.getWifiEnabled()) {
+		Serial.println(F("WiFi Startup"));
+		if (NefryDataStore.getModuleID().equals("")) { NefryDataStore.setModuleID(getDefaultModuleId()); }
+		if (readSW()) { _bootMode = 2; }
+		setLedBlink(0, 0xbf, 0, true, 100);
+		NefryWiFi.begin();
+		Serial.println("WiFi connected");
+		Serial.print("SSID: ");
+		Serial.println(WiFi.SSID());
+		Serial.print("IP address: ");
+		Serial.println(WiFi.localIP());
+	}
 	setLedBlink(0, 0, 0, false, 0);
 	delay(100);
 	setLed(0x00, 0xcf, 0x00);
@@ -76,17 +79,26 @@ void Nefry_lib::nefry_init() {
 	Serial.println(F("\nServer started"));
 	/* Module状況表示 */
 	/* IPaddress display表示 */
-	printDeviceInfo();
+	if(Nefry.getWifiEnabled()){
+		printDeviceInfo();
+	}
 	setLed(0x00, 0xff, 0xff);
-	
+	_nefryWifiWait = 0;
 }
 
 void Nefry_lib::nefry_loop() {
-	NefryWiFi.run();
+	if(Nefry.getWifiEnabled()){
+		_nefryWifiWait++;
+		if (_nefryWifiWait > 1000) {//WiFiに接続する間隔を10秒ごとに修正
+			_nefryWifiWait = 0;
+			NefryWiFi.run();
+		}
+	}
 }
 
 void Nefry_lib::printDeviceInfo()
 {
+    if(!Nefry.getDisplayStatusEnabled()) { return; }
 	NefryDisplay.setAutoScrollFlg(true);
 	NefryDisplay.autoScrollFunc(getNefryDisplayInfo);
 }
@@ -400,4 +412,31 @@ void Nefry_lib::setLedBlink(int red,int green,int blue,bool EN,int wait) {
 	_nefryLedBlinkState[3] = EN;
 	_nefryLedBlinkState[4] = wait;
 }
+
+// Wi-FiのON/OFF
+void Nefry_lib::enableWifi() {
+	_wifiEnableFlg = true;
+}
+
+void Nefry_lib::disableWifi() {
+	_wifiEnableFlg = false;
+}
+
+bool Nefry_lib::getWifiEnabled() {
+	return _wifiEnableFlg;
+}
+
+// ディスプレイステータスのON/OFF
+void Nefry_lib::enableDisplayStatus() {
+	_displayStatusFlg = true;
+}
+
+void Nefry_lib::disableDisplayStatus() {
+	_displayStatusFlg = false;
+}
+
+bool Nefry_lib::getDisplayStatusEnabled() {
+	return _displayStatusFlg;
+}
+
 Nefry_lib Nefry;

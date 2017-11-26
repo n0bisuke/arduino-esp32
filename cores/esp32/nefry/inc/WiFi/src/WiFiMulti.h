@@ -33,9 +33,7 @@
 #include "../../../NefryDisplay.h"
 
 #ifdef DEBUG_ESP_WIFI
-#ifdef DEBUG_ESP_PORT
 #define DEBUG_WIFI_MULTI(...) DEBUG_ESP_PORT.printf( __VA_ARGS__ )
-#endif
 #endif
 
 #ifndef DEBUG_WIFI_MULTI

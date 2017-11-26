@@ -133,7 +133,7 @@ uint8_t WiFiMulti::run(int mode)
             if(bestNetwork.ssid) {
                 DEBUG_WIFI_MULTI("[WIFI] Connecting BSSID: %02X:%02X:%02X:%02X:%02X:%02X SSID: %s Channal: %d (%d)\n", bestBSSID[0], bestBSSID[1], bestBSSID[2], bestBSSID[3], bestBSSID[4], bestBSSID[5], bestNetwork.ssid, bestChannel, bestNetworkDb);
 
-                WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase, bestChannel, bestBSSID);
+                WiFi.begin(bestNetwork.ssid, bestNetwork.passphrase);
                 status = WiFi.status();
 				
                 // wait for connection or fail
