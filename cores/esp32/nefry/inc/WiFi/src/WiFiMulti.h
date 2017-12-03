@@ -31,6 +31,8 @@
 #undef max
 #include <vector>
 #include "../../../NefryDisplay.h"
+#define DEBUG_ESP_WIFI
+#define DEBUG_ESP_PORT Serial
 
 #ifdef DEBUG_ESP_WIFI
 #define DEBUG_WIFI_MULTI(...) DEBUG_ESP_PORT.printf( __VA_ARGS__ )
