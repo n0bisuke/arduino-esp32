@@ -2,7 +2,7 @@
 
 ## 1.1.4
 
-1.1.3 のバグ修正、[70d0d46]まで対応
+1.1.3 のバグ修正、[70d0d46](https://github.com/Nefry-Community/arduino-esp32/commit/70d0d4648766cea047613062ed50a9ecfc9de31f)まで対応 2017/12/
 
 新規機能
 
@@ -22,7 +22,7 @@
 
 - 設定機能関数の追加
 - WiFi無効化機能の追加 [@m2wasabiさん](https://github.com/m2wasabi)からのプルリクありがとうございます。
-- ESP32ライブラリ[a907113]まで対応 2017/11/25まで対応
+- ESP32ライブラリ[a907113](https://github.com/Nefry-Community/arduino-esp32/commit/a907113ba2c67d2dc3785b1ef93e5ab298d82412)まで対応 2017/11/25まで対応
 
 ## 1.1.2
 
