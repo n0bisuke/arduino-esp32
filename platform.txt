@@ -1,7 +1,7 @@
 name=Nefry(ESP32)Module
 version=1.1.0
 
-runtime.tools.xtensa-esp32-elf-gcc.path={runtime.tools.xtensa-esp32-elf-gcc.path}/xtensa-esp32-elf
+runtime.tools.xtensa-esp32-elf-gcc.path={runtime.platform.path}/tools/xtensa-esp32-elf
 
 tools.esptool.cmd={runtime.tools.esptool.path}/esptool
 tools.esptool.cmd.linux={runtime.platform.path}/esptool.py
