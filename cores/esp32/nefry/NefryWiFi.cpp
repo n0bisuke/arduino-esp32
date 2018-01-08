@@ -21,6 +21,8 @@ void Nefry_WiFi::begin() {
 	NefryDisplay.drawString(10, 14, "Scanning WiFi");
 	NefryDisplay.drawProgressBar(14, 44, 100, 14, 0);
 	NefryDisplay.display();
+	WiFi.disconnect();
+	delay(2000);
 	WiFi.persistent(false);
 	WiFi.mode(WIFI_AP_STA);
 	wifiMulti = WiFiMulti();
@@ -76,6 +78,8 @@ run関数で返す値
 	if (getWifiTimeout() == -1)return 1;
 	if (getWifiTimeout() != 0 && getWifiTimeout() <= _WifiTimeOutCount)return 2;
 	uint8_t wifiStatus = wifiMulti.run(Nefry.getBootMode());
+	WiFi.setAutoConnect(true);
+	WiFi.setAutoReconnect(true);
 	if (prevWifiStatus != wifiStatus) {
 		prevWifiStatus = wifiStatus;
 		if (wifiStatus == WL_CONNECTED) {
@@ -105,6 +109,7 @@ run関数で返す値
 		break;
 	case WL_NO_SSID_AVAIL:
 		Serial.println(F("SSID Not Found"));
+		WiFi.disconnect();
 		return 4;
 		break;
 	case WL_SCAN_COMPLETED:

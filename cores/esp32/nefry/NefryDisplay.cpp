@@ -59,6 +59,12 @@ void Nefry_Display::end()
 {
 	_nefrySsdDisplay.end();
 }
+
+void Nefry_Display::setColor(OLEDDISPLAY_COLOR color)
+{
+	_nefrySsdDisplay.setColor(color);
+}
+
 void Nefry_Display::drawString(int16_t x, int16_t y, String text, int16_t maxLineWidth)
 {
 	/* スクロール機能未実装 */
