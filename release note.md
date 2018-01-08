@@ -1,5 +1,58 @@
 # このノートはNefry(ESP32版)のリリースノートになります。
 
+## 1.1.4
+
+1.1.3 のバグ修正、[70d0d46](https://github.com/Nefry-Community/arduino-esp32/commit/70d0d4648766cea047613062ed50a9ecfc9de31f)まで対応 2017/12/
+
+新規機能
+
+- [@bluetone](https://twitter.com/bluetoneinfo)さんからのプルリクでディスプレイ制御関数が追加されました。
+- ESP32ライブラリ[70d0d46]まで対応
+
+バグ対応
+
+- コンパイラ座標を修正
+- [@n0bisuke](https://twitter.com/n0bisuke)さんからのプルリクで表示バグが修正されました
+
+## 1.1.3
+
+設定機能関数の追加、ネットワーク設定変更の対応
+
+新規対応
+
+- 設定機能関数の追加
+- WiFi無効化機能の追加 [@m2wasabiさん](https://github.com/m2wasabi)からのプルリクありがとうございます。
+- ESP32ライブラリ[a907113](https://github.com/Nefry-Community/arduino-esp32/commit/a907113ba2c67d2dc3785b1ef93e5ab298d82412)まで対応 2017/11/25まで対応
+
+## 1.1.2
+
+デバック版
+
+## 1.1.1
+
+###注意
+このバージョンは仮リリースとなります。
+captive portalが正常に動作しませんが、BLEを扱えることを優先します。
+
+新規対応
+
+- ESP32ライブラリ[081ca1c]まで対応 2017/10/30まで対応
+
+バグ対応
+
+- BLEライブラリの動作確認
+
+## 1.1.0
+
+BLEサポート、ESP32ライブラリ[0768590]10月25日まで対応
+
+新規対応
+
+- BLEサポート
+- ESP32ライブラリ[0768590]
+- EddystoneとiBeacon互換対応
+- Nefry BT r2追加
+
 ## 1.0.9
 
 Nefry BT r2対応
