@@ -138,7 +138,7 @@ uint8_t WiFiMulti::run(int mode)
 				
                 // wait for connection or fail
                 while(status != WL_CONNECTED && status != WL_NO_SSID_AVAIL && status != WL_CONNECT_FAILED) {
-                    delay(70);
+                    delay(200);
                     status = WiFi.status();
 					wifiDisplayScroll++;
 					if (wifiDisplayScroll > 50)break;

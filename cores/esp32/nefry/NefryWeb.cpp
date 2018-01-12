@@ -70,7 +70,7 @@ void Nefry_Web::beginWeb() {
 		content += indexlink;
 		content += F("</ul><p>Nefry library:");
 		content += Nefry.getVersion();
-		content += F("</br>Running ProgramName:");
+		content += F("</br>Running Program Name:");
 		content += Nefry.getProgramName();
 		content += F("</p>");
 		NefryWebServer.getWebServer()->send(200, "text/html", createHtml(F("Nefry Menu"), "", content));

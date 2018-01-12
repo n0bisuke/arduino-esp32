@@ -15,6 +15,9 @@ public:
 	// ディスプレイで使用しているメモリを解放する
 	void end();
 
+    // Sets the color of all pixel operations
+    void setColor(OLEDDISPLAY_COLOR color);
+
 	//指定された場所に最大幅の文字列を描画します。
 	//指定されたStringが指定された幅よりも広い場合
 	//テキストはスペースまたはダッシュで次の行に折り返されます
