@@ -1,11 +1,10 @@
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <DNSServer.h>
-#include <ESP8266WebServer.h>
 
 const byte DNS_PORT = 53;
 IPAddress apIP(192, 168, 1, 1);
 DNSServer dnsServer;
-ESP8266WebServer webServer(80);
+WiFiServer server(80);
 
 String responseHTML = ""
   "<!DOCTYPE html><html><head><title>CaptivePortal</title></head><body>"
@@ -21,14 +20,33 @@ void setup() {
   // provided IP to all DNS request
   dnsServer.start(DNS_PORT, "*", apIP);
 
-  // replay to all requests with same HTML
-  webServer.onNotFound([]() {
-    webServer.send(200, "text/html", responseHTML);
-  });
-  webServer.begin();
+  server.begin();
 }
 
 void loop() {
   dnsServer.processNextRequest();
-  webServer.handleClient();
+  WiFiClient client = server.available();   // listen for incoming clients
+
+  if (client) {
+    String currentLine = "";
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
+        if (c == '\n') {
+          if (currentLine.length() == 0) {
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:text/html");
+            client.println();
+            client.print(responseHTML);
+            break;
+          } else {
+            currentLine = "";
+          }
+        } else if (c != '\r') {
+          currentLine += c;
+        }
+      }
+    }
+    client.stop();
+  }
 }
