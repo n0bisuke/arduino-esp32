@@ -2,6 +2,7 @@
 #define Nefry_h
 
 #include <Esp.h>
+#include "./inc/led/Adafruit_DotStar.h"
 #include "./inc/led/Adafruit_NeoPixel.h"
 #include "./inc/Preferences/src/Preferences.h"
 #include "NefryWiFi.h"
@@ -65,8 +66,8 @@ public:
 	void
 		reset(),
 		sleep(const int sec),
-		setProgramName(const char * pn),
-		beginLed(const int num, const int pin, uint8_t t),
+		setProgramName(const char * pn), 
+		beginLed(const int num, const int dataOut, uint8_t t = 0, const int clk = -1),
 		setLed(const int r, const int g, const int b, const char w = 80, const int pin = 16, const int num = 0),
 		setLed(String _colorStr, const char w = 122, const int pin = 16, const int num = 0),
 		addWiFi(String ssid, String pass),

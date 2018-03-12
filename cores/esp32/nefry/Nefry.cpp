@@ -27,15 +27,19 @@ BootMode
 #define LIBVERSION ("1.2.0")
 #include "Nefry.h"
 
-Adafruit_NeoPixel _NefryLED[40];
-
+Adafruit_NeoPixel _NefryLEDNeo;
+Adafruit_DotStar _NefryLEDStar;
 //main 
 
 void Nefry_lib::nefry_init() {
 	/* Display設定 */
 	delay(10);
 	NefryDisplay.begin();//logo表示
-	beginLed((const int)1, (const int)16, (uint8_t)NEO_GRBW);
+	if (boardId == 3) {
+		beginLed((const int)1, (const int)LED_DO, (uint8_t)DOTSTAR_BRG, LED_CLK);
+	} else {
+		beginLed((const int)1, (const int)16, (uint8_t)NEO_GRBW);
+	}
 	setLedBlink(0, 0, 0, false, 0);
 	setLed(0x00, 0x0f, 0x00);
 	enableSW();
@@ -289,18 +293,34 @@ bool Nefry_lib::getPollingSW()
 }
 
 //LED
-void Nefry_lib::beginLed(const int num, const int pin, uint8_t t = NEO_GRB) {
-	_NefryLED[pin] = Adafruit_NeoPixel(num, pin, t);
-	_NefryLED[pin].begin();
+void Nefry_lib::beginLed(const int num, const int DataOut, uint8_t t ,const int clk) {
+	if (boardId == 3) { // Nefry BT r3
+		_NefryLEDStar = Adafruit_DotStar(num, DataOut, clk, DOTSTAR_BRG);
+		_NefryLEDStar.begin();
+		_NefryLEDStar.show();
+	}
+	else {
+		_NefryLEDNeo = Adafruit_NeoPixel(num, DataOut, t);
+		_NefryLEDNeo.begin();
+		_NefryLEDNeo.show();
+	}
 }
+
 void Nefry_lib::setLed(const int r, const int g, const int b, const char w, const int pin, const int num) {
-	_NefryLED[pin].setPixelColor(num,0, 0, 0);
-	delay(1);
-	_NefryLED[pin].show();
-	_NefryLED[pin].setBrightness(w);
-	_NefryLED[pin].setPixelColor(num, map(r,0,255,0,150), g, b);
-	delay(1);
-	_NefryLED[pin].show();
+	if (boardId == 3) { // Nefry BT r3
+		_NefryLEDStar.setBrightness(w);
+		_NefryLEDStar.setPixelColor(num, r, g, b);
+		_NefryLEDStar.show();
+	}
+	else {
+		_NefryLEDNeo.setPixelColor(num, 0, 0, 0);
+		delay(1);
+		_NefryLEDNeo.show();
+		_NefryLEDNeo.setBrightness(w);
+		_NefryLEDNeo.setPixelColor(num, map(r, 0, 255, 0, 150), g, b);
+		delay(1);
+		_NefryLEDNeo.show();
+	}
 }
 void Nefry_lib::setLed(String _colorStr, const char w, const int pin, const int num) {
 	int _color[3];
