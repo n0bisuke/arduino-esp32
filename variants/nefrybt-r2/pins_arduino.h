@@ -43,8 +43,8 @@ static const uint8_t A3 = 36;
 
 static const uint8_t T0 = 13;
 static const uint8_t T1 = 14;
-static const uint8_t T2 = 32;
-static const uint8_t T3 = 33;
+static const uint8_t T2 = 33;
+static const uint8_t T3 = 32;
 static const uint8_t T4 = 27;
 
 static const uint8_t DAC1 = 25;
