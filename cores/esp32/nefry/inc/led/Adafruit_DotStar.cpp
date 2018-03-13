@@ -28,7 +28,7 @@
 #if !defined(__AVR_ATtiny85__)
  #include "./../SPI/src/SPI.h"
 #endif
-
+SPIClass SPI2;
 #define USE_HW_SPI 255 // Assign this to dataPin to indicate 'hard' SPI
 
   // Constructor for hardware SPI -- must connect to MOSI, SCK pins
@@ -112,22 +112,22 @@ void Adafruit_DotStar::hw_spi_init(void) { // Initialize hardware SPI
   PORTB &= ~(_BV(PORTB1) | _BV(PORTB2)); // Outputs
   DDRB  |=   _BV(PORTB1) | _BV(PORTB2);  // DO (NOT MOSI) + SCK
 #elif (SPI_INTERFACES_COUNT > 0) || !defined(SPI_INTERFACES_COUNT)
-  SPI.begin();
+	SPI2.begin();
  #if defined(__AVR__) || defined(CORE_TEENSY) || defined(__ARDUINO_ARC__) || defined(__ARDUINO_X86__)
-  SPI.setClockDivider(SPI_CLOCK_DIV2); // 8 MHz (6 MHz on Pro Trinket 3V)
+	SPI2.setClockDivider(SPI_CLOCK_DIV2); // 8 MHz (6 MHz on Pro Trinket 3V)
  #else
   #if defined(ESP8266) || defined(ESP31B) || defined(ESP32)
-    SPI.setFrequency(8000000L);
+	SPI2.setFrequency(8000000L);
   #elif defined(PIC32)
     // Use begin/end transaction to set SPI clock rate
-    SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-    SPI.endTransaction();
+	SPI2.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
+	SPI2.endTransaction();
   #else
-    SPI.setClockDivider((F_CPU + 4000000L) / 8000000L); // 8-ish MHz on Due
+	SPI2.setClockDivider((F_CPU + 4000000L) / 8000000L); // 8-ish MHz on Due
   #endif
  #endif
-  SPI.setBitOrder(MSBFIRST);
-  SPI.setDataMode(SPI_MODE0);
+	SPI2.setBitOrder(MSBFIRST);
+	SPI2.setDataMode(SPI_MODE0);
 #endif
 }
 
@@ -135,7 +135,7 @@ void Adafruit_DotStar::hw_spi_end(void) { // Stop hardware SPI
 #ifdef __AVR_ATtiny85__
   DDRB &= ~(_BV(PORTB1) | _BV(PORTB2)); // Inputs
 #elif (SPI_INTERFACES_COUNT > 0) || !defined(SPI_INTERFACES_COUNT)
-  SPI.end();
+	SPI2.end();
 #endif
 }
 
@@ -177,7 +177,7 @@ static void spi_out(uint8_t n) { // Clock out one byte
 
 // All other boards have full-featured hardware support for SPI
 
-#define spi_out(n) (void)SPI.transfer(n)
+#define spi_out(n) (void)SPI2.transfer(n)
 // Pipelining reads next byte while current byte is clocked out
 #if (defined(__AVR__) && !defined(__AVR_ATtiny85__)) || defined(CORE_TEENSY)
  #define SPI_PIPELINE
