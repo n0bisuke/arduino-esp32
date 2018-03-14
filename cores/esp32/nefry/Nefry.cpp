@@ -29,10 +29,12 @@ BootMode
 
 Adafruit_NeoPixel _NefryLEDNeo;
 Adafruit_DotStar _NefryLEDStar;
+bool connectAnFlg = false;
 //main 
 
 void Nefry_lib::nefry_init() {
 	/* Display設定 */
+	connectAnFlg = false;
 	delay(10);
 	NefryDisplay.begin();//logo表示
 	if (boardId == 3) {
@@ -96,6 +98,9 @@ void Nefry_lib::nefry_loop() {
 		if (_nefryWifiWait > 1000) {//WiFiに接続する間隔を10秒ごとに修正
 			_nefryWifiWait = 0;
 			NefryWiFi.run();
+			if (connectAnFlg != true) {
+				connectAnFlg = setAnalyticsData("connect");
+			}
 		}
 	}
 }
@@ -457,6 +462,83 @@ void Nefry_lib::disableDisplayStatus() {
 
 bool Nefry_lib::getDisplayStatusEnabled() {
 	return _displayStatusFlg;
+}
+
+bool Nefry_lib::setAnalyticsData(String action) {
+	bool state = false;
+	if (WiFi.status() == WL_CONNECTED) {
+		WiFiClient client;
+		const int httpPort = 80;
+		if (!client.connect("google-analytics.com", httpPort)) {
+			//Serial.println("connection failed");
+			return state;
+		}
+
+		// We now create a URI for the request
+		String url = "/collect?v=1&t=event&tid=UA-78080011-2&cid=NefryBT&ec=";
+		url += "NefryBT";
+		switch (boardId) {
+			case 1:
+				url += "r1";
+				break;
+			case 2:
+				url += "r2";
+				break;
+			case 3:
+				url += "r3";
+				break;
+			default:
+				url += "error";
+				break;
+		}
+		url += "&el=v";
+		url += getVersion();
+		url += "&ea=";
+		url += action;
+	
+
+		//Serial.print("Requesting URL: ");
+		//Serial.println(url);
+
+		// This will send the request to the server
+		client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+			"Host: google-analytics.com\r\n" +
+			"Connection: close\r\n\r\n");
+		unsigned long timeout = millis();
+		while (client.available() == 0) {
+			if (millis() - timeout > 5000) {
+				//Serial.println(">>> Client Timeout !");
+				client.stop();
+				return state;
+			}
+		}
+
+		// Read all the lines of the reply from server and print them to Serial
+		while (client.available()) {
+			size_t len = client.available();
+			if (len > 0) {
+				String headerLine = client.readStringUntil('\n');
+				headerLine.trim(); // remove \r
+				//Serial.print(headerLine);
+				log_d("[HTTP-Client][handleHeaderResponse] RX: '%s'", headerLine.c_str());
+
+				if (headerLine.startsWith("HTTP/1.")) {
+					int _returnCode = headerLine.substring(9, headerLine.indexOf(' ', 9)).toInt();
+					//Serial.printf("[HTTP] GET... code: %d\n", _returnCode);
+					if (_returnCode == 200) {
+						state = true;
+						break;
+					}
+					else {
+						state = false;
+						break;
+					}
+				}
+			}
+		}
+		client.stop();
+	}
+	return state;
 }
 
 Nefry_lib Nefry;

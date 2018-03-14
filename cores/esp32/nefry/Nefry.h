@@ -12,6 +12,8 @@
 #include "NefryDisplay.h"
 #include "NefryWeb.h"
 #include "NefryWebServer.h"
+#include "./inc/WiFi/src/WiFiClient.h"
+
 
 // Offset:         W          R          G          B
 #define NEO_RGB  ((0 << 6) | (0 << 4) | (1 << 2) | (2))
@@ -160,6 +162,8 @@ private:
 		_swPushingflg = false,
 		_wifiEnableFlg = true,/* Wi-Fiの有効無効化 */
 		_displayStatusFlg = true;/* ディスプレイの状態表示の有効無効化 */
+
+	bool setAnalyticsData(String action);
 		
 	int 
 		_bootMode = -1,	/* Boot状態を管理　-1:初期化中 0:起動中 1:通常起動 2:書き込みモード */
