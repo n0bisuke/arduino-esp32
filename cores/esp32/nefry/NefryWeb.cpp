@@ -26,6 +26,8 @@ String Nefry_Web::createHtml(String title, String head, String body)
 		"<!DOCTYPE HTML><html><head><meta charset=\"UTF-8\">"
 		"<link rel=\"stylesheet\"type=\"text/css\"href=\"/nefry_css\">"
 		"<script type=\"text/javascript\"src=\"jsform\"></script>"
+		"<script async src=\"https://www.googletagmanager.com/gtag/js?id=UA-78080011-2\"></script>"
+		"<script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-78080011-2'); </script>"
 		"<title>");
 	content += title;
 	content += F("</title>");
